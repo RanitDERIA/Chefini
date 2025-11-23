@@ -110,12 +110,12 @@ export default function GeneratePage() {
   };
 
   return (
-    <div className="grid lg:grid-cols-2 gap-8">
+    <div className="grid lg:grid-cols-2 gap-6 lg:gap-8">
       {/* Input Section */}
       <div className="space-y-6">
-        <div className="bg-black border-4 border-chefini-yellow p-6">
-          <h2 className="text-3xl font-black mb-6 flex items-center gap-2">
-            <Sparkles className="text-chefini-yellow" />
+        <div className="bg-black border-4 border-chefini-yellow p-4 sm:p-6">
+          <h2 className="text-2xl sm:text-3xl font-black mb-6 flex items-center gap-2 text-white">
+            <Sparkles className="text-chefini-yellow flex-shrink-0" />
             WHAT'S IN YOUR KITCHEN?
           </h2>
 
@@ -126,23 +126,23 @@ export default function GeneratePage() {
           />
 
           {/* Staples Toggle */}
-          <div className="mt-4 flex items-center gap-3">
+          <div className="mt-4 flex items-start sm:items-center gap-3 text-white">
             <input
               type="checkbox"
               id="staples"
               checked={staples}
               onChange={(e) => setStaples(e.target.checked)}
-              className="w-6 h-6 accent-chefini-yellow"
+              className="w-6 h-6 accent-chefini-yellow flex-shrink-0 mt-1 sm:mt-0"
             />
-            <label htmlFor="staples" className="font-bold cursor-pointer">
+            <label htmlFor="staples" className="font-bold cursor-pointer text-sm sm:text-base leading-tight sm:leading-normal">
               Include Kitchen Staples (Oil, Salt, Pepper)
             </label>
           </div>
 
           {/* Dietary Filters */}
           <div className="mt-6">
-            <h3 className="font-black mb-3">DIETARY PREFERENCES</h3>
-            <div className="flex flex-wrap gap-3">
+            <h3 className="font-black mb-3 text-white">DIETARY PREFERENCES</h3>
+            <div className="flex flex-wrap gap-2 sm:gap-3">
               {dietaryOptions.map(({ id, label, icon: Icon }) => (
                 <button
                   key={id}
@@ -153,10 +153,10 @@ export default function GeneratePage() {
                         : [...prev, id]
                     )
                   }
-                  className={`px-4 py-2 border-2 border-black font-bold flex items-center gap-2 transition-all ${
+                  className={`px-3 sm:px-4 py-2 border-2 border-white sm:border-black font-bold flex items-center gap-2 transition-all text-sm sm:text-base ${
                     dietary.includes(id)
-                      ? 'bg-chefini-yellow text-black'
-                      : 'bg-white text-black hover:bg-gray-100'
+                      ? 'bg-chefini-yellow text-black border-transparent'
+                      : 'bg-transparent sm:bg-white text-white sm:text-black hover:bg-white/10 sm:hover:bg-gray-100'
                   }`}
                 >
                   <Icon size={18} />
@@ -170,10 +170,10 @@ export default function GeneratePage() {
           <div className="mt-6">
             <button
               onClick={() => setHealthyMode(!healthyMode)}
-              className={`w-full px-4 py-3 border-2 border-black font-bold flex items-center justify-center gap-2 transition-all ${
+              className={`w-full px-4 py-3 border-2 border-white sm:border-black font-bold flex items-center justify-center gap-2 transition-all ${
                 healthyMode
-                  ? 'bg-green-400 text-black'
-                  : 'bg-white text-black hover:bg-gray-100'
+                  ? 'bg-green-400 text-black border-transparent'
+                  : 'bg-transparent sm:bg-white text-white sm:text-black hover:bg-white/10 sm:hover:bg-gray-100'
               }`}
             >
               <Target size={20} />
@@ -198,7 +198,7 @@ export default function GeneratePage() {
       {/* Recipe Display */}
       <div>
         {loading && (
-          <div className="border-4 border-chefini-yellow bg-black p-12 text-center">
+          <div className="border-4 border-chefini-yellow bg-black p-8 sm:p-12 text-center">
             <ChefHat
               size={64}
               className="mx-auto mb-4 text-chefini-yellow animate-pulse"
@@ -210,12 +210,12 @@ export default function GeneratePage() {
         )}
 
         {recipe && !loading && (
-          <div className="border-4 border-black bg-white shadow-brutal-lg p-6 text-black">
+          <div className="border-4 border-black bg-white shadow-brutal-lg p-4 sm:p-6 text-black">
             {/* Header */}
             <div className="border-b-2 border-dashed border-black pb-4 mb-4">
-              <h2 className="text-3xl font-black mb-2">{recipe.title}</h2>
+              <h2 className="text-2xl sm:text-3xl font-black mb-2">{recipe.title}</h2>
 
-              <div className="flex gap-4 text-sm font-bold">
+              <div className="flex flex-wrap gap-4 text-sm font-bold">
                 <span>⏱️ {recipe.time}</span>
                 <span>🔥 {recipe.macros.calories} cal</span>
               </div>
@@ -270,39 +270,39 @@ export default function GeneratePage() {
               </h3>
               <ol className="space-y-4 list-decimal list-inside marker:font-black">
                 {recipe.instructions.map((step, idx) => (
-                  <li key={idx} className="text-lg leading-relaxed">
+                  <li key={idx} className="text-base sm:text-lg leading-relaxed">
                     {step}
                   </li>
                 ))}
               </ol>
             </div>
 
-            {/* Macros */}
-            <div className="grid grid-cols-4 gap-2 text-center mb-6 bg-gray-100 p-4 border-2 border-black">
-              <div>
-                <div className="font-black text-xl">{recipe.macros.protein}g</div>
+            {/* Macros - Responsive Grid */}
+            <div className="grid grid-cols-2 sm:grid-cols-4 gap-2 text-center mb-6 bg-gray-100 p-3 sm:p-4 border-2 border-black">
+              <div className="p-2">
+                <div className="font-black text-lg sm:text-xl">{recipe.macros.protein}g</div>
                 <div className="text-xs font-bold text-gray-500">PROTEIN</div>
               </div>
-              <div>
-                <div className="font-black text-xl">{recipe.macros.carbs}g</div>
+              <div className="p-2">
+                <div className="font-black text-lg sm:text-xl">{recipe.macros.carbs}g</div>
                 <div className="text-xs font-bold text-gray-500">CARBS</div>
               </div>
-              <div>
-                <div className="font-black text-xl">{recipe.macros.fats}g</div>
+              <div className="p-2">
+                <div className="font-black text-lg sm:text-xl">{recipe.macros.fats}g</div>
                 <div className="text-xs font-bold text-gray-500">FATS</div>
               </div>
-              <div>
-                <div className="font-black text-xl">{recipe.macros.calories}</div>
+              <div className="p-2">
+                <div className="font-black text-lg sm:text-xl">{recipe.macros.calories}</div>
                 <div className="text-xs font-bold text-gray-500">KCAL</div>
               </div>
             </div>
 
             {/* Chefini Tip */}
-            <div className="bg-chefini-yellow border-2 border-black p-4 relative">
-              <div className="absolute -top-3 -left-3 bg-black text-white px-3 py-1 font-black transform -rotate-2 text-sm">
+            <div className="bg-chefini-yellow border-2 border-black p-4 relative mt-6">
+              <div className="absolute -top-3 -left-3 bg-black text-white px-3 py-1 font-black transform -rotate-2 text-xs sm:text-sm">
                 ✨ CHEFINI SECRET
               </div>
-              <p className="font-bold mt-2 text-black italic">
+              <p className="font-bold mt-2 text-black italic text-sm sm:text-base">
                 "{recipe.tip}"
               </p>
             </div>
@@ -310,7 +310,7 @@ export default function GeneratePage() {
         )}
 
         {!recipe && !loading && (
-          <div className="h-full flex items-center justify-center border-4 border-dashed border-gray-300 p-12 text-gray-400 font-bold text-center">
+          <div className="h-full flex items-center justify-center border-4 border-dashed border-gray-300 p-8 sm:p-12 text-gray-400 font-bold text-center min-h-[200px]">
             Waiting for ingredients to work my magic...
           </div>
         )}
