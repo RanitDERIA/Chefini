@@ -312,7 +312,8 @@ export default function ShoppingListPage() {
 
       document.body.removeChild(tempDiv);
 
-      canvas.toBlob((blob) => {
+      // Fix: Explicitly typed 'blob' as Blob | null
+      canvas.toBlob((blob: Blob | null) => {
         if (!blob) throw new Error('Blob creation failed');
         const url = URL.createObjectURL(blob);
         const a = document.createElement('a');
