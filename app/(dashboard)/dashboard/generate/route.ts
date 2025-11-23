@@ -82,7 +82,8 @@ RESPOND WITH THIS EXACT JSON STRUCTURE:
     const userIngredients = ingredients.map((i: string) => i.toLowerCase());
     recipeData.ingredients = recipeData.ingredients.map((ing: any) => ({
       ...ing,
-      missing: !userIngredients.some(ui => ing.item.toLowerCase().includes(ui))
+      // Fix: Explicitly type 'ui' as string
+      missing: !userIngredients.some((ui: string) => ing.item.toLowerCase().includes(ui))
     }));
 
     // Save to database
