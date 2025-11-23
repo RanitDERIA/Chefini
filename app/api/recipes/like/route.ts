@@ -34,11 +34,14 @@ export async function POST(req: NextRequest) {
     }
 
     const recipeObjectId = new mongoose.Types.ObjectId(recipeId);
-    const hasLiked = user.likedRecipes.some(id => id.toString() === recipeId);
+    
+    // Fix: Explicitly type 'id' as any to prevent implicit any error
+    const hasLiked = user.likedRecipes.some((id: any) => id.toString() === recipeId);
 
     if (hasLiked) {
       // Unlike: Remove from user's liked recipes and decrement recipe likes
-      user.likedRecipes = user.likedRecipes.filter(id => id.toString() !== recipeId);
+      // Fix: Explicitly type 'id' as any here as well
+      user.likedRecipes = user.likedRecipes.filter((id: any) => id.toString() !== recipeId);
       recipe.likes = Math.max(0, recipe.likes - 1); // Ensure likes don't go negative
       
       await user.save();
