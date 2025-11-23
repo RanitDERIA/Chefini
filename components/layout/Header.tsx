@@ -39,9 +39,8 @@ export default function Header({ user }: HeaderProps) {
             className="w-10 h-10 sm:w-12 sm:h-12 border-2 border-white shadow-brutal-sm flex items-center justify-center overflow-hidden bg-chefini-yellow hover:border-chefini-yellow hover:scale-110 transition-all cursor-pointer"
             title="View Profile"
           >
-            {avatarDisplay.type === 'emoji' && (
-              <span className="text-lg sm:text-2xl">{avatarDisplay.value}</span>
-            )}
+            {/* Removed 'emoji' block as we now use images for avatars */}
+            
             {avatarDisplay.type === 'image' && (
               <img
                 src={avatarDisplay.value}
@@ -50,6 +49,7 @@ export default function Header({ user }: HeaderProps) {
                 referrerPolicy="no-referrer"
               />
             )}
+            
             {avatarDisplay.type === 'initial' && (
               <span className="font-black text-black text-lg sm:text-xl">{avatarDisplay.value}</span>
             )}
