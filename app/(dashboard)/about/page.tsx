@@ -134,7 +134,7 @@ export default function AboutPage() {
             </p>
             <div className="space-y-2">
               <p className="font-bold">
-                <span className="text-chefini-yellow">Email:</span> <a href="mailto:bytebardderia@gmail.com" className="hover:underline">bytebardderia@gmail.com</a>
+                <span className="text-chefini-yellow">Email:</span> <a href="mailto:bytebardderia@gmail.com" className="hover:underline">gmail.com/RanitDeria</a>
               </p>
               <p className="font-bold">
                 <span className="text-chefini-yellow">GitHub:</span> <a href='https://github.com/RanitDERIA' target='_black' className="hover:underline">github.com/RanitDERIA</a>

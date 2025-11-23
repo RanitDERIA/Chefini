@@ -465,7 +465,7 @@ export default function ShoppingListPage() {
                 <p className="font-black text-black text-lg mb-1">ORDER ONLINE</p>
                 <p className="text-sm text-black font-bold">
                   Click &quot;Order&quot; on any item to purchase it from Blinkit, Zepto, Amazon Fresh, 
-                  Swiggy Instamart, or BigBasket.
+                  Swiggy Instamart, BigBasket, Jiomart and Dealshare.
                 </p>
               </div>
             </div>

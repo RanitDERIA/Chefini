@@ -33,7 +33,7 @@ export default function PrivacyPage() {
             <h2 className="text-2xl font-black text-white mb-3">4. Your Rights</h2>
             <p>
               You have the right to access, modify, or delete your personal data at any time. 
-              Contact us at <a href="bytebardderia@gmail.com">bytebardderia@gmail.com</a> for assistance.
+              Contact us at <a href="mailto:bytebardderia@gmail.com">bytebardderia@gmail.com</a> for assistance.
             </p>
           </section>
 

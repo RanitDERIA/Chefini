@@ -70,6 +70,26 @@ export const shoppingServices: ShoppingService[] = [
     available: true,
     type: 'url',
     description: 'Scheduled delivery'
+  },
+  {
+    id: 'jiomart',
+    name: 'JioMart',
+    icon: '/jiomart.png',
+    color: '#008ECC',
+    bgColor: '#E1F5FE',
+    available: true,
+    type: 'url',
+    description: 'Hyperlocal delivery'
+  },
+  {
+    id: 'dealshare',
+    name: 'DealShare',
+    icon: '/dealshare.png',
+    color: '#D61F5E',
+    bgColor: '#FCE4EC',
+    available: true,
+    type: 'url',
+    description: 'Budget grocery'
   }
 ];
 
@@ -92,6 +112,10 @@ export function generateServiceUrlForItem(serviceId: string, item: string): stri
       return `https://www.swiggy.com/instamart/search?custom_back=true&query=${encodedItem}`;
     case 'bigbasket':
       return `https://www.bigbasket.com/ps/?q=${encodedItem}`;
+    case 'jiomart':
+      return `https://www.jiomart.com/catalogsearch/result?q=${encodedItem}`;
+    case 'dealshare':
+      return `https://www.dealshare.in/search?q=${encodedItem}`;
     default:
       return '#';
   }
@@ -111,6 +135,8 @@ export function getMobileDeepLinkForItem(serviceId: string, item: string): strin
       return `zepto://search?query=${encodedItem}`;
     case 'swiggy-instamart':
       return `swiggy://instamart/search?query=${encodedItem}`;
+    // JioMart and DealShare often rely on web-wrappers or don't have public deep link schemes for search
+    // Returning null falls back to the web URL which opens the app if Universal Links are supported
     default:
       return null;
   }

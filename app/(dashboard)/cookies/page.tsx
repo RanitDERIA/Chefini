@@ -93,7 +93,7 @@ export default function CookiesPage() {
               If you have any questions about our use of cookies, please contact us at:
             </p>
             <div className="mt-3 p-4 bg-white text-black border-2 border-black">
-              <p className="font-bold">Email: <a href="bytebardderia@gmail.com">bytebardderia@gmail.com</a></p>
+              <p className="font-bold">Email: <a href="mailto:bytebardderia@gmail.com">bytebardderia@gmail.com</a></p>
               <p className="text-sm mt-1">We typically respond within 24-48 hours.</p>
             </div>
           </section>
