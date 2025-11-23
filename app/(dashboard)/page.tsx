@@ -242,4 +242,79 @@ export default function GeneratePage() {
                       {ing.missing && (
                         <button
                           onClick={() => addToShoppingList(ing.item)}
-                          className="ml-2 text-xs bg-red-500 text-white p
+                          className="ml-2 text-xs bg-red-500 text-white px-2 py-1 rounded-sm hover:bg-red-600 transition-colors font-bold uppercase"
+                        >
+                          + Add
+                        </button>
+                      )}
+                    </span>
+                  </li>
+                ))}
+              </ul>
+            </div>
+
+            {/* Instructions */}
+            <div className="mb-6">
+              <h3 className="text-xl font-black mb-3 flex items-center gap-2">
+                <ChefHat size={20} />
+                INSTRUCTIONS
+                <button
+                  onClick={speakInstructions}
+                  className={`ml-auto p-2 border-2 border-black ${
+                    isReading ? 'bg-chefini-yellow' : 'bg-white'
+                  } hover:bg-gray-100 transition-colors`}
+                  title="Read instructions aloud"
+                >
+                  <Volume2 size={20} />
+                </button>
+              </h3>
+              <ol className="space-y-4 list-decimal list-inside marker:font-black">
+                {recipe.instructions.map((step, idx) => (
+                  <li key={idx} className="text-lg leading-relaxed">
+                    {step}
+                  </li>
+                ))}
+              </ol>
+            </div>
+
+            {/* Macros */}
+            <div className="grid grid-cols-4 gap-2 text-center mb-6 bg-gray-100 p-4 border-2 border-black">
+              <div>
+                <div className="font-black text-xl">{recipe.macros.protein}g</div>
+                <div className="text-xs font-bold text-gray-500">PROTEIN</div>
+              </div>
+              <div>
+                <div className="font-black text-xl">{recipe.macros.carbs}g</div>
+                <div className="text-xs font-bold text-gray-500">CARBS</div>
+              </div>
+              <div>
+                <div className="font-black text-xl">{recipe.macros.fats}g</div>
+                <div className="text-xs font-bold text-gray-500">FATS</div>
+              </div>
+              <div>
+                <div className="font-black text-xl">{recipe.macros.calories}</div>
+                <div className="text-xs font-bold text-gray-500">KCAL</div>
+              </div>
+            </div>
+
+            {/* Chefini Tip */}
+            <div className="bg-chefini-yellow border-2 border-black p-4 relative">
+              <div className="absolute -top-3 -left-3 bg-black text-white px-3 py-1 font-black transform -rotate-2 text-sm">
+                ✨ CHEFINI SECRET
+              </div>
+              <p className="font-bold mt-2 text-black italic">
+                "{recipe.tip}"
+              </p>
+            </div>
+          </div>
+        )}
+
+        {!recipe && !loading && (
+          <div className="h-full flex items-center justify-center border-4 border-dashed border-gray-300 p-12 text-gray-400 font-bold text-center">
+            Waiting for ingredients to work my magic...
+          </div>
+        )}
+      </div>
+    </div>
+  );
+}
