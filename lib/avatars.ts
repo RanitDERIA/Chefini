@@ -12,6 +12,19 @@ export const avatarOptions = [
   { id: 'chef10', src: 'https://api.dicebear.com/9.x/notionists/svg?seed=Sara', label: 'Sara' },
   { id: 'chef11', src: 'https://api.dicebear.com/9.x/notionists/svg?seed=George', label: 'George' },
   { id: 'chef12', src: 'https://api.dicebear.com/9.x/notionists/svg?seed=Lilly', label: 'Lilly' },
+  // New additions
+  { id: 'chef13', src: 'https://api.dicebear.com/9.x/notionists/svg?seed=Jack', label: 'Jack' },
+  { id: 'chef14', src: 'https://api.dicebear.com/9.x/notionists/svg?seed=Caleb', label: 'Caleb' },
+  { id: 'chef15', src: 'https://api.dicebear.com/9.x/notionists/svg?seed=Zoe', label: 'Zoe' },
+  { id: 'chef16', src: 'https://api.dicebear.com/9.x/notionists/svg?seed=Avery', label: 'Avery' },
+  { id: 'chef17', src: 'https://api.dicebear.com/9.x/notionists/svg?seed=Nora', label: 'Nora' },
+  { id: 'chef18', src: 'https://api.dicebear.com/9.x/notionists/svg?seed=Liam', label: 'Liam' },
+  { id: 'chef19', src: 'https://api.dicebear.com/9.x/notionists/svg?seed=Maya', label: 'Maya' },
+  { id: 'chef20', src: 'https://api.dicebear.com/9.x/notionists/svg?seed=Ethan', label: 'Ethan' },
+  { id: 'chef21', src: 'https://api.dicebear.com/9.x/notionists/svg?seed=Sophie', label: 'Sophie' },
+  { id: 'chef22', src: 'https://api.dicebear.com/9.x/notionists/svg?seed=Lucas', label: 'Lucas' },
+  { id: 'chef23', src: 'https://api.dicebear.com/9.x/notionists/svg?seed=Chloe', label: 'Chloe' },
+  { id: 'chef24', src: 'https://api.dicebear.com/9.x/notionists/svg?seed=Max', label: 'Max' },
 ];
 
 export function getAvatarDisplay(user: {
