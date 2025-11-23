@@ -8,7 +8,7 @@ import Script from "next/script";
 const inter = Inter({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
-  title: "Chefini - Turn Leftovers into Magic",
+  title: "Chefini",
   description: "Smart culinary companion that reduces food waste by turning random leftovers into gourmet meals",
   // Updated Icons configuration
   icons: {
