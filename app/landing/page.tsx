@@ -23,7 +23,7 @@ export default function LandingPage() {
   const features = [
     {
       icon: Wand2,
-      title: 'The "Maa\'s Hands" Magic',
+      title: 'The "Mom\'s Hands" Magic',
       description: 'Digitizing that motherly intuition. We see a feast where others see an empty fridge.'
     },
     {
