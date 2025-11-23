@@ -20,7 +20,8 @@ export async function GET() {
     }
 
     // Return array of liked recipe IDs as strings
-    const likedRecipeIds = user.likedRecipes.map(id => id.toString());
+    // Fix: Explicitly type 'id' as any to avoid implicit any error
+    const likedRecipeIds = user.likedRecipes.map((id: any) => id.toString());
 
     return NextResponse.json({ likedRecipes: likedRecipeIds });
   } catch (error: any) {
