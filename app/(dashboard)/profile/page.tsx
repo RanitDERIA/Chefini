@@ -140,23 +140,23 @@ export default function ProfilePage() {
       ))}
 
       {/* Header */}
-      <div className="mb-8 bg-black border-4 border-chefini-yellow p-6">
-        <h1 className="text-4xl font-black flex items-center gap-3">
-          <User className="text-chefini-yellow" size={40} />
+      <div className="mb-6 sm:mb-8 bg-black border-4 border-chefini-yellow p-4 sm:p-6">
+        <h1 className="text-3xl sm:text-4xl font-black flex items-center gap-3 text-white">
+          <User className="text-chefini-yellow" size={32} />
           MY PROFILE
         </h1>
-        <p className="text-gray-400 mt-2">Manage your account settings and preferences</p>
+        <p className="text-gray-400 mt-2 text-sm sm:text-base">Manage your account settings and preferences</p>
       </div>
 
       <div className="grid lg:grid-cols-3 gap-6">
         
         {/* Left — Profile Preview */}
         <div className="lg:col-span-1">
-          <div className="bg-black border-4 border-chefini-yellow p-6 sticky top-6">
-            <h2 className="text-2xl font-black mb-6 text-center">PROFILE PREVIEW</h2>
+          <div className="bg-black border-4 border-chefini-yellow p-4 sm:p-6 sticky top-6">
+            <h2 className="text-xl sm:text-2xl font-black mb-6 text-center text-white">PROFILE PREVIEW</h2>
 
             <div className="flex flex-col items-center">
-              <div className="w-32 h-32 mb-4 border-4 border-white shadow-brutal-lg flex items-center justify-center text-6xl bg-white">
+              <div className="w-24 h-24 sm:w-32 sm:h-32 mb-4 border-4 border-white shadow-brutal-lg flex items-center justify-center text-5xl sm:text-6xl bg-white overflow-hidden">
                 {avatarDisplay.type === 'emoji' && avatarDisplay.value}
 
                 {avatarDisplay.type === 'image' && (
@@ -173,8 +173,8 @@ export default function ProfilePage() {
                 )}
               </div>
 
-              <h3 className="text-2xl font-black text-chefini-yellow mb-2">{profile.name}</h3>
-              <p className="text-gray-400 text-sm mb-4">{profile.email}</p>
+              <h3 className="text-xl sm:text-2xl font-black text-chefini-yellow mb-2 text-center break-all">{profile.name}</h3>
+              <p className="text-gray-400 text-sm mb-4 break-all text-center">{profile.email}</p>
 
               {isGoogleUser && (
                 <div className="px-3 py-1 bg-blue-500 text-white text-xs font-bold border-2 border-black">
@@ -189,8 +189,8 @@ export default function ProfilePage() {
         <div className="lg:col-span-2 space-y-6">
 
           {/* Basic Info */}
-          <div className="bg-white border-4 border-black shadow-brutal p-6 text-black">
-            <h2 className="text-2xl font-black mb-6 flex items-center gap-2">
+          <div className="bg-white border-4 border-black shadow-brutal p-4 sm:p-6 text-black">
+            <h2 className="text-xl sm:text-2xl font-black mb-6 flex items-center gap-2">
               <User size={24} />
               BASIC INFORMATION
             </h2>
@@ -230,21 +230,21 @@ export default function ProfilePage() {
           </div>
 
           {/* Avatar Selection */}
-          <div className="bg-white border-4 border-black shadow-brutal p-6 text-black">
-            <h2 className="text-2xl font-black mb-6 flex items-center gap-2">
+          <div className="bg-white border-4 border-black shadow-brutal p-4 sm:p-6 text-black">
+            <h2 className="text-xl sm:text-2xl font-black mb-6 flex items-center gap-2">
               <ImageIcon size={24} />
               CHOOSE AVATAR
             </h2>
 
-            <div className="space-y-4">
+            <div className="space-y-6">
               
               {/* Google Profile Image Option */}
               {profile.image && (
                 <div>
-                  <p className="font-bold mb-2">GOOGLE PROFILE IMAGE</p>
+                  <p className="font-bold mb-2 text-sm sm:text-base">GOOGLE PROFILE IMAGE</p>
                   <button
                     onClick={() => setSelectedAvatar('')}
-                    className={`p-4 border-4 transition-all ${
+                    className={`p-3 sm:p-4 border-4 transition-all ${
                       selectedAvatar === ''
                         ? 'border-chefini-yellow bg-chefini-yellow bg-opacity-20'
                         : 'border-black bg-white hover:border-chefini-yellow'
@@ -253,7 +253,7 @@ export default function ProfilePage() {
                     <img
                       src={profile.image}
                       alt="Google profile"
-                      className="w-16 h-16 object-cover"
+                      className="w-12 h-12 sm:w-16 sm:h-16 object-cover"
                       referrerPolicy="no-referrer"
                     />
                   </button>
@@ -262,16 +262,16 @@ export default function ProfilePage() {
 
               {/* Name Initial Option */}
               <div>
-                <p className="font-bold mb-2">NAME INITIAL</p>
+                <p className="font-bold mb-2 text-sm sm:text-base">NAME INITIAL</p>
                 <button
                   onClick={() => setSelectedAvatar('initial')}
-                  className={`p-4 border-4 transition-all ${
+                  className={`p-3 sm:p-4 border-4 transition-all ${
                     selectedAvatar === 'initial'
                       ? 'border-chefini-yellow bg-chefini-yellow'
                       : 'border-black bg-white hover:border-chefini-yellow'
                   }`}
                 >
-                  <div className="w-16 h-16 flex items-center justify-center text-4xl font-black">
+                  <div className="w-12 h-12 sm:w-16 sm:h-16 flex items-center justify-center text-3xl sm:text-4xl font-black">
                     {profile.name?.[0]?.toUpperCase() || 'C'}
                   </div>
                 </button>
@@ -279,20 +279,21 @@ export default function ProfilePage() {
 
               {/* Emoji Avatars */}
               <div>
-                <p className="font-bold mb-2">EMOJI AVATARS</p>
-                <div className="grid grid-cols-6 sm:grid-cols-8 gap-2">
+                <p className="font-bold mb-2 text-sm sm:text-base">EMOJI AVATARS</p>
+                {/* Responsive Grid: 4 cols on mobile, 6 on sm, 8 on md */}
+                <div className="grid grid-cols-4 sm:grid-cols-6 md:grid-cols-8 gap-2 sm:gap-3">
                   {avatarOptions.map(avatar => (
                     <button
                       key={avatar.id}
                       onClick={() => setSelectedAvatar(avatar.id)}
-                      className={`p-3 border-4 transition-all hover:scale-110 ${
+                      className={`p-2 sm:p-3 border-4 transition-all hover:scale-110 flex items-center justify-center aspect-square ${
                         selectedAvatar === avatar.id
                           ? 'border-chefini-yellow bg-chefini-yellow'
                           : 'border-black bg-white hover:border-chefini-yellow'
                       }`}
                       title={avatar.label}
                     >
-                      <span className="text-3xl">{avatar.emoji}</span>
+                      <span className="text-2xl sm:text-3xl">{avatar.emoji}</span>
                     </button>
                   ))}
                 </div>
@@ -302,8 +303,8 @@ export default function ProfilePage() {
 
           {/* Change Password */}
           {!isGoogleUser && (
-            <div className="bg-white border-4 border-black shadow-brutal p-6 text-black">
-              <h2 className="text-2xl font-black mb-6 flex items-center gap-2">
+            <div className="bg-white border-4 border-black shadow-brutal p-4 sm:p-6 text-black">
+              <h2 className="text-xl sm:text-2xl font-black mb-6 flex items-center gap-2">
                 <Lock size={24} />
                 CHANGE PASSWORD
               </h2>
@@ -367,8 +368,8 @@ export default function ProfilePage() {
 
           {/* Google User Info */}
           {isGoogleUser && (
-            <div className="bg-blue-100 border-4 border-blue-500 p-6 text-black">
-              <h2 className="text-xl font-black mb-3 flex items-center gap-2">
+            <div className="bg-blue-100 border-4 border-blue-500 p-4 sm:p-6 text-black">
+              <h2 className="text-lg sm:text-xl font-black mb-3 flex items-center gap-2">
                 <Lock size={24} />
                 GOOGLE ACCOUNT
               </h2>
