@@ -369,7 +369,8 @@ export default function RecipeModal({
 
             document.body.removeChild(tempDiv);
 
-            canvas.toBlob((blob) => {
+            // Fix: Explicitly type 'blob' as Blob | null
+            canvas.toBlob((blob: Blob | null) => {
                 if (!blob) {
                     showToast?.('Failed to generate image', 'error');
                     return;
@@ -461,8 +462,8 @@ export default function RecipeModal({
                                 <button
                                     onClick={onTogglePublic}
                                     className={`px-4 py-2 font-bold border-2 border-black flex items-center gap-2 transition-colors ${isPublic
-                                        ? 'bg-green-400 text-black hover:bg-green-500'
-                                        : 'bg-gray-200 text-black hover:bg-gray-300'
+                                            ? 'bg-green-400 text-black hover:bg-green-500'
+                                            : 'bg-gray-200 text-black hover:bg-gray-300'
                                         }`}
                                 >
                                     <Globe size={18} />
