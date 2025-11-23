@@ -5,19 +5,25 @@ import { Lock, CheckCircle, ChefHat, X, AlertCircle, Info } from 'lucide-react';
 
 // --- CUSTOM HOOK: useToast (Implemented from app/hooks/useToast.ts) ---
 function useToast() {
-  const [toasts, setToasts] = useState([]);
+  const [toasts, setToasts] = useState<
+    { id: number; message: string; type: 'success' | 'error' | 'info' }[]
+  >([]);
 
-  const showToast = useCallback((message, type = 'success') => {
-    const id = Date.now();
-    setToasts(prev => [...prev, { id, message, type }]);
-  }, []);
+  const showToast = useCallback(
+    (message: string, type: 'success' | 'error' | 'info' = 'success') => {
+      const id = Date.now();
+      setToasts(prev => [...prev, { id, message, type }]);
+    },
+    []
+  );
 
-  const removeToast = useCallback((id) => {
+  const removeToast = useCallback((id: number) => {
     setToasts(prev => prev.filter(toast => toast.id !== id));
   }, []);
 
   return { toasts, showToast, removeToast };
 }
+
 
 // --- COMPONENT: Toast (Implemented from components/ui/Toast.tsx) ---
 const Toast = ({ message, type = 'success', onClose, duration = 3000 }) => {
@@ -92,11 +98,11 @@ const ChefiniButton = ({ children, className = "", icon: Icon, disabled, ...prop
 
 export default function ResetPasswordPage() {
   const { toasts, showToast, removeToast } = useToast();
-  
+
   // For demo purposes, simulate URL params
   const [email] = useState('test@example.com');
   const [otp] = useState('123456');
-  
+
   const [password, setPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
   const [loading, setLoading] = useState(false);
@@ -140,7 +146,7 @@ export default function ResetPasswordPage() {
     try {
       // Simulate API call
       await new Promise(resolve => setTimeout(resolve, 1500));
-      
+
       // In a real app, you would make the API call here:
       // const res = await fetch('/api/auth/reset-password', {
       //   method: 'POST',
@@ -149,10 +155,10 @@ export default function ResetPasswordPage() {
       // });
       // 
       // if (!res.ok) throw new Error('Failed to reset password');
-      
+
       setSuccess(true);
       showToast('Password reset successful!', 'success');
-      
+
     } catch (err) {
       showToast(err.message || 'Failed to reset password', 'error');
     } finally {
@@ -177,7 +183,7 @@ export default function ResetPasswordPage() {
           onClose={() => removeToast(toast.id)}
         />
       ))}
-      
+
       <div className="min-h-screen flex items-center justify-center p-4" style={{ backgroundColor: '#000000' }}>
         <div className="w-full max-w-md">
           {/* Logo */}
@@ -262,12 +268,12 @@ export default function ResetPasswordPage() {
                 <p className="text-gray-700 mb-2">
                   Your password has been successfully reset.
                 </p>
-                
+
                 <p className="text-gray-600 text-sm mb-6">
                   Redirecting to login in {countdown} second{countdown !== 1 ? 's' : ''}...
                 </p>
 
-                <ChefiniButton 
+                <ChefiniButton
                   className="w-full justify-center"
                   onClick={handleManualRedirect}
                 >
