@@ -5,6 +5,7 @@ import { Users, Heart, ChefHat, Eye } from 'lucide-react';
 import Toast from '@/components/ui/Toast';
 import { useToast } from '@/app/hooks/useToast';
 import RecipeModal from '@/components/ui/RecipeModal';
+import { getAvatarDisplay } from '@/lib/avatars'; // Import avatar helper
 
 interface Recipe {
   _id: string;
@@ -23,7 +24,7 @@ interface Recipe {
   createdBy: {
     name: string;
     image?: string;
-    avatar?: string;
+    avatar?: string; // Added avatar field
   };
 }
 
@@ -102,7 +103,6 @@ export default function DiscoverPage() {
     }
   };
 
-  // Fix: Changed parameter type to 'any' to resolve interface mismatch with RecipeModal
   const saveToCookbook = async (recipe: any) => {
     try {
       const res = await fetch('/api/recipes', {
@@ -181,6 +181,13 @@ export default function DiscoverPage() {
         <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
           {recipes.map((recipe) => {
             const isLiked = likedRecipes.has(recipe._id);
+            
+            // Calculate Avatar Display for each creator
+            const creatorAvatar = getAvatarDisplay({
+              name: recipe.createdBy.name,
+              image: recipe.createdBy.image,
+              avatar: recipe.createdBy.avatar
+            });
 
             return (
               <div
@@ -203,16 +210,16 @@ export default function DiscoverPage() {
                 <div className="p-6">
                   {/* Creator Info */}
                   <div className="flex items-center gap-3 mb-4 pb-4 border-b-2 border-dashed border-gray-300">
-                    {recipe.createdBy.image ? (
+                    {creatorAvatar.type === 'image' ? (
                       <img
-                        src={recipe.createdBy.image}
+                        src={creatorAvatar.value}
                         alt={recipe.createdBy.name}
                         className="w-10 h-10 border-2 border-black object-cover"
                         referrerPolicy="no-referrer"
                       />
                     ) : (
                       <div className="w-10 h-10 bg-chefini-yellow border-2 border-black flex items-center justify-center font-black">
-                        {recipe.createdBy.name[0]}
+                        {creatorAvatar.value}
                       </div>
                     )}
                     <div>
