@@ -30,7 +30,11 @@ export default async function DashboardLayout({
       <Header user={session.user} />
       <Navigation />
 
-      <main className="max-w-7xl mx-auto p-6 flex-1 w-full">
+      {/* RESPONSIVE FIX:
+         Changed p-6 to p-4 sm:p-6 
+         Added overflow-x-hidden to prevent horizontal scrolling issues
+      */}
+      <main className="max-w-7xl mx-auto p-4 sm:p-6 flex-1 w-full overflow-x-hidden">
         {children}
       </main>
 
