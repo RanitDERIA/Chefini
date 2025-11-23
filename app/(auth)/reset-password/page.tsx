@@ -26,7 +26,17 @@ function useToast() {
 
 
 // --- COMPONENT: Toast (Implemented from components/ui/Toast.tsx) ---
-const Toast = ({ message, type = 'success', onClose, duration = 3000 }) => {
+const Toast = ({ 
+  message, 
+  type = 'success', 
+  onClose, 
+  duration = 3000 
+}: { 
+  message: string; 
+  type?: 'success' | 'error' | 'info'; 
+  onClose: () => void; 
+  duration?: number; 
+}) => {
   useEffect(() => {
     const timer = setTimeout(onClose, duration);
     return () => clearTimeout(timer);
@@ -64,7 +74,7 @@ const Toast = ({ message, type = 'success', onClose, duration = 3000 }) => {
 
 // --- INLINE UI COMPONENTS ---
 
-const ChefiniLogo = ({ size = "md" }) => {
+const ChefiniLogo = ({ size = "md" }: { size?: "sm" | "md" | "lg" }) => {
   const sizeClasses = { sm: "text-xl", md: "text-2xl", lg: "text-4xl" };
   return (
     <div className={`font-black tracking-tighter flex items-center justify-center gap-2 ${sizeClasses[size]}`}>
@@ -74,7 +84,8 @@ const ChefiniLogo = ({ size = "md" }) => {
   );
 };
 
-const ChefiniButton = ({ children, className = "", icon: Icon, disabled, ...props }) => {
+// Using 'any' here to prevent further implicit-any errors since props are spread
+const ChefiniButton = ({ children, className = "", icon: Icon, disabled, ...props }: any) => {
   return (
     <button
       disabled={disabled}
@@ -159,7 +170,7 @@ export default function ResetPasswordPage() {
       setSuccess(true);
       showToast('Password reset successful!', 'success');
 
-    } catch (err) {
+    } catch (err: any) {
       showToast(err.message || 'Failed to reset password', 'error');
     } finally {
       setLoading(false);
@@ -214,7 +225,7 @@ export default function ResetPasswordPage() {
                       value={password}
                       onChange={(e) => setPassword(e.target.value)}
                       className="w-full px-4 py-3 border-2 border-black focus:outline-none focus:ring-2 text-black"
-                      style={{ '--tw-ring-color': '#FFC72C' }}
+                      style={{ '--tw-ring-color': '#FFC72C' } as React.CSSProperties}
                       placeholder="Min. 6 characters"
                       disabled={loading}
                       onKeyPress={(e) => e.key === 'Enter' && handleSubmit()}
@@ -232,7 +243,7 @@ export default function ResetPasswordPage() {
                       value={confirmPassword}
                       onChange={(e) => setConfirmPassword(e.target.value)}
                       className="w-full px-4 py-3 border-2 border-black focus:outline-none focus:ring-2 text-black"
-                      style={{ '--tw-ring-color': '#FFC72C' }}
+                      style={{ '--tw-ring-color': '#FFC72C' } as React.CSSProperties}
                       placeholder="Re-enter password"
                       disabled={loading}
                       onKeyPress={(e) => e.key === 'Enter' && handleSubmit()}
