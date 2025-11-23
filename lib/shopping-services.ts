@@ -103,9 +103,11 @@ export function generateServiceUrlForItem(serviceId: string, item: string): stri
     case 'bigbasket':
       return `https://www.bigbasket.com/ps/?q=${encodedItem}`;
     case 'jiomart':
-      return `https://www.jiomart.com/catalogsearch/result?q=${encodedItem}`;
+      // Updated to use 'search?q='
+      return `https://www.jiomart.com/search?q=${encodedItem}`;
     case 'dealshare':
-      return `https://www.dealshare.in/search?q=${encodedItem}`;
+      // Updated to use 'search?query='
+      return `https://www.dealshare.in/search?query=${encodedItem}`;
     default:
       return '#';
   }

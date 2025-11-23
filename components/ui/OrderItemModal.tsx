@@ -113,9 +113,11 @@ export function generateServiceUrlForItem(serviceId: string, item: string): stri
     case 'bigbasket':
       return `https://www.bigbasket.com/ps/?q=${encodedItem}`;
     case 'jiomart':
-      return `https://www.jiomart.com/catalogsearch/result?q=${encodedItem}`;
+      // Corrected URL for JioMart
+      return `https://www.jiomart.com/search?q=${encodedItem}`;
     case 'dealshare':
-      return `https://www.dealshare.in/search?q=${encodedItem}`;
+      // Corrected URL for DealShare
+      return `https://www.dealshare.in/search?query=${encodedItem}`;
     default:
       return '#';
   }
@@ -135,8 +137,7 @@ export function getMobileDeepLinkForItem(serviceId: string, item: string): strin
       return `zepto://search?query=${encodedItem}`;
     case 'swiggy-instamart':
       return `swiggy://instamart/search?query=${encodedItem}`;
-    // JioMart and DealShare often rely on web-wrappers or don't have public deep link schemes for search
-    // Returning null falls back to the web URL which opens the app if Universal Links are supported
+    // JioMart and DealShare rely on web wrappers; returning null forces web URL fallback
     default:
       return null;
   }
