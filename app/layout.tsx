@@ -10,7 +10,12 @@ const inter = Inter({ subsets: ["latin"] });
 export const metadata: Metadata = {
   title: "Chefini - Turn Leftovers into Magic",
   description: "Smart culinary companion that reduces food waste by turning random leftovers into gourmet meals",
-  icons: '/favicon.png',
+  // Updated Icons configuration
+  icons: {
+    icon: '/favicon.png',
+    shortcut: '/favicon.png',
+    apple: '/favicon.png', // Optional: Add a separate apple-touch-icon.png in public if you have one
+  },
 };
 
 export default async function RootLayout({
