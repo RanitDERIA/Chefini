@@ -3,7 +3,7 @@ import { Inter } from "next/font/google";
 import "./globals.css";
 import { auth } from "@/lib/auth";
 import SessionProvider from "@/components/auth/SessionProvider";
-// import Script from "next/script"; // COMMENT THIS OUT
+import Script from "next/script";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -23,8 +23,6 @@ export default async function RootLayout({
   return (
     <html lang="en" suppressHydrationWarning>
       <head>
-        {/* COMMENT OUT THIS ENTIRE SCRIPT BLOCK */}
-        {/*
         <Script id="disable-context-menu" strategy="afterInteractive">
           {`
             // Disable right-click
@@ -54,7 +52,6 @@ export default async function RootLayout({
             });
           `}
         </Script>
-        */}
       </head>
       <body className={inter.className} suppressHydrationWarning>
         <SessionProvider session={session}>
