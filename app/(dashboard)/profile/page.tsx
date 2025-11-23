@@ -156,9 +156,8 @@ export default function ProfilePage() {
             <h2 className="text-xl sm:text-2xl font-black mb-6 text-center text-white">PROFILE PREVIEW</h2>
 
             <div className="flex flex-col items-center">
-              <div className="w-24 h-24 sm:w-32 sm:h-32 mb-4 border-4 border-white shadow-brutal-lg flex items-center justify-center text-5xl sm:text-6xl bg-white overflow-hidden">
-                {avatarDisplay.type === 'emoji' && avatarDisplay.value}
-
+              <div className="w-32 h-32 mb-4 border-4 border-white shadow-brutal-lg flex items-center justify-center bg-white overflow-hidden">
+                {/* Display Image (Used for both Google Image and DiceBear Avatars) */}
                 {avatarDisplay.type === 'image' && (
                   <img
                     src={avatarDisplay.value}
@@ -168,8 +167,9 @@ export default function ProfilePage() {
                   />
                 )}
 
+                {/* Fallback Initial */}
                 {avatarDisplay.type === 'initial' && (
-                  <span className="text-black font-black">{avatarDisplay.value}</span>
+                  <span className="text-black font-black text-5xl sm:text-6xl">{avatarDisplay.value}</span>
                 )}
               </div>
 
@@ -244,7 +244,7 @@ export default function ProfilePage() {
                   <p className="font-bold mb-2 text-sm sm:text-base">GOOGLE PROFILE IMAGE</p>
                   <button
                     onClick={() => setSelectedAvatar('')}
-                    className={`p-3 sm:p-4 border-4 transition-all ${
+                    className={`p-1 border-4 transition-all ${
                       selectedAvatar === ''
                         ? 'border-chefini-yellow bg-chefini-yellow bg-opacity-20'
                         : 'border-black bg-white hover:border-chefini-yellow'
@@ -253,7 +253,7 @@ export default function ProfilePage() {
                     <img
                       src={profile.image}
                       alt="Google profile"
-                      className="w-12 h-12 sm:w-16 sm:h-16 object-cover"
+                      className="w-16 h-16 object-cover"
                       referrerPolicy="no-referrer"
                     />
                   </button>
@@ -265,35 +265,39 @@ export default function ProfilePage() {
                 <p className="font-bold mb-2 text-sm sm:text-base">NAME INITIAL</p>
                 <button
                   onClick={() => setSelectedAvatar('initial')}
-                  className={`p-3 sm:p-4 border-4 transition-all ${
+                  className={`p-1 border-4 transition-all ${
                     selectedAvatar === 'initial'
                       ? 'border-chefini-yellow bg-chefini-yellow'
                       : 'border-black bg-white hover:border-chefini-yellow'
                   }`}
                 >
-                  <div className="w-12 h-12 sm:w-16 sm:h-16 flex items-center justify-center text-3xl sm:text-4xl font-black">
+                  <div className="w-16 h-16 flex items-center justify-center text-3xl sm:text-4xl font-black">
                     {profile.name?.[0]?.toUpperCase() || 'C'}
                   </div>
                 </button>
               </div>
 
-              {/* Emoji Avatars */}
+              {/* Illustrated Avatars */}
               <div>
-                <p className="font-bold mb-2 text-sm sm:text-base">EMOJI AVATARS</p>
+                <p className="font-bold mb-2 text-sm sm:text-base">ILLUSTRATED AVATARS</p>
                 {/* Responsive Grid: 4 cols on mobile, 6 on sm, 8 on md */}
-                <div className="grid grid-cols-4 sm:grid-cols-6 md:grid-cols-8 gap-2 sm:gap-3">
+                <div className="grid grid-cols-4 sm:grid-cols-6 md:grid-cols-8 gap-3">
                   {avatarOptions.map(avatar => (
                     <button
                       key={avatar.id}
                       onClick={() => setSelectedAvatar(avatar.id)}
-                      className={`p-2 sm:p-3 border-4 transition-all hover:scale-110 flex items-center justify-center aspect-square ${
+                      className={`border-4 transition-all hover:scale-110 aspect-square overflow-hidden bg-gray-50 ${
                         selectedAvatar === avatar.id
-                          ? 'border-chefini-yellow bg-chefini-yellow'
+                          ? 'border-chefini-yellow bg-chefini-yellow bg-opacity-10'
                           : 'border-black bg-white hover:border-chefini-yellow'
                       }`}
                       title={avatar.label}
                     >
-                      <span className="text-2xl sm:text-3xl">{avatar.emoji}</span>
+                      <img 
+                        src={avatar.src} 
+                        alt={avatar.label}
+                        className="w-full h-full object-cover"
+                      />
                     </button>
                   ))}
                 </div>

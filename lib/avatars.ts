@@ -1,28 +1,17 @@
+// Using DiceBear "Notionists" style for a clean, illustrative look
 export const avatarOptions = [
-  { id: 'chef1', emoji: '👨‍🍳', label: 'Male Chef' },
-  { id: 'chef2', emoji: '👩‍🍳', label: 'Female Chef' },
-  { id: 'cook1', emoji: '🧑‍🍳', label: 'Cook' },
-  { id: 'food1', emoji: '🍕', label: 'Pizza' },
-  { id: 'food2', emoji: '🍔', label: 'Burger' },
-  { id: 'food3', emoji: '🍜', label: 'Ramen' },
-  { id: 'food4', emoji: '🍳', label: 'Cooking' },
-  { id: 'food5', emoji: '🥘', label: 'Paella' },
-  { id: 'food6', emoji: '🍱', label: 'Bento' },
-  { id: 'fruit1', emoji: '🍎', label: 'Apple' },
-  { id: 'fruit2', emoji: '🍊', label: 'Orange' },
-  { id: 'fruit3', emoji: '🍋', label: 'Lemon' },
-  { id: 'veg1', emoji: '🥕', label: 'Carrot' },
-  { id: 'veg2', emoji: '🥦', label: 'Broccoli' },
-  { id: 'veg3', emoji: '🌽', label: 'Corn' },
-  { id: 'drink1', emoji: '☕', label: 'Coffee' },
-  { id: 'drink2', emoji: '🍵', label: 'Tea' },
-  { id: 'drink3', emoji: '🥤', label: 'Soda' },
-  { id: 'sweet1', emoji: '🍰', label: 'Cake' },
-  { id: 'sweet2', emoji: '🍪', label: 'Cookie' },
-  { id: 'sweet3', emoji: '🍩', label: 'Donut' },
-  { id: 'animal1', emoji: '🐔', label: 'Chicken' },
-  { id: 'animal2', emoji: '🐟', label: 'Fish' },
-  { id: 'animal3', emoji: '🐷', label: 'Pig' },
+  { id: 'chef1', src: 'https://api.dicebear.com/9.x/notionists/svg?seed=Felix', label: 'Felix' },
+  { id: 'chef2', src: 'https://api.dicebear.com/9.x/notionists/svg?seed=Aneka', label: 'Aneka' },
+  { id: 'chef3', src: 'https://api.dicebear.com/9.x/notionists/svg?seed=Chef', label: 'Chef' },
+  { id: 'chef4', src: 'https://api.dicebear.com/9.x/notionists/svg?seed=Maria', label: 'Maria' },
+  { id: 'chef5', src: 'https://api.dicebear.com/9.x/notionists/svg?seed=Leo', label: 'Leo' },
+  { id: 'chef6', src: 'https://api.dicebear.com/9.x/notionists/svg?seed=Mila', label: 'Mila' },
+  { id: 'chef7', src: 'https://api.dicebear.com/9.x/notionists/svg?seed=Robert', label: 'Robert' },
+  { id: 'chef8', src: 'https://api.dicebear.com/9.x/notionists/svg?seed=Jasmine', label: 'Jasmine' },
+  { id: 'chef9', src: 'https://api.dicebear.com/9.x/notionists/svg?seed=Oliver', label: 'Oliver' },
+  { id: 'chef10', src: 'https://api.dicebear.com/9.x/notionists/svg?seed=Sara', label: 'Sara' },
+  { id: 'chef11', src: 'https://api.dicebear.com/9.x/notionists/svg?seed=George', label: 'George' },
+  { id: 'chef12', src: 'https://api.dicebear.com/9.x/notionists/svg?seed=Lilly', label: 'Lilly' },
 ];
 
 export function getAvatarDisplay(user: {
@@ -30,14 +19,14 @@ export function getAvatarDisplay(user: {
   image?: string | null;
   name?: string | null;
 }): {
-  type: 'emoji' | 'image' | 'initial';
+  type: 'image' | 'initial'; // Removed 'emoji' type
   value: string;
 } {
   // Priority 1: Custom selected avatar
   if (user.avatar) {
     const avatarOption = avatarOptions.find(a => a.id === user.avatar);
     if (avatarOption) {
-      return { type: 'emoji', value: avatarOption.emoji };
+      return { type: 'image', value: avatarOption.src };
     }
   }
 
