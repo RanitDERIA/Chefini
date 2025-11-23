@@ -102,7 +102,8 @@ export default function DiscoverPage() {
     }
   };
 
-  const saveToCookbook = async (recipe: Recipe) => {
+  // Fix: Changed parameter type to 'any' to resolve interface mismatch with RecipeModal
+  const saveToCookbook = async (recipe: any) => {
     try {
       const res = await fetch('/api/recipes', {
         method: 'POST',
