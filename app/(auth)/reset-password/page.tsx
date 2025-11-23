@@ -84,7 +84,7 @@ const ChefiniLogo = ({ size = "md" }: { size?: "sm" | "md" | "lg" }) => {
   );
 };
 
-// Using 'any' here to prevent further implicit-any errors since props are spread
+// Typed as 'any' to suppress implicit any errors on spread props
 const ChefiniButton = ({ children, className = "", icon: Icon, disabled, ...props }: any) => {
   return (
     <button
