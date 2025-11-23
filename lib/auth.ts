@@ -41,6 +41,7 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
           email: user.email,
           name: user.name,
           image: user.image,
+          avatar: user.avatar, // Fix: Return avatar from DB
         };
       }
     }),
@@ -56,15 +57,27 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
     signIn: '/login',
   },
   callbacks: {
-    async jwt({ token, user }) {
+    async jwt({ token, user, trigger, session }) {
+      // Initial sign in
       if (user) {
         token.id = user.id;
+        // @ts-ignore
+        token.avatar = user.avatar; // Fix: Persist avatar to token
       }
+
+      // Handle updates (This allows the update() function in ProfilePage to work)
+      if (trigger === "update" && session?.user) {
+        token.avatar = session.user.avatar;
+        token.name = session.user.name;
+      }
+      
       return token;
     },
     async session({ session, token }) {
       if (session.user) {
         session.user.id = token.id as string;
+        // @ts-ignore
+        session.user.avatar = token.avatar as string; // Fix: Pass avatar to client
       }
       return session;
     },
@@ -81,10 +94,13 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
             name: user.name,
             email: user.email,
             image: user.image,
+            avatar: '', // Initialize empty avatar
           });
         }
         
         user.id = existingUser._id.toString();
+        // @ts-ignore
+        user.avatar = existingUser.avatar; // Fix: Load existing avatar for Google users
       }
       return true;
     },

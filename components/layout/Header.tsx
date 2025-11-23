@@ -1,6 +1,6 @@
 'use client';
 
-import { signOut } from 'next-auth/react';
+import { signOut, useSession } from 'next-auth/react';
 import { useRouter } from 'next/navigation';
 import ChefiniLogo from '../ui/ChefiniLogo';
 import { LogOut } from 'lucide-react';
@@ -15,8 +15,17 @@ interface HeaderProps {
   };
 }
 
-export default function Header({ user }: HeaderProps) {
+export default function Header({ user: initialUser }: HeaderProps) {
   const router = useRouter();
+  const { data: session } = useSession();
+  
+  // Merge server-side initialUser with client-side session updates.
+  // This ensures that when profile.update() is called, the header reflects changes immediately.
+  const user = {
+    ...initialUser,
+    ...session?.user,
+  };
+
   const avatarDisplay = getAvatarDisplay(user);
 
   return (
@@ -39,8 +48,6 @@ export default function Header({ user }: HeaderProps) {
             className="w-10 h-10 sm:w-12 sm:h-12 border-2 border-white shadow-brutal-sm flex items-center justify-center overflow-hidden bg-chefini-yellow hover:border-chefini-yellow hover:scale-110 transition-all cursor-pointer"
             title="View Profile"
           >
-            {/* Removed 'emoji' block as we now use images for avatars */}
-            
             {avatarDisplay.type === 'image' && (
               <img
                 src={avatarDisplay.value}
