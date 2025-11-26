@@ -1551,8 +1551,8 @@ export default function DailyDishesPage() {
             {recipe.title}
           </h3>
           <div className="flex flex-wrap gap-3 text-sm font-bold">
-            <span className="flex items-center gap-1"><Clock size={16} /> {recipe.time}</span>
-            <span className="flex items-center gap-1"><Flame size={16} /> {recipe.macros.calories} cal</span>
+            <span>⏱️ {recipe.time}</span>
+            <span>🔥 {recipe.macros.calories} cal</span>
           </div>
         </div>
 
