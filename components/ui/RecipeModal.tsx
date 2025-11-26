@@ -9,7 +9,9 @@ import {
     Volume2,
     Sparkles,
     Globe,
-    Trash2
+    Trash2,
+    Share2, // Added Share2 icon
+    ListPlus // Added ListPlus for distinct shopping list icon
 } from 'lucide-react';
 
 import { useState } from 'react';
@@ -48,6 +50,7 @@ interface Recipe {
         image?: string;
         avatar?: string;
     };
+    isPublic?: boolean;
 }
 
 interface RecipeModalProps {
@@ -58,6 +61,9 @@ interface RecipeModalProps {
     onLike?: (recipeId: string) => void;
     onTogglePublic?: () => void;
     onDelete?: () => void;
+    // New Props for added options
+    onAddToShoppingList?: (recipe: Recipe) => void;
+    onShare?: (recipe: Recipe) => void;
     showActions?: boolean;
     showToast?: (
         message: string,
@@ -76,6 +82,8 @@ export default function RecipeModal({
     onLike,
     onTogglePublic,
     onDelete,
+    onAddToShoppingList, // Destructure new prop
+    onShare,            // Destructure new prop
     showActions = true,
     showToast,
     isLiked = false,
@@ -108,6 +116,38 @@ export default function RecipeModal({
             setIsReading(true);
         } else {
             setIsReading(false);
+        }
+    };
+
+    // ------------------------------------
+    // 🔗 HANDLE SHARE
+    // ------------------------------------
+    const handleShare = async () => {
+        if (onShare) {
+            onShare(recipe);
+            return;
+        }
+
+        // Default share behavior if no prop provided
+        if (navigator.share) {
+            try {
+                await navigator.share({
+                    title: `Chefini: ${recipe.title}`,
+                    text: `Check out this recipe for ${recipe.title}! ⏱️ ${recipe.time} • 🔥 ${recipe.macros.calories} cal`,
+                    url: window.location.href,
+                });
+                showToast?.('Recipe shared successfully!', 'success');
+            } catch (error) {
+                console.log('Error sharing:', error);
+            }
+        } else {
+            // Fallback: Copy to clipboard
+            try {
+                await navigator.clipboard.writeText(`${recipe.title}\n\nIngredients:\n${recipe.ingredients.map(i => i.item).join('\n')}\n\nInstructions:\n${recipe.instructions.join('\n')}`);
+                showToast?.('Recipe details copied to clipboard!', 'success');
+            } catch (err) {
+                showToast?.('Failed to share recipe', 'error');
+            }
         }
     };
 
@@ -449,6 +489,15 @@ export default function RecipeModal({
                                 <Download size={18} /> Image
                             </button>
 
+                            {onAddToShoppingList && (
+                                <button
+                                    onClick={() => onAddToShoppingList(recipe)}
+                                    className="px-4 py-2 bg-blue-500 text-white font-bold border-2 border-black hover:bg-blue-600 flex items-center gap-2"
+                                >
+                                    <ListPlus size={18} /> Add to List
+                                </button>
+                            )}
+
                             {!isOwner && onSaveToCookbook && (
                                 <button
                                     onClick={() => onSaveToCookbook(recipe)}
@@ -492,6 +541,13 @@ export default function RecipeModal({
                                     {recipe.likes || 0}
                                 </button>
                             )}
+
+                            <button
+                                onClick={handleShare}
+                                className="px-4 py-2 bg-white text-black font-bold border-2 border-black hover:bg-gray-100 flex items-center gap-2"
+                            >
+                                <Share2 size={18} /> Share
+                            </button>
 
                             <button
                                 onClick={speakInstructions}
