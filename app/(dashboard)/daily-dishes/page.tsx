@@ -206,49 +206,49 @@ function RecipeModal({ recipe, isOpen, onClose, onSaveToCookbook, showToast, isS
         <div className="absolute inset-0 bg-black bg-opacity-70" onClick={onClose}></div>
         <div className="relative bg-white border-4 border-black shadow-brutal-lg max-w-4xl w-full my-8">
             {/* Header */}
-            <div className="bg-chefini-yellow border-b-4 border-black p-6 sticky top-0 z-10">
-                <div className="flex items-start justify-between gap-4">
+            <div className="bg-chefini-yellow border-b-4 border-black p-4 md:p-6 sticky top-0 z-10">
+                <div className="flex flex-col md:flex-row md:items-start justify-between gap-4">
                     <div className="flex-1">
-                        <h2 className="text-3xl font-black text-black mb-2 selectable">{recipe.title}</h2>
+                        <h2 className="text-2xl md:text-3xl font-black text-black mb-2 selectable">{recipe.title}</h2>
                         <div className="flex flex-wrap gap-4 text-sm font-bold text-black">
                             <span>⏱️ {recipe.time}</span>
                             <span>🔥 {recipe.macros.calories} cal</span>
                         </div>
                     </div>
-                    <button onClick={onClose} className="p-2 bg-black text-white hover:bg-gray-800 transition-colors">
+                    <button onClick={onClose} className="self-end md:self-auto p-2 bg-black text-white hover:bg-gray-800 transition-colors">
                         <X size={24} />
                     </button>
                 </div>
                 <div className="mt-4 flex flex-wrap gap-2">
-                    <button onClick={downloadPDF} disabled={downloading} className="px-4 py-2 bg-black text-white font-bold border-2 border-black hover:bg-gray-800 flex items-center gap-2 disabled:opacity-50">
+                    <button onClick={downloadPDF} disabled={downloading} className="px-3 py-2 md:px-4 bg-black text-white font-bold border-2 border-black hover:bg-gray-800 flex items-center gap-2 disabled:opacity-50 text-sm md:text-base">
                         <Download size={18} /> PDF
                     </button>
                     {onSaveToCookbook && (
                         <button 
                             onClick={() => !isSaved && onSaveToCookbook(recipe)} 
                             disabled={isSaved}
-                            className={`px-4 py-2 font-bold border-2 border-black flex items-center gap-2 ${
+                            className={`px-3 py-2 md:px-4 font-bold border-2 border-black flex items-center gap-2 text-sm md:text-base ${
                                 isSaved 
                                 ? 'bg-green-200 text-green-800 cursor-default' 
                                 : 'bg-green-400 text-black hover:bg-green-500'
                             }`}
                         >
                             {isSaved ? <Check size={18} /> : <BookmarkPlus size={18} />} 
-                            {isSaved ? 'Saved to Cookbook' : 'Save to Cookbook'}
+                            {isSaved ? 'Saved' : 'Cookbook'}
                         </button>
                     )}
-                    <button onClick={speakInstructions} className={`px-4 py-2 font-bold border-2 border-black flex items-center gap-2 ${isReading ? 'bg-chefini-yellow' : 'bg-white hover:bg-gray-100'}`}>
+                    <button onClick={speakInstructions} className={`px-3 py-2 md:px-4 font-bold border-2 border-black flex items-center gap-2 text-sm md:text-base ${isReading ? 'bg-chefini-yellow' : 'bg-white hover:bg-gray-100'}`}>
                         <Volume2 size={18} /> {isReading ? 'Stop' : 'Read'}
                     </button>
                 </div>
             </div>
             {/* Content */}
-            <div id="recipe-modal-content" className="p-6 bg-white text-black max-h-[70vh] overflow-y-auto">
+            <div id="recipe-modal-content" className="p-4 md:p-6 bg-white text-black max-h-[70vh] overflow-y-auto">
                 <div className="mb-6">
-                    <h3 className="text-2xl font-black mb-4 flex items-center gap-2"><ShoppingCart size={24} /> INGREDIENTS</h3>
+                    <h3 className="text-xl md:text-2xl font-black mb-4 flex items-center gap-2"><ShoppingCart size={24} /> INGREDIENTS</h3>
                     <ul className="space-y-2 selectable">
                         {recipe.ingredients.map((ing, idx) => (
-                            <li key={idx} className="flex items-start gap-3 text-lg">
+                            <li key={idx} className="flex items-start gap-3 text-base md:text-lg">
                                 <span className="font-mono text-chefini-yellow">▪</span>
                                 <span>{ing.item}</span>
                             </li>
@@ -256,27 +256,27 @@ function RecipeModal({ recipe, isOpen, onClose, onSaveToCookbook, showToast, isS
                     </ul>
                 </div>
                 <div className="mb-6">
-                    <h3 className="text-2xl font-black mb-4">INSTRUCTIONS</h3>
+                    <h3 className="text-xl md:text-2xl font-black mb-4">INSTRUCTIONS</h3>
                     <ol className="space-y-4 selectable">
                         {recipe.instructions.map((step, idx) => (
                             <li key={idx} className="flex gap-4">
-                                <span className="font-black text-xl text-chefini-yellow min-w-[30px]">{idx + 1}.</span>
-                                <span className="text-lg">{step}</span>
+                                <span className="font-black text-lg md:text-xl text-chefini-yellow min-w-[30px]">{idx + 1}.</span>
+                                <span className="text-base md:text-lg">{step}</span>
                             </li>
                         ))}
                     </ol>
                 </div>
-                <div className="border-4 border-chefini-yellow bg-chefini-yellow bg-opacity-20 p-6 mb-6">
-                    <h3 className="text-xl font-black mb-3 flex items-center gap-2"><Sparkles size={20} /> CHEFINI'S MAGIC TIP</h3>
-                    <p className="text-base selectable">{recipe.tip}</p>
+                <div className="border-4 border-chefini-yellow bg-chefini-yellow bg-opacity-20 p-4 md:p-6 mb-6">
+                    <h3 className="text-lg md:text-xl font-black mb-3 flex items-center gap-2"><Sparkles size={20} /> CHEFINI'S MAGIC TIP</h3>
+                    <p className="text-sm md:text-base selectable">{recipe.tip}</p>
                 </div>
                 <div className="border-t-4 border-dashed border-black pt-6">
-                    <h3 className="text-xl font-black mb-4">NUTRITIONAL INFO</h3>
-                    <div className="grid grid-cols-4 gap-4 text-center">
-                        <div><div className="font-black text-3xl text-chefini-yellow">{recipe.macros.calories}</div><div className="text-sm font-bold">CALORIES</div></div>
-                        <div><div className="font-black text-3xl text-chefini-yellow">{recipe.macros.protein}g</div><div className="text-sm font-bold">PROTEIN</div></div>
-                        <div><div className="font-black text-3xl text-chefini-yellow">{recipe.macros.carbs}g</div><div className="text-sm font-bold">CARBS</div></div>
-                        <div><div className="font-black text-3xl text-chefini-yellow">{recipe.macros.fats}g</div><div className="text-sm font-bold">FATS</div></div>
+                    <h3 className="text-lg md:text-xl font-black mb-4">NUTRITIONAL INFO</h3>
+                    <div className="grid grid-cols-4 gap-2 md:gap-4 text-center">
+                        <div><div className="font-black text-xl md:text-3xl text-chefini-yellow">{recipe.macros.calories}</div><div className="text-xs md:text-sm font-bold">CAL</div></div>
+                        <div><div className="font-black text-xl md:text-3xl text-chefini-yellow">{recipe.macros.protein}g</div><div className="text-xs md:text-sm font-bold">PROT</div></div>
+                        <div><div className="font-black text-xl md:text-3xl text-chefini-yellow">{recipe.macros.carbs}g</div><div className="text-xs md:text-sm font-bold">CARB</div></div>
+                        <div><div className="font-black text-xl md:text-3xl text-chefini-yellow">{recipe.macros.fats}g</div><div className="text-xs md:text-sm font-bold">FAT</div></div>
                     </div>
                 </div>
             </div>
@@ -1536,48 +1536,43 @@ export default function DailyDishesPage() {
     return (
       <div className="bg-white border-4 border-black shadow-brutal text-black hover:shadow-brutal-lg transition-all flex flex-col h-full group relative overflow-hidden">
         {/* Premium Badge / Logo overlay */}
-        <div className="border-b-4 border-black p-6 bg-chefini-yellow relative">
+        <div className="border-b-4 border-black p-4 md:p-6 bg-chefini-yellow relative">
            {/* State Badge */}
           <div className="absolute top-0 right-0 bg-black text-white px-2 py-1 text-xs font-bold uppercase tracking-wider">
             {recipe.state}
           </div>
           
-          {/* Premium Logo Area */}
-          <div className="absolute top-0 left-0 bg-black text-chefini-yellow px-2 py-1 text-xs font-black uppercase tracking-wider flex items-center gap-1 border-r-4 border-b-4 border-white/20">
-             <Crown size={12} /> CLASSICS
-          </div>
-
-          <h3 className="text-2xl font-black mb-3 line-clamp-2 selectable mt-4">
+          <h3 className="text-xl md:text-2xl font-black mb-3 line-clamp-2 selectable mt-4">
             {recipe.title}
           </h3>
-          <div className="flex flex-wrap gap-3 text-sm font-bold">
-            <span>⏱️ {recipe.time}</span>
-            <span>🔥 {recipe.macros.calories} cal</span>
+          <div className="flex flex-wrap gap-3 text-xs md:text-sm font-bold">
+            <span className="flex items-center gap-1"><Clock size={16} /> {recipe.time}</span>
+            <span className="flex items-center gap-1"><Flame size={16} /> {recipe.macros.calories} cal</span>
           </div>
         </div>
 
-        <div className="p-6 flex-1 flex flex-col">
+        <div className="p-4 md:p-6 flex-1 flex flex-col">
           {/* Creator Info - Enhanced */}
           <div className="flex items-center gap-3 mb-4 pb-4 border-b-2 border-dashed border-gray-300">
-             <div className="w-12 h-12 bg-black text-chefini-yellow border-2 border-chefini-yellow flex items-center justify-center rounded-full shadow-sm">
-                 <ChefHat size={24} />
+             <div className="w-10 h-10 md:w-12 md:h-12 bg-black text-chefini-yellow border-2 border-chefini-yellow flex items-center justify-center rounded-full shadow-sm">
+                 <ChefHat size={20} className="md:w-6 md:h-6" />
              </div>
              <div>
-                <p className="font-black text-lg leading-none">Chefini <span className="text-chefini-yellow bg-black px-1 text-sm">GOLD</span></p>
-                <p className="text-xs text-gray-500 font-bold">Premium Collection</p>
+                <p className="font-black text-base md:text-lg leading-none">Chefini <span className="text-chefini-yellow bg-black px-1 text-xs md:text-sm">GOLD</span></p>
+                <p className="text-[10px] md:text-xs text-gray-500 font-bold">Premium Collection</p>
              </div>
           </div>
 
           {/* Vibrant Magic Tip */}
-          <div className="mb-4 bg-purple-50 p-4 border-l-4 border-purple-600 text-sm text-purple-900 font-medium italic relative">
-            <Sparkles className="absolute -top-2 -right-2 text-purple-500 fill-purple-200" size={20} />
-            <span className="not-italic font-bold block text-xs text-purple-600 mb-1">✨ MAGIC TIP:</span>
+          <div className="mb-4 bg-purple-50 p-3 md:p-4 border-l-4 border-purple-600 text-xs md:text-sm text-purple-900 font-medium italic relative">
+            <Sparkles className="absolute -top-2 -right-2 text-purple-500 fill-purple-200" size={16} />
+            <span className="not-italic font-bold block text-[10px] md:text-xs text-purple-600 mb-1">✨ MAGIC TIP:</span>
             "{recipe.tip}"
           </div>
 
           <div className="mb-4 flex-1">
-            <p className="text-sm font-bold text-gray-700 mb-2">Core Ingredients:</p>
-            <ul className="text-sm space-y-1">
+            <p className="text-xs md:text-sm font-bold text-gray-700 mb-2">Core Ingredients:</p>
+            <ul className="text-xs md:text-sm space-y-1">
               {recipe.ingredients.slice(0, 3).map((ing, idx) => (
                 <li key={idx} className="flex items-start gap-2">
                   <span className="text-chefini-yellow font-black">▪</span>
@@ -1593,9 +1588,9 @@ export default function DailyDishesPage() {
           </div>
 
           <div className="flex gap-2 mt-auto">
-            <button onClick={() => setSelectedRecipe(recipe)} className="flex-1 px-4 py-3 bg-chefini-yellow text-black font-bold border-2 border-black hover:shadow-brutal-sm hover:translate-x-0.5 hover:translate-y-0.5 transition-all flex items-center justify-center gap-2">
-              <Eye size={18} />
-              View Full Recipe
+            <button onClick={() => setSelectedRecipe(recipe)} className="flex-1 px-3 py-2 md:px-4 md:py-3 bg-chefini-yellow text-black font-bold border-2 border-black hover:shadow-brutal-sm hover:translate-x-0.5 hover:translate-y-0.5 transition-all flex items-center justify-center gap-2 text-sm md:text-base">
+              <Eye size={16} className="md:w-[18px] md:h-[18px]" />
+              View Recipe
             </button>
              <button 
                 onClick={(e) => { 
@@ -1603,14 +1598,14 @@ export default function DailyDishesPage() {
                     if (!isSaved) handleSaveToCookbook(recipe); 
                 }} 
                 disabled={isSaved}
-                className={`px-4 py-3 border-2 border-black font-bold transition-all flex items-center gap-2 ${
+                className={`px-3 py-2 md:px-4 md:py-3 border-2 border-black font-bold transition-all flex items-center gap-2 ${
                     isSaved 
                     ? 'bg-green-100 text-green-700 border-green-600 cursor-default' 
                     : 'bg-white hover:bg-gray-100 text-green-600'
                 }`}
                 title={isSaved ? "Already saved" : "Save Copy to My Cookbook"}
             >
-              {isSaved ? <Check size={18} /> : <BookmarkPlus size={18} />}
+              {isSaved ? <Check size={16} className="md:w-[18px] md:h-[18px]" /> : <BookmarkPlus size={16} className="md:w-[18px] md:h-[18px]" />}
             </button>
           </div>
         </div>
@@ -1624,34 +1619,34 @@ export default function DailyDishesPage() {
         <Toast key={toast.id} message={toast.message} type={toast.type} onClose={() => removeToast(toast.id)} />
       ))}
 
-       <div className="mb-8 bg-black border-4 border-chefini-yellow p-6 mx-8 mt-8">
-        <h1 className="text-4xl font-black flex items-center gap-3 text-white">
-          <Utensils className="text-chefini-yellow" size={40} />
+       <div className="mb-4 md:mb-8 bg-black border-4 border-chefini-yellow p-4 md:p-6 mx-4 md:mx-8 mt-4 md:mt-8">
+        <h1 className="text-2xl md:text-4xl font-black flex flex-col md:flex-row items-start md:items-center gap-2 md:gap-3 text-white">
+          <Utensils className="text-chefini-yellow w-8 h-8 md:w-10 md:h-10" />
           INDIAN STAPLES
         </h1>
-        <p className="text-gray-400 mt-2 font-bold">
+        <p className="text-gray-400 mt-2 font-bold text-sm md:text-base">
           A culinary journey through India • {readyRecipes.length} recipes from 28 states and 8 union territories
         </p>
       </div>
 
-      <div className="p-8 max-w-7xl mx-auto">
-        <div className="mb-10 flex gap-3 overflow-x-auto pb-4 no-scrollbar">
+      <div className="p-4 md:p-8 max-w-7xl mx-auto">
+        <div className="mb-6 md:mb-10 flex gap-2 md:gap-3 overflow-x-auto pb-4 no-scrollbar">
           {states.map((state) => (
-            <button key={state} onClick={() => setActiveFilter(state)} className={`px-6 py-2 font-black border-4 border-black whitespace-nowrap transition-all shadow-brutal-sm ${activeFilter === state ? 'bg-chefini-yellow text-black scale-105' : 'bg-white text-gray-500 hover:bg-gray-50'}`}>
+            <button key={state} onClick={() => setActiveFilter(state)} className={`px-4 py-1.5 md:px-6 md:py-2 text-sm md:text-base font-black border-4 border-black whitespace-nowrap transition-all shadow-brutal-sm ${activeFilter === state ? 'bg-chefini-yellow text-black scale-105' : 'bg-white text-gray-500 hover:bg-gray-50'}`}>
               {state}
             </button>
           ))}
         </div>
 
-        <div className="mb-8 flex items-center gap-4">
-          <h2 className="text-3xl font-black text-black bg-white border-4 border-black px-6 py-2 shadow-brutal-sm inline-flex items-center gap-2 transform -rotate-1">
-            <MapPin className="text-red-500" />
+        <div className="mb-6 md:mb-8 flex items-center gap-4">
+          <h2 className="text-xl md:text-3xl font-black text-black bg-white border-4 border-black px-4 py-1.5 md:px-6 md:py-2 shadow-brutal-sm inline-flex items-center gap-2 transform -rotate-1">
+            <MapPin className="text-red-500 w-5 h-5 md:w-6 md:h-6" />
             {activeFilter === 'All Staples' ? 'Pan-India Collection' : `${activeFilter} Specials`}
           </h2>
           <div className="h-1 bg-black flex-1 rounded-full opacity-20 border-t-2 border-black border-dashed"></div>
         </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 md:gap-8">
           {displayedRecipes.map((recipe) => (
             <RecipeCard key={recipe._id} recipe={recipe} />
           ))}
