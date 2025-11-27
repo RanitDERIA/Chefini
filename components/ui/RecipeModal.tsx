@@ -10,8 +10,11 @@ import {
     Sparkles,
     Globe,
     Trash2,
-    Share2, // Added Share2 icon
-    ListPlus // Added ListPlus for distinct shopping list icon
+    Share2,
+    ListPlus,
+    MoreHorizontal,
+    ChevronUp,
+    ChevronDown
 } from 'lucide-react';
 
 import { useState } from 'react';
@@ -61,7 +64,6 @@ interface RecipeModalProps {
     onLike?: (recipeId: string) => void;
     onTogglePublic?: () => void;
     onDelete?: () => void;
-    // New Props for added options
     onAddToShoppingList?: (recipe: Recipe) => void;
     onShare?: (recipe: Recipe) => void;
     showActions?: boolean;
@@ -82,8 +84,8 @@ export default function RecipeModal({
     onLike,
     onTogglePublic,
     onDelete,
-    onAddToShoppingList, // Destructure new prop
-    onShare,            // Destructure new prop
+    onAddToShoppingList,
+    onShare,
     showActions = true,
     showToast,
     isLiked = false,
@@ -92,6 +94,7 @@ export default function RecipeModal({
 }: RecipeModalProps) {
     const [isReading, setIsReading] = useState(false);
     const [downloading, setDownloading] = useState(false);
+    const [showMobileMenu, setShowMobileMenu] = useState(false);
 
     if (!isOpen || !recipe) return null;
 
@@ -252,11 +255,8 @@ export default function RecipeModal({
       `;
 
             document.body.appendChild(tempDiv);
+            await new Promise(r => setTimeout(r, 200));
 
-            // 2. Wait for rendering
-            await new Promise(r => setTimeout(r, 200)); // Increased timeout slightly to ensure footer renders
-
-            // 3. Create Canvas
             const canvas = await html2canvas(tempDiv, {
                 backgroundColor: '#fff',
                 scale: 2,
@@ -268,14 +268,11 @@ export default function RecipeModal({
             document.body.removeChild(tempDiv);
 
             // 4. Calculate Dimensions (CRITICAL FIX FOR FOOTER/TIP)
-            // Instead of forcing A4, we calculate the PDF size based on the content height
             const imgData = canvas.toDataURL('image/png');
             const imgWidthPx = canvas.width;
             const imgHeightPx = canvas.height;
 
-            // Convert pixels to mm (1px approx 0.264583mm at 96dpi)
-            // But since we scaled canvas by 2, we adjust math:
-            // Let's standardise width to A4 width (210mm) and let height be dynamic
+            // standardise width to A4 width (210mm)
             const pdfWidth = 210;
             const pdfHeight = (imgHeightPx * pdfWidth) / imgWidthPx;
 
@@ -283,7 +280,7 @@ export default function RecipeModal({
             const doc = new jsPDF({
                 orientation: 'p',
                 unit: 'mm',
-                format: [pdfWidth, pdfHeight] // <--- THIS FIXES THE CUTOFF
+                format: [pdfWidth, pdfHeight]
             });
 
             // 6. Add image filling the exact custom page
@@ -438,7 +435,7 @@ export default function RecipeModal({
     // Render JSX (Modal UI)
     // -------------------------
     return (
-        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 overflow-y-auto">
+        <div className="fixed inset-0 z-50 flex items-center justify-center p-2 md:p-4 overflow-hidden">
 
             {/* Backdrop */}
             <div
@@ -447,14 +444,14 @@ export default function RecipeModal({
             ></div>
 
             {/* Modal container */}
-            <div className="relative bg-white border-4 border-black shadow-brutal-lg max-w-4xl w-full my-8">
+            <div className="relative bg-white border-4 border-black shadow-brutal-lg max-w-4xl w-full flex flex-col max-h-[90vh]">
 
                 {/* Header */}
-                <div className="bg-chefini-yellow border-b-4 border-black p-6 sticky top-0 z-10">
+                <div className="bg-chefini-yellow border-b-4 border-black p-4 md:p-6 shrink-0">
                     <div className="flex items-start justify-between gap-4">
                         <div className="flex-1">
-                            <h2 className="text-3xl font-black text-black mb-2 selectable">{recipe.title}</h2>
-                            <div className="flex flex-wrap gap-4 text-sm font-bold text-black">
+                            <h2 className="text-2xl md:text-3xl font-black text-black mb-2 selectable">{recipe.title}</h2>
+                            <div className="flex flex-wrap gap-4 text-xs md:text-sm font-bold text-black">
                                 <span>⏱️ {recipe.time}</span>
                                 <span>🔥 {recipe.macros.calories} cal</span>
                                 {recipe.createdBy && <span>👨‍🍳 By {recipe.createdBy.name}</span>}
@@ -472,104 +469,207 @@ export default function RecipeModal({
 
                     {/* Action buttons */}
                     {showActions && (
-                        <div className="mt-4 flex flex-wrap gap-2">
-                            <button
-                                onClick={downloadPDF}
-                                disabled={downloading}
-                                className="px-4 py-2 bg-black text-white font-bold border-2 border-black hover:bg-gray-800 flex items-center gap-2 disabled:opacity-50"
-                            >
-                                <Download size={18} /> PDF
-                            </button>
-
-                            <button
-                                onClick={downloadImage}
-                                disabled={downloading}
-                                className="px-4 py-2 bg-black text-white font-bold border-2 border-black hover:bg-gray-800 flex items-center gap-2 disabled:opacity-50"
-                            >
-                                <Download size={18} /> Image
-                            </button>
-
-                            {onAddToShoppingList && (
+                        <>
+                            {/* --- DESKTOP ACTIONS (Hidden on Mobile) --- */}
+                            <div className="hidden md:flex mt-4 flex-wrap gap-2">
                                 <button
-                                    onClick={() => onAddToShoppingList(recipe)}
-                                    className="px-4 py-2 bg-blue-500 text-white font-bold border-2 border-black hover:bg-blue-600 flex items-center gap-2"
+                                    onClick={downloadPDF}
+                                    disabled={downloading}
+                                    className="px-4 py-2 bg-black text-white font-bold border-2 border-black hover:bg-gray-800 flex items-center gap-2 disabled:opacity-50"
                                 >
-                                    <ListPlus size={18} /> Add to List
+                                    <Download size={18} /> PDF
                                 </button>
-                            )}
 
-                            {!isOwner && onSaveToCookbook && (
                                 <button
-                                    onClick={() => onSaveToCookbook(recipe)}
-                                    className="px-4 py-2 bg-green-400 text-black font-bold border-2 border-black hover:bg-green-500 flex items-center gap-2"
+                                    onClick={downloadImage}
+                                    disabled={downloading}
+                                    className="px-4 py-2 bg-black text-white font-bold border-2 border-black hover:bg-gray-800 flex items-center gap-2 disabled:opacity-50"
                                 >
-                                    <BookmarkPlus size={18} /> Save to Cookbook
+                                    <Download size={18} /> Image
                                 </button>
-                            )}
 
-                            {isOwner && onTogglePublic && (
-                                <button
-                                    onClick={onTogglePublic}
-                                    className={`px-4 py-2 font-bold border-2 border-black flex items-center gap-2 transition-colors ${isPublic
+                                {onAddToShoppingList && (
+                                    <button
+                                        onClick={() => onAddToShoppingList(recipe)}
+                                        className="px-4 py-2 bg-blue-500 text-white font-bold border-2 border-black hover:bg-blue-600 flex items-center gap-2"
+                                    >
+                                        <ListPlus size={18} /> Add to List
+                                    </button>
+                                )}
+
+                                {!isOwner && onSaveToCookbook && (
+                                    <button
+                                        onClick={() => onSaveToCookbook(recipe)}
+                                        className="px-4 py-2 bg-green-400 text-black font-bold border-2 border-black hover:bg-green-500 flex items-center gap-2"
+                                    >
+                                        <BookmarkPlus size={18} /> Save to Cookbook
+                                    </button>
+                                )}
+
+                                {isOwner && onTogglePublic && (
+                                    <button
+                                        onClick={onTogglePublic}
+                                        className={`px-4 py-2 font-bold border-2 border-black flex items-center gap-2 transition-colors ${isPublic
                                             ? 'bg-green-400 text-black hover:bg-green-500'
                                             : 'bg-gray-200 text-black hover:bg-gray-300'
+                                            }`}
+                                    >
+                                        <Globe size={18} />
+                                        {isPublic ? 'Make Private' : 'Make Public'}
+                                    </button>
+                                )}
+
+                                {isOwner && onDelete && (
+                                    <button
+                                        onClick={onDelete}
+                                        className="px-4 py-2 bg-red-500 text-white font-bold border-2 border-black hover:bg-red-600 flex items-center gap-2"
+                                    >
+                                        <Trash2 size={18} />
+                                        Delete
+                                    </button>
+                                )}
+
+                                {!isOwner && onLike && recipe._id && (
+                                    <button
+                                        onClick={() => onLike(recipe._id!)}
+                                        className={`px-4 py-2 font-bold border-2 border-black flex items-center gap-2 transition-all ${isLiked ? 'bg-red-500 text-white hover:bg-red-600' : 'bg-white text-black hover:bg-red-100'
+                                            }`}
+                                        title={isLiked ? 'Unlike' : 'Like'}
+                                    >
+                                        <Heart size={18} className={isLiked ? 'fill-white' : 'fill-none'} />
+                                        {recipe.likes || 0}
+                                    </button>
+                                )}
+
+                                <button
+                                    onClick={handleShare}
+                                    className="px-4 py-2 bg-white text-black font-bold border-2 border-black hover:bg-gray-100 flex items-center gap-2"
+                                >
+                                    <Share2 size={18} /> Share
+                                </button>
+
+                                <button
+                                    onClick={speakInstructions}
+                                    className={`px-4 py-2 font-bold border-2 border-black flex items-center gap-2 transition-colors ${isReading
+                                            ? 'bg-blue-600 text-white'
+                                            : 'bg-white text-blue-600 hover:bg-blue-50'
                                         }`}
                                 >
-                                    <Globe size={18} />
-                                    {isPublic ? 'Make Private' : 'Make Public'}
+                                    <Volume2 size={18} /> {isReading ? 'Stop' : 'Read'}
                                 </button>
-                            )}
+                            </div>
 
-                            {isOwner && onDelete && (
-                                <button
-                                    onClick={onDelete}
-                                    className="px-4 py-2 bg-red-500 text-white font-bold border-2 border-black hover:bg-red-600 flex items-center gap-2"
-                                >
-                                    <Trash2 size={18} />
-                                    Delete
-                                </button>
-                            )}
+                            {/* --- MOBILE ACTIONS (Visible on Mobile) --- */}
+                            <div className="md:hidden mt-4">
+                                <div className="flex items-center gap-2 justify-between">
+                                    <div className="flex gap-2">
+                                        {!isOwner && onLike && recipe._id && (
+                                            <button
+                                                onClick={() => onLike(recipe._id!)}
+                                                className={`p-2 font-bold border-2 border-black flex items-center gap-2 transition-all ${isLiked ? 'bg-red-500 text-white' : 'bg-white text-black'}`}
+                                            >
+                                                <Heart size={20} className={isLiked ? 'fill-white' : 'fill-none'} />
+                                                {recipe.likes || 0}
+                                            </button>
+                                        )}
 
-                            {!isOwner && onLike && recipe._id && (
-                                <button
-                                    onClick={() => onLike(recipe._id!)}
-                                    className={`px-4 py-2 font-bold border-2 border-black flex items-center gap-2 transition-all ${isLiked ? 'bg-red-500 text-white hover:bg-red-600' : 'bg-white text-black hover:bg-red-100'
-                                        }`}
-                                    title={isLiked ? 'Unlike' : 'Like'}
-                                >
-                                    <Heart size={18} className={isLiked ? 'fill-white' : 'fill-none'} />
-                                    {recipe.likes || 0}
-                                </button>
-                            )}
+                                        <button
+                                            onClick={handleShare}
+                                            className="p-2 bg-white text-black font-bold border-2 border-black hover:bg-gray-100"
+                                        >
+                                            <Share2 size={20} />
+                                        </button>
 
-                            <button
-                                onClick={handleShare}
-                                className="px-4 py-2 bg-white text-black font-bold border-2 border-black hover:bg-gray-100 flex items-center gap-2"
-                            >
-                                <Share2 size={18} /> Share
-                            </button>
+                                        <button
+                                            onClick={speakInstructions}
+                                            className={`p-2 font-bold border-2 border-black transition-colors ${isReading ? 'bg-blue-600' : 'bg-white'}`}
+                                        >
+                                            <Volume2 size={20} className={isReading ? 'animate-pulse text-white' : 'text-blue-600'} />
+                                        </button>
+                                    </div>
 
-                            <button
-                                onClick={speakInstructions}
-                                className={`px-4 py-2 font-bold border-2 border-black flex items-center gap-2 ${isReading ? 'bg-chefini-yellow' : 'bg-white hover:bg-gray-100'}`}
-                            >
-                                <Volume2 size={18} /> {isReading ? 'Stop' : 'Read'}
-                            </button>
-                        </div>
+                                    <button
+                                        onClick={() => setShowMobileMenu(!showMobileMenu)}
+                                        className="px-3 py-2 bg-black text-white font-bold border-2 border-black flex items-center gap-1 text-sm"
+                                    >
+                                        <MoreHorizontal size={18} /> Actions
+                                        {showMobileMenu ? <ChevronUp size={16} /> : <ChevronDown size={16} />}
+                                    </button>
+                                </div>
+
+                                {/* Expanded Mobile Menu */}
+                                {showMobileMenu && (
+                                    <div className="mt-3 grid grid-cols-2 gap-2 animate-in slide-in-from-top-2 duration-200">
+                                        <button
+                                            onClick={downloadPDF}
+                                            disabled={downloading}
+                                            className="p-2 bg-white text-black font-bold border-2 border-black flex items-center justify-center gap-2 text-sm"
+                                        >
+                                            <Download size={16} /> Save PDF
+                                        </button>
+
+                                        <button
+                                            onClick={downloadImage}
+                                            disabled={downloading}
+                                            className="p-2 bg-white text-black font-bold border-2 border-black flex items-center justify-center gap-2 text-sm"
+                                        >
+                                            <Download size={16} /> Save Image
+                                        </button>
+
+                                        {onAddToShoppingList && (
+                                            <button
+                                                onClick={() => onAddToShoppingList(recipe)}
+                                                className="p-2 bg-blue-100 text-black font-bold border-2 border-black flex items-center justify-center gap-2 text-sm col-span-2"
+                                            >
+                                                <ListPlus size={16} /> Add Ingredients to List
+                                            </button>
+                                        )}
+
+                                        {!isOwner && onSaveToCookbook && (
+                                            <button
+                                                onClick={() => onSaveToCookbook(recipe)}
+                                                className="p-2 bg-green-100 text-black font-bold border-2 border-black flex items-center justify-center gap-2 text-sm col-span-2"
+                                            >
+                                                <BookmarkPlus size={16} /> Save to Cookbook
+                                            </button>
+                                        )}
+
+                                        {isOwner && onTogglePublic && (
+                                            <button
+                                                onClick={onTogglePublic}
+                                                className="p-2 bg-gray-100 text-black font-bold border-2 border-black flex items-center justify-center gap-2 text-sm col-span-2"
+                                            >
+                                                <Globe size={16} />
+                                                {isPublic ? 'Make Private' : 'Make Public'}
+                                            </button>
+                                        )}
+
+                                        {isOwner && onDelete && (
+                                            <button
+                                                onClick={onDelete}
+                                                className="p-2 bg-red-100 text-red-900 font-bold border-2 border-black flex items-center justify-center gap-2 text-sm col-span-2"
+                                            >
+                                                <Trash2 size={16} /> Delete Recipe
+                                            </button>
+                                        )}
+                                    </div>
+                                )}
+                            </div>
+                        </>
                     )}
                 </div>
 
                 {/* Content */}
-                <div id="recipe-modal-content" className="p-6 bg-white text-black max-h-[70vh] overflow-y-auto">
+                <div id="recipe-modal-content" className="p-4 md:p-6 bg-white text-black overflow-y-auto flex-1">
 
                     {/* Ingredients */}
                     <div className="mb-6">
-                        <h3 className="text-2xl font-black mb-4 flex items-center gap-2">
+                        <h3 className="text-xl md:text-2xl font-black mb-4 flex items-center gap-2">
                             <ShoppingCart size={24} /> INGREDIENTS
                         </h3>
                         <ul className="space-y-2 selectable">
                             {recipe.ingredients.map((ing, idx) => (
-                                <li key={idx} className="flex items-start gap-3 text-lg">
+                                <li key={idx} className="flex items-start gap-3 text-base md:text-lg">
                                     <span className="font-mono text-chefini-yellow">▪</span>
                                     <span>{ing.item}</span>
                                 </li>
@@ -579,44 +679,44 @@ export default function RecipeModal({
 
                     {/* Instructions */}
                     <div className="mb-6">
-                        <h3 className="text-2xl font-black mb-4">INSTRUCTIONS</h3>
+                        <h3 className="text-xl md:text-2xl font-black mb-4">INSTRUCTIONS</h3>
                         <ol className="space-y-4 selectable">
                             {recipe.instructions.map((step, idx) => (
                                 <li key={idx} className="flex gap-4">
-                                    <span className="font-black text-xl text-chefini-yellow min-w-[30px]">{idx + 1}.</span>
-                                    <span className="text-lg">{step}</span>
+                                    <span className="font-black text-lg md:text-xl text-chefini-yellow min-w-[30px]">{idx + 1}.</span>
+                                    <span className="text-base md:text-lg">{step}</span>
                                 </li>
                             ))}
                         </ol>
                     </div>
 
                     {/* Magic Tip */}
-                    <div className="border-4 border-chefini-yellow bg-chefini-yellow bg-opacity-20 p-6 mb-6">
-                        <h3 className="text-xl font-black mb-3 flex items-center gap-2">
+                    <div className="border-4 border-chefini-yellow bg-chefini-yellow bg-opacity-20 p-4 md:p-6 mb-6">
+                        <h3 className="text-lg md:text-xl font-black mb-3 flex items-center gap-2">
                             <Sparkles size={20} /> CHEFINI'S MAGIC TIP
                         </h3>
-                        <p className="text-base selectable">{recipe.tip}</p>
+                        <p className="text-sm md:text-base selectable">{recipe.tip}</p>
                     </div>
 
                     {/* Macros */}
                     <div className="border-t-4 border-dashed border-black pt-6">
-                        <h3 className="text-xl font-black mb-4">NUTRITIONAL INFO</h3>
-                        <div className="grid grid-cols-4 gap-4 text-center">
+                        <h3 className="text-lg md:text-xl font-black mb-4">NUTRITIONAL INFO</h3>
+                        <div className="grid grid-cols-2 md:grid-cols-4 gap-4 text-center">
                             <div>
-                                <div className="font-black text-3xl text-chefini-yellow">{recipe.macros.calories}</div>
-                                <div className="text-sm font-bold">CALORIES</div>
+                                <div className="font-black text-2xl md:text-3xl text-chefini-yellow">{recipe.macros.calories}</div>
+                                <div className="text-xs md:text-sm font-bold">CALORIES</div>
                             </div>
                             <div>
-                                <div className="font-black text-3xl text-chefini-yellow">{recipe.macros.protein}g</div>
-                                <div className="text-sm font-bold">PROTEIN</div>
+                                <div className="font-black text-2xl md:text-3xl text-chefini-yellow">{recipe.macros.protein}g</div>
+                                <div className="text-xs md:text-sm font-bold">PROTEIN</div>
                             </div>
                             <div>
-                                <div className="font-black text-3xl text-chefini-yellow">{recipe.macros.carbs}g</div>
-                                <div className="text-sm font-bold">CARBS</div>
+                                <div className="font-black text-2xl md:text-3xl text-chefini-yellow">{recipe.macros.carbs}g</div>
+                                <div className="text-xs md:text-sm font-bold">CARBS</div>
                             </div>
                             <div>
-                                <div className="font-black text-3xl text-chefini-yellow">{recipe.macros.fats}g</div>
-                                <div className="text-sm font-bold">FATS</div>
+                                <div className="font-black text-2xl md:text-3xl text-chefini-yellow">{recipe.macros.fats}g</div>
+                                <div className="text-xs md:text-sm font-bold">FATS</div>
                             </div>
                         </div>
                     </div>
