@@ -102,7 +102,7 @@ export default function AboutPage() {
                 </div>
               </div>
               <p className="text-sm">
-                Just a student trying to translate his mother's kitchen logic into code. I built Chefini because he missed home cooked meals in college and realized that "resourcefulness" is the most valuable algorithm of all.
+                Just a student trying to translate his mother's kitchen logic into code. Built Chefini because I missed home cooked meals in college and realized that "resourcefulness" is the most valuable algorithm of all.
               </p>
               <div className="mt-4 pt-4 border-t-2 border-dashed border-black">
                 <p className="text-xs text-gray-600">
