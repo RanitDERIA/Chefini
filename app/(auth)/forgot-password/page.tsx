@@ -3,7 +3,7 @@
 import { useState } from 'react';
 import { useRouter } from 'next/navigation';
 import Link from 'next/link';
-import { Mail, ArrowLeft, Send } from 'lucide-react';
+import { Mail, ArrowLeft, Send, CheckCircle, AlertCircle } from 'lucide-react';
 import ChefiniLogo from '@/components/ui/ChefiniLogo';
 import ChefiniButton from '@/components/ui/ChefiniButton';
 
@@ -12,10 +12,12 @@ export default function ForgotPasswordPage() {
   const [email, setEmail] = useState('');
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
+  const [message, setMessage] = useState('');
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setError('');
+    setMessage('');
     setLoading(true);
 
     try {
@@ -27,12 +29,25 @@ export default function ForgotPasswordPage() {
 
       const data = await res.json();
 
-      if (!res.ok && res.status !== 200) {
+      // Handle specific error cases (OAuth users, server errors)
+      if (!res.ok) {
         throw new Error(data.error || 'Something went wrong');
       }
 
-      // Redirect to verify OTP page with email
-      router.push(`/verify-otp?email=${encodeURIComponent(email)}`);
+      // Check if we should proceed to OTP page
+      if (data.shouldProceed) {
+        // User exists and OTP was sent
+        setMessage('OTP sent! Redirecting to verification page...');
+        
+        setTimeout(() => {
+          router.push(`/verify-otp?email=${encodeURIComponent(email)}`);
+        }, 2000);
+      } else {
+        // User doesn't exist - show message but DON'T redirect
+        setMessage(data.message || 'If an account exists with this email, you will receive an OTP code.');
+        // Don't redirect - just show the message
+      }
+
     } catch (err: any) {
       setError(err.message);
     } finally {
@@ -70,8 +85,16 @@ export default function ForgotPasswordPage() {
           </p>
 
           {error && (
-            <div className="bg-red-500 text-white p-3 mb-4 border-2 border-black font-bold">
-              {error}
+            <div className="bg-red-500 text-white p-3 mb-4 border-2 border-black font-bold flex items-center gap-2">
+              <AlertCircle size={20} />
+              <span>{error}</span>
+            </div>
+          )}
+
+          {message && (
+            <div className="bg-green-500 text-white p-3 mb-4 border-2 border-black font-bold flex items-center gap-2">
+              <CheckCircle size={20} />
+              <span>{message}</span>
             </div>
           )}
 
@@ -88,6 +111,7 @@ export default function ForgotPasswordPage() {
                 onChange={(e) => setEmail(e.target.value)}
                 className="w-full px-4 py-3 border-2 border-black focus:outline-none focus:ring-2 focus:ring-chefini-yellow text-black"
                 placeholder="your@email.com"
+                disabled={loading}
               />
             </div>
 
