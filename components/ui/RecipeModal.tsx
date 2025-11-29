@@ -1,3 +1,4 @@
+// components/ui/RecipeModal.tsx
 'use client';
 
 import {
@@ -14,10 +15,12 @@ import {
     ListPlus,
     MoreHorizontal,
     ChevronUp,
-    ChevronDown
+    ChevronDown,
+    ChefHat // IMPORTED: ChefHat Icon
 } from 'lucide-react';
 
 import { useState } from 'react';
+import CookMode from './CookMode'; // IMPORTED: CookMode Component
 
 // Helper to load external scripts dynamically
 const loadScript = (src: string) => {
@@ -95,6 +98,9 @@ export default function RecipeModal({
     const [isReading, setIsReading] = useState(false);
     const [downloading, setDownloading] = useState(false);
     const [showMobileMenu, setShowMobileMenu] = useState(false);
+    
+    // NEW STATE: Toggle for Cook Mode Overlay
+    const [isCookMode, setIsCookMode] = useState(false);
 
     if (!isOpen || !recipe) return null;
 
@@ -437,6 +443,15 @@ export default function RecipeModal({
     return (
         <div className="fixed inset-0 z-50 flex items-center justify-center p-2 md:p-4 overflow-hidden">
 
+            {/* NEW: RENDER COOK MODE OVERLAY IF ACTIVE */}
+            {isCookMode && (
+                <CookMode
+                    instructions={recipe.instructions}
+                    title={recipe.title}
+                    onClose={() => setIsCookMode(false)}
+                />
+            )}
+
             {/* Backdrop */}
             <div
                 className="absolute inset-0 bg-black bg-opacity-70"
@@ -472,6 +487,15 @@ export default function RecipeModal({
                         <>
                             {/* --- DESKTOP ACTIONS (Hidden on Mobile) --- */}
                             <div className="hidden md:flex mt-4 flex-wrap gap-2">
+
+                                {/* NEW: START COOKING BUTTON (Prominent) */}
+                                <button
+                                    onClick={() => setIsCookMode(true)}
+                                    className="px-6 py-2 bg-white text-black font-black border-2 border-black hover:bg-black hover:text-chefini-yellow flex items-center gap-2 text-lg shadow-brutal-sm hover:shadow-none transition-all transform hover:translate-x-[2px] hover:translate-y-[2px]"
+                                >
+                                    <ChefHat size={22} /> START COOKING
+                                </button>
+
                                 <button
                                     onClick={downloadPDF}
                                     disabled={downloading}
@@ -510,8 +534,8 @@ export default function RecipeModal({
                                     <button
                                         onClick={onTogglePublic}
                                         className={`px-4 py-2 font-bold border-2 border-black flex items-center gap-2 transition-colors ${isPublic
-                                            ? 'bg-green-400 text-black hover:bg-green-500'
-                                            : 'bg-gray-200 text-black hover:bg-gray-300'
+                                                ? 'bg-green-400 text-black hover:bg-green-500'
+                                                : 'bg-gray-200 text-black hover:bg-gray-300'
                                             }`}
                                     >
                                         <Globe size={18} />
@@ -561,6 +585,15 @@ export default function RecipeModal({
 
                             {/* --- MOBILE ACTIONS (Visible on Mobile) --- */}
                             <div className="md:hidden mt-4">
+
+                                {/* NEW: Mobile Prominent Start Cooking Button */}
+                                <button
+                                    onClick={() => setIsCookMode(true)}
+                                    className="w-full mb-3 py-3 bg-white text-black font-black border-2 border-black flex items-center justify-center gap-2 shadow-brutal-sm active:shadow-none active:translate-y-1"
+                                >
+                                    <ChefHat size={20} /> START COOKING
+                                </button>
+
                                 <div className="flex items-center gap-2 justify-between">
                                     <div className="flex gap-2">
                                         {!isOwner && onLike && recipe._id && (
