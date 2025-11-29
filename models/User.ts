@@ -1,4 +1,4 @@
-import mongoose, { Schema, models, Document } from 'mongoose';
+import mongoose, { Schema, models } from 'mongoose';
 
 export interface IUser extends Document {
   name: string;
@@ -8,8 +8,8 @@ export interface IUser extends Document {
   avatar?: string;
   likedRecipes: mongoose.Types.ObjectId[];
   createdAt: Date;
-  resetOTP?: string;
-  resetOTPExpiry?: Date;
+  resetOTP?: string; // NEW: 6-digit OTP
+  resetOTPExpiry?: Date; // NEW: OTP expiry time
 }
 
 const UserSchema = new Schema<IUser>({
@@ -37,14 +37,8 @@ const UserSchema = new Schema<IUser>({
     type: Date,
     default: Date.now,
   },
-  resetOTP: {
-    type: String,
-    select: false,
-  },
-  resetOTPExpiry: {
-    type: Date,
-    select: false,
-  },
+  resetOTP: String, // NEW
+  resetOTPExpiry: Date, // NEW
 });
 
 const User = models.User || mongoose.model<IUser>('User', UserSchema);
