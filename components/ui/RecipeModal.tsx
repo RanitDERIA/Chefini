@@ -14,10 +14,10 @@ import {
     MoreHorizontal,
     ChevronUp,
     ChevronDown,
-    ChefHat // 1. Imported ChefHat
+    ChefHat
 } from 'lucide-react';
 import { useState } from 'react';
-import CookMode from './CookMode'; // 1. Imported CookMode
+import CookMode from './CookMode';
 
 // Helper to load external scripts dynamically
 const loadScript = (src: string) => {
@@ -34,7 +34,7 @@ const loadScript = (src: string) => {
     });
 };
 
-// Helper to escape HTML entities for safe rendering in the temporary div
+// Helper to escape HTML entities
 const escapeHtml = (str: string) => {
     if (typeof str !== 'string') return '';
     return str.replace(/&/g, '&amp;')
@@ -105,7 +105,7 @@ export default function RecipeModal({
     const [isReading, setIsReading] = useState(false);
     const [downloading, setDownloading] = useState(false);
     const [showMobileMenu, setShowMobileMenu] = useState(false);
-    const [cookModeOpen, setCookModeOpen] = useState(false); // 2. Added cookModeOpen state
+    const [cookModeOpen, setCookModeOpen] = useState(false);
 
     if (!isOpen || !recipe) return null;
 
@@ -137,7 +137,6 @@ export default function RecipeModal({
             onShare(recipe);
             return;
         }
-        // Default share behavior if no prop provided
         if (navigator.share) {
             try {
                 await navigator.share({
@@ -147,13 +146,11 @@ export default function RecipeModal({
                 });
                 showToast?.('Recipe shared successfully!', 'success');
             } catch (error) {
-                // User cancelled or error
                 if (String(error).indexOf('AbortError') === -1) {
                     console.log('Error sharing:', error);
                 }
             }
         } else {
-            // Fallback: Copy to clipboard
             try {
                 await navigator.clipboard.writeText(`${recipe.title}\n\nIngredients:\n${recipe.ingredients.map(i => i.item).join('\n')}\n\nInstructions:\n${recipe.instructions.join('\n')}`);
                 showToast?.('Recipe details copied to clipboard!', 'success');
@@ -164,12 +161,11 @@ export default function RecipeModal({
     };
 
     // ------------------------------------
-    // 📄 DOWNLOAD PDF (Exact Image Match)
+    // 📄 DOWNLOAD PDF
     // ------------------------------------
     const downloadPDF = async () => {
         setDownloading(true);
         try {
-            // Load BOTH jsPDF and html2canvas
             await loadScript('https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js');
             await loadScript('https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js');
 
@@ -178,17 +174,17 @@ export default function RecipeModal({
             // @ts-ignore
             const html2canvas = window.html2canvas;
 
-            // 1. Generate HTML (Exact copy of image generation logic)
             const tempDiv = document.createElement('div');
-            tempDiv.style.position = 'fixed';
-            tempDiv.style.left = '-9999px';
-            tempDiv.style.top = '0';
-            tempDiv.style.width = '800px'; // consistent width
-            tempDiv.style.background = 'white';
-            tempDiv.style.padding = '0';
-            tempDiv.style.boxSizing = 'border-box';
+            Object.assign(tempDiv.style, {
+                position: 'fixed',
+                left: '-9999px',
+                top: '0',
+                width: '800px',
+                background: 'white',
+                padding: '0',
+                boxSizing: 'border-box'
+            });
 
-            // *** EXACT HTML TEMPLATE USED IN DOWNLOAD IMAGE ***
             tempDiv.innerHTML = `
         <div style="font-family: Arial, sans-serif; background: white; width: 800px;">
           <div style="background: #FFC72C; padding: 40px; text-align: center; border: 4px solid #000; border-bottom: none;">
@@ -267,26 +263,19 @@ export default function RecipeModal({
             });
             document.body.removeChild(tempDiv);
 
-            // 4. Calculate Dimensions (CRITICAL FIX FOR FOOTER/TIP)
             const imgData = canvas.toDataURL('image/png');
             const imgWidthPx = canvas.width;
             const imgHeightPx = canvas.height;
-
-            // standardise width to A4 width (210mm)
             const pdfWidth = 210;
             const pdfHeight = (imgHeightPx * pdfWidth) / imgWidthPx;
 
-            // 5. Initialize PDF with CUSTOM page size to fit everything
             const doc = new jsPDF({
                 orientation: 'p',
                 unit: 'mm',
                 format: [pdfWidth, pdfHeight]
             });
 
-            // 6. Add image filling the exact custom page
             doc.addImage(imgData, 'PNG', 0, 0, pdfWidth, pdfHeight);
-
-            // 7. Save
             const fileName = recipe.title.replace(/[^a-z0-9]/gi, '_').toLowerCase();
             doc.save(`chefini_${fileName}.pdf`);
             showToast?.('PDF downloaded successfully!', 'success');
@@ -309,15 +298,17 @@ export default function RecipeModal({
             const html2canvas = window.html2canvas;
 
             const tempDiv = document.createElement('div');
-            tempDiv.style.position = 'fixed';
-            tempDiv.style.left = '-9999px';
-            tempDiv.style.top = '0';
-            tempDiv.style.width = '800px';
-            tempDiv.style.background = 'white';
-            tempDiv.style.padding = '0';
-            tempDiv.style.boxSizing = 'border-box';
+            Object.assign(tempDiv.style, {
+                position: 'fixed',
+                left: '-9999px',
+                top: '0',
+                width: '800px',
+                background: 'white',
+                padding: '0',
+                boxSizing: 'border-box'
+            });
 
-            // *** EXACT HTML TEMPLATE ***
+            // Same template string as above... (simplified for brevity)
             tempDiv.innerHTML = `
         <div style="font-family: Arial, sans-serif; background: white; width: 800px;">
           <div style="background: #FFC72C; padding: 40px; text-align: center; border: 4px solid #000; border-bottom: none;">
@@ -385,7 +376,6 @@ export default function RecipeModal({
         </div>
       `;
             document.body.appendChild(tempDiv);
-
             await new Promise(r => setTimeout(r, 150));
 
             const canvas = await html2canvas(tempDiv, {
@@ -397,7 +387,6 @@ export default function RecipeModal({
             });
             document.body.removeChild(tempDiv);
 
-            // Fix: Explicitly type 'blob' as Blob | null
             canvas.toBlob((blob: Blob | null) => {
                 if (!blob) {
                     showToast?.('Failed to generate image', 'error');
@@ -428,12 +417,10 @@ export default function RecipeModal({
     return (
         <>
             <div className="fixed inset-0 z-50 flex items-center justify-center p-2 md:p-4 overflow-hidden">
-                {/* Backdrop */}
                 <div
                     className="absolute inset-0 bg-black bg-opacity-70"
                     onClick={onClose}
                 ></div>
-                {/* Modal container */}
                 <div className="relative bg-white border-4 border-black shadow-brutal-lg max-w-4xl w-full flex flex-col max-h-[90vh]">
                     {/* Header */}
                     <div className="bg-chefini-yellow border-b-4 border-black p-4 md:p-6 shrink-0">
@@ -458,7 +445,7 @@ export default function RecipeModal({
                         <div className="mt-4 mb-2">
                             <button
                                 onClick={() => setCookModeOpen(true)}
-                                className="w-full py-4 bg-chefini-yellow text-black font-black text-lg md:text-xl border-4 border-black hover:bg-yellow-400 transition-all shadow-brutal flex items-center justify-center gap-3"
+                                className="w-full py-4 bg-chefini-yellow text-black font-black text-lg md:text-xl border-4 border-black hover:bg-yellow-400 transition-all shadow-brutal flex items-center justify-center gap-3 active:translate-y-1"
                             >
                                 <ChefHat size={28} />
                                 START COOKING (HANDS-FREE MODE)
