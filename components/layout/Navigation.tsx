@@ -1,34 +1,25 @@
 'use client';
 
-// [NOTE] UNCOMMENT THESE IN YOUR ACTUAL NEXT.JS APP
-// import { usePathname } from 'next/navigation';
-// import Link from 'next/link';
-
-// [NOTE] REMOVE THESE MOCKS IN YOUR ACTUAL NEXT.JS APP
-import { useState, useEffect } from 'react';
-const usePathname = () => {
-  const [path, setPath] = useState('');
-  useEffect(() => {
-    if (typeof window !== 'undefined') {
-        setPath(window.location.pathname === '/' ? '/dashboard' : window.location.pathname);
-    }
-  }, []);
-  return path;
-};
-const Link = ({ href, children, className, ...props }: any) => (
-  <a href={href} className={className} {...props}>{children}</a>
-);
-
-import { Sparkles, ChefHat, Users, ShoppingCart, Utensils } from 'lucide-react';
+import { usePathname } from 'next/navigation';
+import Link from 'next/link';
+import { 
+    Sparkles, 
+    ChefHat, 
+    Users, 
+    ShoppingCart, 
+    Utensils,
+    Stethoscope,
+} from 'lucide-react';
 
 export default function Navigation() {
   const pathname = usePathname();
   
   const navItems = [
     { href: '/dashboard', label: 'Generate Magic', icon: Sparkles },
-    { href: '/daily-dishes', label: 'Daily Dishes', icon: Utensils }, // Added this
+    { href: '/daily-dishes', label: 'Daily Dishes', icon: Utensils },
     { href: '/cookbook', label: 'My Cookbook', icon: ChefHat },
     { href: '/shopping-list', label: 'Shopping List', icon: ShoppingCart },
+    { href: '/debug', label: 'Flavor Rescue', icon: Stethoscope }, // Changed to AlertTriangle for consistency
     { href: '/discover', label: 'Discover', icon: Users },
   ];
 
