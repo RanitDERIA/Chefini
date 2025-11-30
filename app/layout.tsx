@@ -14,7 +14,11 @@ export const metadata: Metadata = {
   icons: {
     icon: '/favicon.png',
     shortcut: '/favicon.png',
-    apple: '/favicon.png', // Optional: Add a separate apple-touch-icon.png in public if you have one
+    apple: '/favicon.png',
+  },
+  // Google Search Console Verification
+  verification: {
+    google: "mk3o2lgavXTz12smdAaB0chv20Bnmyjy2GIUOJHMvX4",
   },
 };
 
