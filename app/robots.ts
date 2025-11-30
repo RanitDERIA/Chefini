@@ -5,7 +5,7 @@ export default function robots(): MetadataRoute.Robots {
     rules: {
       userAgent: '*',
       allow: '/',
-      disallow: '/private/', // Block private routes if you have any
+      disallow: '/private/',
     },
     sitemap: 'https://chefini.vercel.app/sitemap.xml',
   };
