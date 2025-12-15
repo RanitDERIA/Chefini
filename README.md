@@ -191,17 +191,24 @@ Chefini/
 
 This project is licensed under the **MIT License**.
 
-### Contact: <a name="contact"></a>
+### 📬 Let's Connect
 
-**Ranit Deria**
-
-📧 **Email:** bytebardderia@gmail.com
-💼 **LinkedIn:** [Ranit Deria](https://www.linkedin.com/in/ranit-deria-916864257/)
-🐦 **Twitter:** [@DeriaRanit](https://twitter.com/DeriaRanit)
-💻 **GitHub:** [@RanitDERIA](https://github.com/RanitDERIA)
+<p align="left">
+  <a href="mailto:bytebardderia@gmail.com">
+    <img src="https://img.shields.io/badge/Gmail-D14836?style=for-the-badge&logo=gmail&logoColor=white" alt="Email" />
+  </a>
+  <a href="https://www.linkedin.com/in/ranit-deria-916864257/">
+    <img src="https://img.shields.io/badge/LinkedIn-0077B5?style=for-the-badge&logo=linkedin&logoColor=white" alt="LinkedIn" />
+  </a>
+  <a href="https://twitter.com/DeriaRanit">
+    <img src="https://img.shields.io/badge/Twitter-1DA1F2?style=for-the-badge&logo=twitter&logoColor=white" alt="Twitter" />
+  </a>
+  <a href="https://github.com/RanitDERIA">
+    <img src="https://img.shields.io/badge/GitHub-100000?style=for-the-badge&logo=github&logoColor=white" alt="GitHub" />
+  </a>
+</p>
 
 ---
-
 <div align="center">
 
 **⭐ Star this repository if you love cooking with AI!**
