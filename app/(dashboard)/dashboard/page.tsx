@@ -203,7 +203,7 @@ export default function GeneratePage() {
           {/* Dietary Filters */}
           <div className="mt-6">
             <h3 className="font-black mb-3">DIETARY PREFERENCES</h3>
-            <div className="flex flex-wrap gap-3">
+            <div className="grid grid-cols-3 gap-2 sm:gap-3">
               {dietaryOptions.map(({ id, label, icon: Icon }) => (
                 <button
                   key={id}
@@ -212,13 +212,13 @@ export default function GeneratePage() {
                       prev.includes(id) ? prev.filter(d => d !== id) : [...prev, id]
                     );
                   }}
-                  className={`px-4 py-2 border-2 border-black font-bold flex items-center gap-2 transition-all ${dietary.includes(id)
-                      ? 'bg-chefini-yellow text-black'
-                      : 'bg-white text-black hover:bg-gray-100'
+                  className={`px-2 sm:px-4 py-2 border-2 border-black font-bold flex items-center justify-center gap-1 sm:gap-2 transition-all text-xs sm:text-sm md:text-base w-full ${dietary.includes(id)
+                    ? 'bg-chefini-yellow text-black'
+                    : 'bg-white text-black hover:bg-gray-100'
                     }`}
                 >
-                  <Icon size={18} />
-                  {label}
+                  <Icon size={18} className="shrink-0" />
+                  <span className="truncate">{label}</span>
                 </button>
               ))}
             </div>
@@ -229,8 +229,8 @@ export default function GeneratePage() {
             <button
               onClick={() => setHealthyMode(!healthyMode)}
               className={`w-full px-4 py-3 border-2 border-black font-bold flex items-center justify-center gap-2 transition-all ${healthyMode
-                  ? 'bg-green-400 text-black'
-                  : 'bg-white text-black hover:bg-gray-100'
+                ? 'bg-green-400 text-black'
+                : 'bg-white text-black hover:bg-gray-100'
                 }`}
             >
               <Target size={20} />

@@ -142,7 +142,7 @@ export default function GeneratePage() {
           {/* Dietary Filters */}
           <div className="mt-6">
             <h3 className="font-black mb-3 text-white">DIETARY PREFERENCES</h3>
-            <div className="flex flex-wrap gap-2 sm:gap-3">
+            <div className="grid grid-cols-3 gap-2 sm:gap-3">
               {dietaryOptions.map(({ id, label, icon: Icon }) => (
                 <button
                   key={id}
@@ -153,14 +153,13 @@ export default function GeneratePage() {
                         : [...prev, id]
                     )
                   }
-                  className={`px-3 sm:px-4 py-2 border-2 border-white sm:border-black font-bold flex items-center gap-2 transition-all text-sm sm:text-base ${
-                    dietary.includes(id)
+                  className={`px-2 sm:px-4 py-2 border-2 border-white sm:border-black font-bold flex items-center justify-center gap-1 sm:gap-2 transition-all text-xs sm:text-sm md:text-base w-full ${dietary.includes(id)
                       ? 'bg-chefini-yellow text-black border-transparent'
                       : 'bg-transparent sm:bg-white text-white sm:text-black hover:bg-white/10 sm:hover:bg-gray-100'
-                  }`}
+                    }`}
                 >
-                  <Icon size={18} />
-                  {label}
+                  <Icon size={18} className="shrink-0" />
+                  <span className="truncate">{label}</span>
                 </button>
               ))}
             </div>
@@ -170,11 +169,10 @@ export default function GeneratePage() {
           <div className="mt-6">
             <button
               onClick={() => setHealthyMode(!healthyMode)}
-              className={`w-full px-4 py-3 border-2 border-white sm:border-black font-bold flex items-center justify-center gap-2 transition-all ${
-                healthyMode
+              className={`w-full px-4 py-3 border-2 border-white sm:border-black font-bold flex items-center justify-center gap-2 transition-all ${healthyMode
                   ? 'bg-green-400 text-black border-transparent'
                   : 'bg-transparent sm:bg-white text-white sm:text-black hover:bg-white/10 sm:hover:bg-gray-100'
-              }`}
+                }`}
             >
               <Target size={20} />
               MAKE IT HEALTHY MODE {healthyMode ? 'ON' : 'OFF'}
@@ -260,9 +258,8 @@ export default function GeneratePage() {
                 INSTRUCTIONS
                 <button
                   onClick={speakInstructions}
-                  className={`ml-auto p-2 border-2 border-black ${
-                    isReading ? 'bg-chefini-yellow' : 'bg-white'
-                  } hover:bg-gray-100 transition-colors`}
+                  className={`ml-auto p-2 border-2 border-black ${isReading ? 'bg-chefini-yellow' : 'bg-white'
+                    } hover:bg-gray-100 transition-colors`}
                   title="Read instructions aloud"
                 >
                   <Volume2 size={20} />
