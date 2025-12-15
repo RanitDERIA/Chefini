@@ -150,7 +150,7 @@ export default function AboutPage() {
               Dedicated to মা <Heart size={20} className="inline text-red-500 fill-red-500 animate-pulse mx-1" /> The original Kitchen Alchemist
             </p>
             <p className="text-sm text-gray-500">
-              Coded with love in Chittaranjan, India
+              Coded with love at Chittaranjan, India
             </p>
           </div>
         </div>

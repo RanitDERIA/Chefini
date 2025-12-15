@@ -144,24 +144,42 @@ Chefini is optimized for **Vercel**.
 ### Project Structure: <a name="project-structure"></a>
 
 ```
-chefini/
-├── app/                        # Next.js App Router
-│   ├── (auth)/                 # Login/Register strategies
-│   ├── (dashboard)/            # Protected application routes
-│   │   ├── dashboard/          # Main generator
-│   │   ├── batch/              # Smart meal prep
-│   │   ├── cookbook/           # Saved recipes
-│   │   ├── debug/              # Flavor rescue lab
-│   │   └── shopping-list/      # Grocery list
-│   ├── api/                    # Backend API routes (AI, DB)
-│   └── page.tsx                # Redirect logic
-├── components/                 # React Components
-│   ├── layout/                 # Header, Nav, Footer
-│   ├── ui/                     # Reusable UI (Modals, Toasts)
-│   └── ...
-├── models/                     # Mongoose Schemas (User, Recipe, BatchPlan)
-├── lib/                        # Utilities (DB connect, Auth config)
-└── public/                     # Static assets
+Chefini/
+├── app/
+│   ├── (auth)/                 # Authentication Routes
+│   │   ├── login/
+│   │   ├── signup/
+│   │   └── verify-otp/
+│   ├── (dashboard)/            # Protected User Interface
+│   │   ├── batch/              # "Batch Cooking" Feature
+│   │   ├── cookbook/           # Saved Recipes
+│   │   ├── dashboard/          # Main UI + AI Generation Trigger
+│   │   ├── debug/              # "Scientific Rescue" (Flavor Debugger)
+│   │   └── shopping-list/      # Smart Grocery List
+│   ├── api/                    # Backend API Routes
+│   │   ├── generate/           # Llama 3 AI Logic Endpoint
+│   │   ├── debug-dish/         # Flavor correction logic
+│   │   └── recipes/            # CRUD for user recipes
+│   └── landing/                # Public Landing Page
+├── components/
+│   ├── ui/
+│   │   ├── BatchCompiler.tsx   # Logic for weekly meal planning
+│   │   ├── CookMode.tsx        # Step-by-step cooking interface
+│   │   ├── FlavorDebugger.tsx  # Scientific dish rescue UI
+│   │   └── RecipeModal.tsx     # Recipe visualization
+├── lib/
+│   ├── auth.ts                 # NextAuth Configuration
+│   ├── mongodb.ts              # Database Connection
+│   └── ready-recipes.ts        # Fallback/Static recipe data
+├── models/                     # Mongoose Schemas
+│   ├── BatchPlan.ts
+│   ├── Recipe.ts
+│   ├── ShoppingList.ts
+│   └── User.ts
+├── public/                     # Static Assets
+├── next.config.mjs             # Next.js Configuration
+├── tailwind.config.js          # Styling Configuration
+└── package.json                # Project Dependencies
 ```
 
 ### Privacy & Safety: <a name="privacy--safety"></a>
