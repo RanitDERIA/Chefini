@@ -1,36 +1,193 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+<div align="center">
 
-## Getting Started
+![GitHub repo size](https://img.shields.io/github/repo-size/RanitDERIA/Chefini?color=ffc72c)
+![GitHub stars](https://img.shields.io/github/stars/RanitDERIA/chefini?style=social)
+![GitHub forks](https://img.shields.io/github/forks/RanitDERIA/chefini?style=social)
 
-First, run the development server:
+[![Twitter Follow](https://img.shields.io/twitter/follow/DeriaRanit?style=social)](https://twitter.com/intent/follow?screen_name=DeriaRanit)
+[![LinkedIn](https://img.shields.io/badge/LinkedIn%20%40ranit--deria-blue?style=flat-square)](https://www.linkedin.com/in/ranit-deria-916864257/)
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+  <br />
+   <!-- Replace with your actual logo path if available, or remove -->
+   <div align="center">
+  <img src="README-images/logo.png" alt="CHEFINI Logo" />
+</div>
+  <br />
+
+  <h2 align="center">Computational Kitchen Companion</h2>
+
+  <p align="center">
+    Chefini is an intelligent culinary companion that turns your leftovers into gourmet meals, plans your weekly batch cooking, and scientifically rescues dishes gone wrong. Built with <strong>Next.js 16</strong> and powered by <strong>Llama 3 (Groq)</strong>, it features a bold brutalist aesthetic and practical AI tools for the modern home cook.
+  </p>
+
+  <a href="https://chefini.vercel.app/"><strong>➥ Live Demo</strong></a>
+
+  <br />
+
+  <img src="README-images/chefini.png" alt="Chefini Interface Showcase" width="100%" />
+
+</div>
+
+## Table of Contents
+
+- [Overview](#overview)
+- [Prerequisites](#prerequisites)
+- [Technologies Utilized](#technologies-utilized)
+- [Features](#features)
+- [Run Locally](#run-locally)
+- [Deployment](#deployment)
+- [Configuration](#configuration)
+- [Project Structure](#project-structure)
+- [Privacy & Safety](#privacy--safety)
+- [License](#license)
+- [Contact](#contact)
+
+## Overview
+
+Cooking shouldn't be stressful or wasteful. **Chefini** solves common kitchen chaos with three core pillars:
+
+- **Resourcefulness:** Instantly generate recipes from whatever ingredients you have on hand.
+- **Planning:** Create structured 3-5 day meal prep plans to save time and money.
+- **Rescue:** A scientific "Flavor Rescue Lab" to fix salty, spicy, or bland dishes in real-time.
+
+All wrapped in a high-contrast, partially accessible, and mobile-responsive **Brutalist UI**.
+
+### Prerequisites: <a name="prerequisites"></a>
+
+Before setting up Chefini, ensure you have:
+
+- **[Node.js](https://nodejs.org/)** (v18.x or later)
+- **[npm](https://www.npmjs.com/)** or **[pnpm](https://pnpm.io/)**
+- **[MongoDB](https://www.mongodb.com/)** (Local or AtlasURI)
+- **Groq Cloud Account** (for Llama 3 API)
+
+### Technologies Utilized: <a name="technologies-utilized"></a>
+
+- **Framework:** <img align="center" alt="Next.js" height="20" src="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/nextjs/nextjs-original.svg"> Next.js 16 (App Router)
+- **Language:** <img align="center" alt="TypeScript" height="20" src="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/typescript/typescript-original.svg"> TypeScript
+- **Database:** <img align="center" alt="MongoDB" height="20" src="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/mongodb/mongodb-original.svg"> MongoDB (Mongoose)
+- **Styling:** <img align="center" alt="Tailwind" height="20" src="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/tailwindcss/tailwindcss-original.svg"> Tailwind CSS
+- **AI Engine:** <img align="center" alt="Groq" height="20" src="https://cdn.brandfetch.io/idxygbEPCQ/w/201/h/201/theme/dark/icon.png?c=1bxid64Mup7aczewSAYMX&t=1668515712972"> Groq SDK (Llama-3.3-70b-versatile)
+- **Auth:** <img align="center" alt="NextAuth.js" height="20" src="https://next-auth.js.org/img/logo/logo-sm.png"> NextAuth.js (v5 Beta)
+- **Emails:** <img align="center" alt="NextAuth.js" height="20" src="https://cdn.resend.com/brand/resend-icon-white.svg"> Nodemailer / Resend
+- **Icons:** <img align="center" alt="NextAuth.js" height="20" src="https://lucide.dev/logo.dark.svg"> Lucide React
+- **PDF/Image Gen:** <img align="center" alt="NextAuth.js" height="20" src="https://bestofjs.org/logos/jspdf.dark.svg"> jsPDF & html2canvas
+
+### Features: <a name="features"></a>
+
+- **🪄 Leftover Magic:** Input your ingredients and get a tailored recipe instantly.
+- **🍱 Smart Meal Prep:** "Batch Compiler" creates a Sunday prep guide + daily runtime instructions for the week.
+- **🚑 Flavor Rescue Lab:** Too salty? Too spicy? The AI analyzes the problem and provides a chemical/culinary fix.
+- **🛡️ AI Content Moderation:** Inputs are validated to prevent gibberish or offensive content.
+- **📚 Digital Cookbook:** Save, categorize, and manage your favorite AI-generated recipes.
+- **🛒 Smart Shopping List:** Auto-generated grocery lists from your meal plans.
+- **📤 Export Options:** Download recipes and lists as high-quality PDFs or images.
+- **📱 Fully Responsive:** Optimized for use on your phone while cooking.
+
+### Run Locally: <a name="run-locally"></a>
+
+1. **Clone the Repository:**
+
+   ```bash
+   git clone https://github.com/RanitDERIA/chefini.git
+   cd chefini
+   ```
+
+2. **Install Dependencies:**
+
+   ```bash
+   npm install
+   ```
+
+3. **Environment Setup:** Create a `.env` file in the root directory:
+
+   ```env
+   # Database
+   MONGODB_URI=your_mongodb_connection_string
+
+   # AI Provider
+   GROQ_API_KEY=your_groq_api_key
+
+   # Authentication
+   AUTH_SECRET=your_nextauth_secret_key
+
+   # Email (Optional)
+   EMAIL_SERVER_USER=your_email
+   EMAIL_SERVER_PASSWORD=your_password
+   EMAIL_SERVER_HOST=smtp.example.com
+   EMAIL_SERVER_PORT=587
+   EMAIL_FROM=noreply@example.com
+   ```
+
+4. **Start Development Server:**
+
+   ```bash
+   npm run dev
+   ```
+
+5. **Open Browser:** Navigate to `http://localhost:3000`.
+
+### Deployment: <a name="deployment"></a>
+
+Chefini is optimized for **Vercel**.
+
+1. Push to GitHub.
+2. Import project in Vercel.
+3. Add Environment Variables in Vercel Dashboard.
+4. Deploy.
+
+### Configuration: <a name="configuration"></a>
+
+- **Groq Model:** Defaults to `llama-3.3-70b-versatile` for balance of speed and creativity. Configurable in `app/api/...` routes.
+- **Theme:** The "Brutalist" theme uses standard Tailwind colors extended in `tailwind.config.js` (`chefini-yellow`, `chefini-black`).
+
+### Project Structure: <a name="project-structure"></a>
+
+```
+chefini/
+├── app/                        # Next.js App Router
+│   ├── (auth)/                 # Login/Register strategies
+│   ├── (dashboard)/            # Protected application routes
+│   │   ├── dashboard/          # Main generator
+│   │   ├── batch/              # Smart meal prep
+│   │   ├── cookbook/           # Saved recipes
+│   │   ├── debug/              # Flavor rescue lab
+│   │   └── shopping-list/      # Grocery list
+│   ├── api/                    # Backend API routes (AI, DB)
+│   └── page.tsx                # Redirect logic
+├── components/                 # React Components
+│   ├── layout/                 # Header, Nav, Footer
+│   ├── ui/                     # Reusable UI (Modals, Toasts)
+│   └── ...
+├── models/                     # Mongoose Schemas (User, Recipe, BatchPlan)
+├── lib/                        # Utilities (DB connect, Auth config)
+└── public/                     # Static assets
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+### Privacy & Safety: <a name="privacy--safety"></a>
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+- **Content Safety:** Integrated AI moderation ensures inputs are safe and relevant to cooking.
+- **Data:** User data (recipes/plans) is stored securely in MongoDB. Passwords are hashed.
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+### License: <a name="license"></a>
 
-## Learn More
+This project is licensed under the **MIT License**.
 
-To learn more about Next.js, take a look at the following resources:
+### Contact: <a name="contact"></a>
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+**Ranit Deria**
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+📧 **Email:** bytebardderia@gmail.com
+💼 **LinkedIn:** [Ranit Deria](https://www.linkedin.com/in/ranit-deria-916864257/)
+🐦 **Twitter:** [@DeriaRanit](https://twitter.com/DeriaRanit)
+💻 **GitHub:** [@RanitDERIA](https://github.com/RanitDERIA)
 
-## Deploy on Vercel
+---
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+<div align="center">
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+**⭐ Star this repository if you love cooking with AI!**
+
+Made with ❤️ and 🧂 by [Ranit Deria](https://profession-folio.vercel.app)
+
+</div>

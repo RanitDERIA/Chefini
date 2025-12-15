@@ -99,13 +99,41 @@ export default function FlavorDebugger() {
     const resultRef = useRef<HTMLDivElement>(null);
     const { showToast, toasts, removeToast } = useToast();
 
+    // Helper: Validation API
+    const validateContent = async (text: string): Promise<{ valid: boolean; reason?: string }> => {
+        try {
+            const res = await fetch('/api/validate-content', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ text }),
+            });
+            return await res.json();
+        } catch (e) {
+            return { valid: true }; // Fail open
+        }
+    };
+
     const handleDebug = async () => {
         if (!dishName || !selectedError) {
             showToast('Please fill in all fields', 'error');
             return;
         }
 
-        setStatus('scanning');
+        setStatus('scanning'); // Show scanning state immediately for feedback
+
+        // 1. Content Moderation
+        const checks = [validateContent(dishName)];
+        if (additionalContext) checks.push(validateContent(additionalContext));
+
+        const results = await Promise.all(checks);
+        const invalid = results.find(r => !r.valid);
+
+        if (invalid) {
+            showToast(invalid.reason || 'Please write properly.', 'error');
+            setStatus('idle');
+            return;
+        }
+
         setResult(null);
 
         try {
@@ -247,8 +275,8 @@ export default function FlavorDebugger() {
                                         key={sym.id}
                                         onClick={() => setSelectedError(sym.id)}
                                         className={`relative p-4 border-4 text-left transition-all duration-200 group ${selectedError === sym.id
-                                                ? `${sym.color} shadow-brutal-sm -translate-y-0.5`
-                                                : 'bg-white border-black hover:bg-gray-50 hover:shadow-brutal-sm hover:-translate-y-0.5'
+                                            ? `${sym.color} shadow-brutal-sm -translate-y-0.5`
+                                            : 'bg-white border-black hover:bg-gray-50 hover:shadow-brutal-sm hover:-translate-y-0.5'
                                             }`}
                                     >
                                         <div className="text-3xl md:text-4xl mb-2 group-hover:scale-110 transition-transform origin-left">{sym.icon}</div>
@@ -315,7 +343,7 @@ export default function FlavorDebugger() {
                                         <h4 className="text-black font-black uppercase text-sm mb-2 flex items-center gap-2">
                                             <Stethoscope size={18} className="text-chefini-yellow" /> DIAGNOSIS
                                         </h4>
-                                        <p className="text-lg font-medium text-black leading-relaxed italic">
+                                        <p className="text-lg font-medium text-black leading-relaxed italic break-words">
                                             "{result.diagnosis}"
                                         </p>
                                     </div>
@@ -337,7 +365,7 @@ export default function FlavorDebugger() {
                                         <h4 className="text-black font-black uppercase text-sm mb-3 flex items-center gap-2">
                                             <Utensils size={18} /> HOW TO DO IT
                                         </h4>
-                                        <p className="text-base md:text-lg font-bold text-black leading-relaxed">
+                                        <p className="text-base md:text-lg font-bold text-black leading-relaxed break-words">
                                             {result.instruction}
                                         </p>
                                     </div>

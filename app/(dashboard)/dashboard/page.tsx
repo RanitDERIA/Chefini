@@ -59,6 +59,20 @@ export default function GeneratePage() {
     { id: 'gluten-free', label: 'Gluten-Free', icon: Wheat }
   ];
 
+  // Helper: Validation API
+  const validateContent = async (text: string): Promise<{ valid: boolean; reason?: string }> => {
+    try {
+      const res = await fetch('/api/validate-content', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ text }),
+      });
+      return await res.json();
+    } catch (e) {
+      return { valid: true }; // Fail open
+    }
+  };
+
   const generateRecipe = async () => {
     setLoading(true);
     setRecipe(null);
@@ -93,15 +107,15 @@ export default function GeneratePage() {
     if (!recipe || !('speechSynthesis' in window)) return;
 
     window.speechSynthesis.cancel();
-    
+
     if (!isReading) {
       const text = recipe.instructions
         .map((step, i) => `Step ${i + 1}. ${step}`)
         .join('. ');
-      
+
       const utterance = new SpeechSynthesisUtterance(text);
 
-      const femaleVoice = voices.find(voice => 
+      const femaleVoice = voices.find(voice =>
         voice.name.includes('Google US English Female') ||
         voice.name.includes('Microsoft Zira') ||
         voice.name.includes('Samantha') ||
@@ -112,16 +126,16 @@ export default function GeneratePage() {
         voice.name.includes('Female') ||
         (voice.lang.startsWith('en') && voice.name.toLowerCase().includes('female'))
       );
-      
+
       if (femaleVoice) utterance.voice = femaleVoice;
-      
+
       utterance.rate = 0.9;
       utterance.pitch = 1.1;
       utterance.volume = 1.0;
 
       utterance.onend = () => setIsReading(false);
       utterance.onerror = () => setIsReading(false);
-      
+
       window.speechSynthesis.speak(utterance);
       setIsReading(true);
     } else {
@@ -145,7 +159,7 @@ export default function GeneratePage() {
 
   return (
     <div className="grid lg:grid-cols-2 gap-8">
-      
+
       {/* ⭐ Toast Notifications */}
       {toasts.map(toast => (
         <Toast
@@ -163,13 +177,15 @@ export default function GeneratePage() {
             <Sparkles className="text-chefini-yellow" />
             WHAT'S IN YOUR KITCHEN?
           </h2>
-          
+
           <TagInput
             tags={ingredients}
             setTags={setIngredients}
             placeholder="Type ingredient (e.g., chicken, rice...)"
+            onValidate={validateContent}
+            onError={(msg) => showToast(msg, 'error')}
           />
-          
+
           {/* Staples Toggle */}
           <div className="mt-4 flex items-center gap-3">
             <input
@@ -183,7 +199,7 @@ export default function GeneratePage() {
               Include Kitchen Staples (Oil, Salt, Pepper)
             </label>
           </div>
-          
+
           {/* Dietary Filters */}
           <div className="mt-6">
             <h3 className="font-black mb-3">DIETARY PREFERENCES</h3>
@@ -196,11 +212,10 @@ export default function GeneratePage() {
                       prev.includes(id) ? prev.filter(d => d !== id) : [...prev, id]
                     );
                   }}
-                  className={`px-4 py-2 border-2 border-black font-bold flex items-center gap-2 transition-all ${
-                    dietary.includes(id) 
-                      ? 'bg-chefini-yellow text-black' 
+                  className={`px-4 py-2 border-2 border-black font-bold flex items-center gap-2 transition-all ${dietary.includes(id)
+                      ? 'bg-chefini-yellow text-black'
                       : 'bg-white text-black hover:bg-gray-100'
-                  }`}
+                    }`}
                 >
                   <Icon size={18} />
                   {label}
@@ -208,22 +223,21 @@ export default function GeneratePage() {
               ))}
             </div>
           </div>
-          
+
           {/* Healthy Mode */}
           <div className="mt-6">
             <button
               onClick={() => setHealthyMode(!healthyMode)}
-              className={`w-full px-4 py-3 border-2 border-black font-bold flex items-center justify-center gap-2 transition-all ${
-                healthyMode 
-                  ? 'bg-green-400 text-black' 
+              className={`w-full px-4 py-3 border-2 border-black font-bold flex items-center justify-center gap-2 transition-all ${healthyMode
+                  ? 'bg-green-400 text-black'
                   : 'bg-white text-black hover:bg-gray-100'
-              }`}
+                }`}
             >
               <Target size={20} />
               MAKE IT HEALTHY MODE {healthyMode ? 'ON' : 'OFF'}
             </button>
           </div>
-          
+
           {/* Generate Button */}
           <div className="mt-6">
             <ChefiniButton
@@ -237,7 +251,7 @@ export default function GeneratePage() {
           </div>
         </div>
       </div>
-      
+
       {/* RIGHT SIDE — Recipe Display */}
       <div>
         {loading && (
@@ -295,9 +309,8 @@ export default function GeneratePage() {
                 </h3>
                 <button
                   onClick={speakInstructions}
-                  className={`p-2 border-2 border-black transition-colors ${
-                    isReading ? 'bg-chefini-yellow' : 'bg-white hover:bg-gray-100'
-                  }`}
+                  className={`p-2 border-2 border-black transition-colors ${isReading ? 'bg-chefini-yellow' : 'bg-white hover:bg-gray-100'
+                    }`}
                 >
                   <Volume2 size={20} />
                 </button>
