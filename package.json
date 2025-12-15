@@ -4,10 +4,9 @@
   "private": true,
   "scripts": {
     "dev": "next dev",
-    "build": "next build && next-sitemap",
+    "build": "next build",
     "start": "next start",
-    "lint": "eslint",
-    "postbuild": "next-sitemap"
+    "lint": "eslint"
   },
   "dependencies": {
     "@types/nodemailer": "^7.0.4",
