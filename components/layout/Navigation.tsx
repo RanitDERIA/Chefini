@@ -26,26 +26,56 @@ export default function Navigation() {
   ];
 
   return (
-    <nav className="bg-black border-b-2 border-chefini-yellow sticky top-0 z-30" suppressHydrationWarning>
-      <div className="max-w-7xl mx-auto flex gap-1 overflow-x-auto scrollbar-hide pb-1 md:pb-0">
-        {navItems.map(({ href, label, icon: Icon }) => {
-          const isActive = pathname === href;
+    <>
+      {/* DESKTOP NAVIGATION (Top) - Hidden on Mobile */}
+      <nav className="hidden md:block bg-black border-b-2 border-chefini-yellow sticky top-0 z-30" suppressHydrationWarning>
+        <div className="max-w-7xl mx-auto flex gap-1 overflow-x-auto scrollbar-hide">
+          {navItems.map(({ href, label, icon: Icon }) => {
+            const isActive = pathname === href;
 
-          return (
-            <Link
-              key={href}
-              href={href}
-              className={`px-4 sm:px-6 py-3 sm:py-4 font-bold flex items-center gap-2 transition-all whitespace-nowrap flex-shrink-0 text-sm sm:text-base ${isActive
-                ? 'bg-chefini-yellow text-black'
-                : 'bg-black text-white hover:bg-chefini-yellow hover:bg-opacity-20 hover:text-chefini-yellow'
-                } ${href !== '/discover' ? 'border-r-2 border-chefini-yellow' : ''}`}
-            >
-              <Icon size={18} className="sm:w-5 sm:h-5" />
-              {label}
-            </Link>
-          );
-        })}
-      </div>
-    </nav>
+            return (
+              <Link
+                key={href}
+                href={href}
+                className={`px-6 py-4 font-bold flex items-center gap-2 transition-all whitespace-nowrap flex-shrink-0 text-base ${isActive
+                  ? 'bg-chefini-yellow text-black'
+                  : 'bg-black text-white hover:bg-chefini-yellow hover:bg-opacity-20 hover:text-chefini-yellow'
+                  } ${href !== '/discover' ? 'border-r-2 border-chefini-yellow' : ''}`}
+              >
+                <Icon size={20} />
+                {label}
+              </Link>
+            );
+          })}
+        </div>
+      </nav>
+
+      {/* MOBILE NAVIGATION (Bottom) - Hidden on Desktop */}
+      <nav className="md:hidden fixed bottom-0 left-0 right-0 bg-black border-t-4 border-chefini-yellow z-50 safe-area-bottom shadow-2xl" suppressHydrationWarning>
+        <div className="flex overflow-x-auto no-scrollbar snap-x">
+          {navItems.map(({ href, label, icon: Icon }) => {
+            const isActive = pathname === href;
+
+            return (
+              <Link
+                key={href}
+                href={href}
+                className={`
+                  flex flex-col items-center justify-center min-w-[20vw] flex-1 py-3 transition-all snap-center
+                  ${isActive
+                    ? 'bg-chefini-yellow text-black font-black border-l-2 border-r-2 border-black'
+                    : 'text-gray-400 hover:text-white active:scale-95 border-r border-zinc-800'
+                  }
+                `}
+              >
+                <Icon size={20} strokeWidth={isActive ? 3 : 2} />
+                <span className={`text-[10px] mt-1 text-center leading-tight ${isActive ? 'font-bold' : 'font-medium'}`}>{label}</span>
+              </Link>
+            );
+          })}
+        </div>
+      </nav>
+
+    </>
   );
 }

@@ -20,7 +20,7 @@ export default async function DashboardLayout({
 
 
   return (
-    <div className="min-h-screen bg-chefini-black flex flex-col" suppressHydrationWarning>
+    <div className="min-h-screen bg-chefini-black flex flex-col pb-24 md:pb-0" suppressHydrationWarning>
       {/* Anti-right-click + feedback */}
       <DisableContextMenu />
       <RightClickFeedback />
