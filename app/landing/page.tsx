@@ -14,7 +14,8 @@ import {
   Wand2,
   UtensilsCrossed,
   Menu,
-  X
+  X,
+  Code
 } from 'lucide-react';
 
 export default function LandingPage() {
@@ -363,12 +364,23 @@ export default function LandingPage() {
             "To a child, this wasn't just cooking—it was alchemy."
           </p>
           <div className="w-24 h-1 bg-gray-800 mx-auto mb-6"></div>
-          <p className="text-gray-400 text-sm mb-2">
-            Made with <Heart size={16} className="inline text-red-500 fill-red-500 mx-1" /> by <a href='https://profession-folio.vercel.app/' target='_blank'><b>RanitDERIA</b></a>
-          </p>
+          <div className="flex items-center justify-center gap-1 text-gray-400 text-sm mb-2 whitespace-nowrap flex-wrap md:flex-nowrap">
+            <span>Made with</span>
+            <Heart size={16} className="text-red-500 fill-red-500" />
+            <span>by</span>
+            <a href='https://profession-folio.vercel.app/' target='_blank' className="hover:text-white transition-colors"><b>RanitDERIA</b></a>
+          </div>
           <p className="text-gray-600 text-xs mt-4">
             &copy; {new Date().getFullYear()} Chefini. All rights reserved.
           </p>
+
+          {/* Tech Stack Badge */}
+          <div className="mt-6 text-center">
+            <div className="inline-flex flex-nowrap justify-center items-center gap-2 px-4 py-2 bg-zinc-900 text-gray-400 font-mono text-[10px] md:text-xs border border-zinc-800 rounded-full hover:border-chefini-yellow hover:text-chefini-yellow transition-colors cursor-default max-w-full overflow-x-auto">
+              <Code size={12} className="flex-shrink-0" />
+              <span className="whitespace-nowrap">Next.js 16 • TypeScript • MongoDB • Groq AI • Tailwind</span>
+            </div>
+          </div>
         </div>
       </footer>
     </div>
