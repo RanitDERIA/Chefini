@@ -61,15 +61,15 @@ export default function Navigation() {
                 key={href}
                 href={href}
                 className={`
-                  flex flex-col items-center justify-center min-w-[20vw] flex-1 py-3 transition-all snap-center
+                  flex flex-col items-center justify-center min-w-[20vw] flex-1 py-3 px-1 transition-all snap-center
                   ${isActive
                     ? 'bg-chefini-yellow text-black font-black border-l-2 border-r-2 border-black'
                     : 'text-gray-400 hover:text-white active:scale-95 border-r border-zinc-800'
                   }
                 `}
               >
-                <Icon size={20} strokeWidth={isActive ? 3 : 2} />
-                <span className={`text-[10px] mt-1 text-center leading-tight ${isActive ? 'font-bold' : 'font-medium'}`}>{label}</span>
+                <Icon size={18} strokeWidth={isActive ? 3 : 2} />
+                <span className={`text-[9px] mt-1 text-center leading-tight whitespace-normal break-words w-full ${isActive ? 'font-bold' : 'font-medium'}`}>{label}</span>
               </Link>
             );
           })}
