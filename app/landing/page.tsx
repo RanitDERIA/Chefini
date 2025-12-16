@@ -14,8 +14,7 @@ import {
   Wand2,
   UtensilsCrossed,
   Menu,
-  X,
-  Code
+  X
 } from 'lucide-react';
 
 export default function LandingPage() {
@@ -374,13 +373,7 @@ export default function LandingPage() {
             &copy; {new Date().getFullYear()} Chefini. All rights reserved.
           </p>
 
-          {/* Tech Stack Badge */}
-          <div className="mt-6 text-center">
-            <div className="inline-flex flex-nowrap justify-center items-center gap-2 px-4 py-2 bg-zinc-900 text-gray-400 font-mono text-[10px] md:text-xs border border-zinc-800 rounded-full hover:border-chefini-yellow hover:text-chefini-yellow transition-colors cursor-default max-w-full overflow-x-auto">
-              <Code size={12} className="flex-shrink-0" />
-              <span className="whitespace-nowrap">Next.js 16 • TypeScript • MongoDB • Groq AI • Tailwind</span>
-            </div>
-          </div>
+
         </div>
       </footer>
     </div>

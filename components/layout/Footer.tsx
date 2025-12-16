@@ -123,13 +123,7 @@ export default function Footer() {
             </div>
           </div>
 
-          {/* Tech Stack Badge */}
-          <div className="mt-8 text-center">
-            <div className="inline-flex flex-wrap justify-center items-center gap-2 px-4 py-2 bg-zinc-900 text-gray-400 font-mono text-xs border border-zinc-800 rounded-full hover:border-chefini-yellow hover:text-chefini-yellow transition-colors cursor-default max-w-full">
-              <Code size={14} className="flex-shrink-0" />
-              <span className="text-center">Next.js 16 • TypeScript • MongoDB • Groq AI • Tailwind</span>
-            </div>
-          </div>
+
         </div>
 
       </div>
