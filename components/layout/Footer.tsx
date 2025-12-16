@@ -1,30 +1,30 @@
 import Link from 'next/link';
-import { 
-  Heart, 
-  Github, 
-  Linkedin, 
-  Mail, 
-  Code, 
+import {
+  Heart,
+  Github,
+  Linkedin,
+  Mail,
+  Code,
   ChefHat,
   Brain
 } from 'lucide-react';
 
 export default function Footer() {
   return (
-    <footer className="border-t-4 border-chefini-yellow bg-black text-white pt-16 pb-8">
+    <footer className="border-t-4 border-chefini-yellow bg-black text-white pt-16 pb-8" suppressHydrationWarning>
       <div className="max-w-7xl mx-auto px-6">
-        
+
         <div className="grid md:grid-cols-4 gap-12 mb-12">
           {/* Brand Narrative */}
           <div className="md:col-span-2">
             <div className="flex items-center gap-2 mb-6">
-               <ChefHat size={32} className="text-chefini-yellow transform -rotate-12" />
-               <span className="text-3xl font-black tracking-tighter text-chefini-white">CHEFINI</span>
+              <ChefHat size={32} className="text-chefini-yellow transform -rotate-12" />
+              <span className="text-3xl font-black tracking-tighter text-chefini-white">CHEFINI</span>
             </div>
-            
+
             <p className="text-gray-400 max-w-md leading-relaxed mb-6">
               The soul of a mother's intuition, digitized. We help you look at a handful of random scraps and see a table full of love instead of a bin full of waste.
-              <br/><br/>
+              <br /><br />
               <span className="text-chefini-yellow font-bold">Don't just cook. Perform Alchemy.</span>
             </p>
 
@@ -53,12 +53,12 @@ export default function Footer() {
                 </Link>
               </li>
               <li>
-                <Link href="/pantry" className="text-gray-400 hover:text-white hover:pl-2 transition-all font-bold inline-block">
+                <Link href="/shopping-list" className="text-gray-400 hover:text-white hover:pl-2 transition-all font-bold inline-block">
                   Shopping List
                 </Link>
               </li>
               <li>
-                <Link href="/community" className="text-gray-400 hover:text-white hover:pl-2 transition-all font-bold inline-block">
+                <Link href="/discover" className="text-gray-400 hover:text-white hover:pl-2 transition-all font-bold inline-block">
                   Discover
                 </Link>
               </li>
@@ -80,7 +80,7 @@ export default function Footer() {
         {/* Bottom Bar */}
         <div className="border-t-2 border-dashed border-gray-800 pt-8">
           <div className="flex flex-col md:flex-row justify-between items-center gap-6">
-            
+
             {/* Copyright */}
             <div className="text-center md:text-left">
               <p className="text-gray-500 text-sm">
@@ -125,9 +125,9 @@ export default function Footer() {
 
           {/* Tech Stack Badge */}
           <div className="mt-8 text-center">
-            <div className="inline-flex items-center gap-2 px-4 py-2 bg-zinc-900 text-gray-400 font-mono text-xs border border-zinc-800 rounded-full hover:border-chefini-yellow hover:text-chefini-yellow transition-colors cursor-default">
-              <Code size={14} />
-              <span>Next.js 14 • TypeScript • MongoDB • Groq AI • Tailwind</span>
+            <div className="inline-flex flex-wrap justify-center items-center gap-2 px-4 py-2 bg-zinc-900 text-gray-400 font-mono text-xs border border-zinc-800 rounded-full hover:border-chefini-yellow hover:text-chefini-yellow transition-colors cursor-default max-w-full">
+              <Code size={14} className="flex-shrink-0" />
+              <span className="text-center">Next.js 16 • TypeScript • MongoDB • Groq AI • Tailwind</span>
             </div>
           </div>
         </div>

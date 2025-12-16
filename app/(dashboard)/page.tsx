@@ -110,7 +110,7 @@ export default function GeneratePage() {
   };
 
   return (
-    <div className="grid lg:grid-cols-2 gap-6 lg:gap-8">
+    <div className="grid lg:grid-cols-2 gap-6 lg:gap-8" suppressHydrationWarning>
       {/* Input Section */}
       <div className="space-y-6">
         <div className="bg-black border-4 border-chefini-yellow p-4 sm:p-6">
@@ -154,8 +154,8 @@ export default function GeneratePage() {
                     )
                   }
                   className={`px-2 sm:px-4 py-2 border-2 border-white sm:border-black font-bold flex items-center justify-center gap-1 sm:gap-2 transition-all text-xs sm:text-sm md:text-base w-full ${dietary.includes(id)
-                      ? 'bg-chefini-yellow text-black border-transparent'
-                      : 'bg-transparent sm:bg-white text-white sm:text-black hover:bg-white/10 sm:hover:bg-gray-100'
+                    ? 'bg-chefini-yellow text-black border-transparent'
+                    : 'bg-transparent sm:bg-white text-white sm:text-black hover:bg-white/10 sm:hover:bg-gray-100'
                     }`}
                 >
                   <Icon size={18} className="shrink-0" />
@@ -170,8 +170,8 @@ export default function GeneratePage() {
             <button
               onClick={() => setHealthyMode(!healthyMode)}
               className={`w-full px-4 py-3 border-2 border-white sm:border-black font-bold flex items-center justify-center gap-2 transition-all ${healthyMode
-                  ? 'bg-green-400 text-black border-transparent'
-                  : 'bg-transparent sm:bg-white text-white sm:text-black hover:bg-white/10 sm:hover:bg-gray-100'
+                ? 'bg-green-400 text-black border-transparent'
+                : 'bg-transparent sm:bg-white text-white sm:text-black hover:bg-white/10 sm:hover:bg-gray-100'
                 }`}
             >
               <Target size={20} />

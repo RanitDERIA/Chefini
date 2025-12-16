@@ -76,7 +76,10 @@ Before setting up Chefini, ensure you have:
 ### Features: <a name="features"></a>
 
 - **🪄 Leftover Magic:** Input your ingredients and get a tailored recipe instantly.
+- **🥗 Intelligent Diet Filtering:** Toggle between **Veg** and **Non-Veg** recipes with instant visual feedback (🟢/🔴).
+- **🔒 Edge Authentication:** Secure, lightning-fast route protection using Next.js Middleware and Auth.js.
 - **🍱 Smart Meal Prep:** "Batch Compiler" creates a Sunday prep guide + daily runtime instructions for the week.
+- **🎨 Premium Brutalist UI:** Custom dark-themed scrollbars and interactive elements designing for a unique experience.
 - **🚑 Flavor Rescue Lab:** Too salty? Too spicy? The AI analyzes the problem and provides a chemical/culinary fix.
 - **🛡️ AI Content Moderation:** Inputs are validated to prevent gibberish or offensive content.
 - **📚 Digital Cookbook:** Save, categorize, and manage your favorite AI-generated recipes.
@@ -168,7 +171,7 @@ Chefini/
 │   │   ├── FlavorDebugger.tsx  # Scientific dish rescue UI
 │   │   └── RecipeModal.tsx     # Recipe visualization
 ├── lib/
-│   ├── auth.ts                 # NextAuth Configuration
+│   ├── auth.ts                 # NextAuth Configuration (Node.js)
 │   ├── mongodb.ts              # Database Connection
 │   └── ready-recipes.ts        # Fallback/Static recipe data
 ├── models/                     # Mongoose Schemas
@@ -176,6 +179,8 @@ Chefini/
 │   ├── Recipe.ts
 │   ├── ShoppingList.ts
 │   └── User.ts
+├── auth.config.ts              # Edge-compatible Auth Config
+├── middleware.ts               # Edge Middleware for Route Protection
 ├── public/                     # Static Assets
 ├── next.config.mjs             # Next.js Configuration
 ├── tailwind.config.js          # Styling Configuration

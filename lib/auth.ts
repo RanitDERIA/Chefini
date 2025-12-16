@@ -5,7 +5,10 @@ import bcrypt from 'bcryptjs';
 import dbConnect from './mongodb';
 import User from '@/models/User';
 
+import { authConfig } from '@/auth.config';
+
 export const { handlers, signIn, signOut, auth } = NextAuth({
+  ...authConfig,
   providers: [
     Credentials({
       credentials: {
@@ -19,8 +22,8 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
 
         await dbConnect();
 
-        const user = await User.findOne({ 
-          email: (credentials.email as string).toLowerCase() 
+        const user = await User.findOne({
+          email: (credentials.email as string).toLowerCase()
         }).select('+password');
 
         if (!user || !user.password) {
@@ -28,7 +31,7 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
         }
 
         const isPasswordCorrect = await bcrypt.compare(
-          credentials.password as string, 
+          credentials.password as string,
           user.password
         );
 
@@ -50,44 +53,18 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
       clientSecret: process.env.GOOGLE_CLIENT_SECRET!,
     }),
   ],
-  session: {
-    strategy: 'jwt',
-  },
-  pages: {
-    signIn: '/login',
-  },
+  // callback/pages/session config now in authConfig, we only override what needs DB access or isn't in config
   callbacks: {
-    async jwt({ token, user, trigger, session }) {
-      // Initial sign in
-      if (user) {
-        token.id = user.id;
-        // @ts-ignore
-        token.avatar = user.avatar; // Fix: Persist avatar to token
-      }
+    ...authConfig.callbacks,
+    // jwt and session callbacks are imported from authConfig
 
-      // Handle updates (This allows the update() function in ProfilePage to work)
-      if (trigger === "update" && session?.user) {
-        token.avatar = session.user.avatar;
-        token.name = session.user.name;
-      }
-      
-      return token;
-    },
-    async session({ session, token }) {
-      if (session.user) {
-        session.user.id = token.id as string;
-        // @ts-ignore
-        session.user.avatar = token.avatar as string; // Fix: Pass avatar to client
-      }
-      return session;
-    },
     async signIn({ user, account, profile }) {
       if (account?.provider === 'google') {
         await dbConnect();
-        
+
         // Check if user exists
         let existingUser = await User.findOne({ email: user.email });
-        
+
         if (!existingUser) {
           // Create new user from Google profile
           existingUser = await User.create({
@@ -97,7 +74,7 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
             avatar: '', // Initialize empty avatar
           });
         }
-        
+
         user.id = existingUser._id.toString();
         // @ts-ignore
         user.avatar = existingUser.avatar; // Fix: Load existing avatar for Google users

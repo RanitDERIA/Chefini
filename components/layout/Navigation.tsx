@@ -26,7 +26,7 @@ export default function Navigation() {
   ];
 
   return (
-    <nav className="bg-black border-b-2 border-chefini-yellow sticky top-0 z-30">
+    <nav className="bg-black border-b-2 border-chefini-yellow sticky top-0 z-30" suppressHydrationWarning>
       <div className="max-w-7xl mx-auto flex gap-1 overflow-x-auto scrollbar-hide pb-1 md:pb-0">
         {navItems.map(({ href, label, icon: Icon }) => {
           const isActive = pathname === href;

@@ -18,7 +18,7 @@ interface HeaderProps {
 export default function Header({ user: initialUser }: HeaderProps) {
   const router = useRouter();
   const { data: session } = useSession();
-  
+
   // Merge server-side initialUser with client-side session updates.
   // This ensures that when profile.update() is called, the header reflects changes immediately.
   const user = {
@@ -29,19 +29,19 @@ export default function Header({ user: initialUser }: HeaderProps) {
   const avatarDisplay = getAvatarDisplay(user);
 
   return (
-    <header className="border-b-4 border-chefini-yellow bg-black p-4 sm:p-6 sticky top-0 z-40">
+    <header className="border-b-4 border-chefini-yellow bg-black p-4 sm:p-6 sticky top-0 z-40" suppressHydrationWarning>
       <div className="max-w-7xl mx-auto flex justify-between items-center">
         {/* Scale logo slightly down on mobile to prevent overflow */}
         <div className="scale-90 origin-left sm:scale-100">
           <ChefiniLogo size="md" />
         </div>
-        
+
         <div className="flex items-center gap-3 sm:gap-4">
           <div className="text-right hidden md:block">
             <p className="font-bold text-white">{user.name ? `Hey, ${user.name.split(' ')[0]}!` : 'Hey, Chef!'}</p>
             <p className="text-sm text-gray-400">{user.email}</p>
           </div>
-          
+
           {/* Clickable Profile Avatar - Responsive sizing */}
           <button
             onClick={() => router.push('/profile')}
@@ -56,12 +56,12 @@ export default function Header({ user: initialUser }: HeaderProps) {
                 referrerPolicy="no-referrer"
               />
             )}
-            
+
             {avatarDisplay.type === 'initial' && (
               <span className="font-black text-black text-lg sm:text-xl">{avatarDisplay.value}</span>
             )}
           </button>
-          
+
           {/* Logout Button - Responsive sizing */}
           <button
             onClick={() => signOut({ callbackUrl: '/login' })}

@@ -88,12 +88,12 @@ export default function AboutPage() {
             <div className="bg-white text-black p-6 border-4 border-chefini-yellow">
               <div className="flex items-center gap-4 mb-4">
                 {/* AVATAR IMAGE HERE */}
-                <img 
-                  src="/avatar.png" 
-                  alt="Ranit Deria" 
+                <img
+                  src="/avatar.png"
+                  alt="Ranit Deria"
                   className="w-16 h-16 border-4 border-black object-cover bg-chefini-yellow"
                 />
-                
+
                 <div>
                   <h3 className="text-2xl font-black">Ranit Deria</h3>
                   <p className="text-sm font-bold mt-1 text-gray-400">
@@ -106,7 +106,7 @@ export default function AboutPage() {
               </p>
               <div className="mt-4 pt-4 border-t-2 border-dashed border-black">
                 <p className="text-xs text-gray-600">
-                  <strong>The Tech Behind The Magic:</strong> Next.js 14, TypeScript, MongoDB, Groq AI, and a lot of nostalgia.
+                  <strong>The Tech Behind The Magic:</strong> Next.js 16, TypeScript, MongoDB, Groq AI, and a lot of nostalgia.
                 </p>
               </div>
             </div>

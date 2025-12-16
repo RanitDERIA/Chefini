@@ -22,6 +22,21 @@
   border: 2px solid #000;
 }
 
+.scrollbar-thin::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+
+.scrollbar-thin::-webkit-scrollbar-track {
+  background: #333333;
+}
+
+.scrollbar-thin::-webkit-scrollbar-thumb {
+  background: #FFC72C;
+  border-radius: 0px;
+  border: 1px solid #000;
+}
+
 /* Disable number input arrows */
 input[type="number"]::-webkit-inner-spin-button,
 input[type="number"]::-webkit-outer-spin-button {
@@ -35,6 +50,7 @@ input[type="number"]::-webkit-outer-spin-button {
     transform: translateX(400px);
     opacity: 0;
   }
+
   to {
     transform: translateX(0);
     opacity: 1;
@@ -75,10 +91,15 @@ body {
 }
 
 /* Keep normal cursor for interactive elements */
-a, button, input, textarea, select {
+a,
+button,
+input,
+textarea,
+select {
   cursor: pointer;
 }
 
-input, textarea {
+input,
+textarea {
   cursor: text;
 }

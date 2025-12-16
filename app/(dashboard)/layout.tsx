@@ -14,20 +14,19 @@ export default async function DashboardLayout({
 }: {
   children: React.ReactNode;
 }) {
+  // Middleware now handles protection
   const session = await auth();
 
-  if (!session) {
-    redirect('/login');
-  }
+
 
   return (
-    <div className="min-h-screen bg-chefini-black flex flex-col">
+    <div className="min-h-screen bg-chefini-black flex flex-col" suppressHydrationWarning>
       {/* Anti-right-click + feedback */}
       <DisableContextMenu />
       <RightClickFeedback />
 
       {/* Layout UI */}
-      <Header user={session.user} />
+      <Header user={session?.user || {}} />
       <Navigation />
 
       {/* RESPONSIVE FIX:

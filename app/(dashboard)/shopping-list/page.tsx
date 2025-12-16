@@ -1,12 +1,12 @@
 'use client';
 
 import { useEffect, useState } from 'react';
-import { 
-  ShoppingCart, 
-  Plus, 
-  Trash2, 
-  Check, 
-  Download, 
+import {
+  ShoppingCart,
+  Plus,
+  Trash2,
+  Check,
+  Download,
   FileText,
   Image as ImageIcon,
   ShoppingBag,
@@ -335,7 +335,7 @@ export default function ShoppingListPage() {
 
   if (loading) {
     return (
-      <div className="text-center py-12">
+      <div className="text-center py-12" suppressHydrationWarning>
         <ShoppingCart size={64} className="mx-auto mb-4 text-chefini-yellow animate-pulse" />
         <p className="text-xl font-bold">Loading your shopping list...</p>
       </div>
@@ -343,7 +343,7 @@ export default function ShoppingListPage() {
   }
 
   return (
-    <div>
+    <div suppressHydrationWarning>
       {/* Toast Notifications */}
       {toasts.map(toast => (
         <Toast
@@ -430,7 +430,7 @@ export default function ShoppingListPage() {
                   <Download className="text-chefini-yellow" size={20} />
                   EXPORT LIST
                 </h3>
-                
+
                 <div className="space-y-2">
                   <button
                     onClick={downloadPDF}
@@ -440,7 +440,7 @@ export default function ShoppingListPage() {
                     <FileText size={20} />
                     Download PDF
                   </button>
-                  
+
                   <button
                     onClick={downloadImage}
                     disabled={exportLoading}
@@ -464,7 +464,7 @@ export default function ShoppingListPage() {
               <div>
                 <p className="font-black text-black text-lg mb-1">ORDER ONLINE</p>
                 <p className="text-sm text-black font-bold">
-                  Click &quot;Order&quot; on any item to purchase it from Blinkit, Zepto, Amazon Fresh, 
+                  Click &quot;Order&quot; on any item to purchase it from Blinkit, Zepto, Amazon Fresh,
                   Swiggy Instamart, BigBasket, Jiomart and Dealshare.
                 </p>
               </div>
@@ -482,30 +482,27 @@ export default function ShoppingListPage() {
             <div className="space-y-3">
               {items.map((item, idx) => {
                 const isChecked = checkedItems.has(item);
-                
+
                 return (
                   <div
                     key={idx}
-                    className={`bg-white border-4 border-black shadow-brutal transition-all ${
-                      isChecked ? 'opacity-50' : ''
-                    }`}
+                    className={`bg-white border-4 border-black shadow-brutal transition-all ${isChecked ? 'opacity-50' : ''
+                      }`}
                   >
                     <div className="p-4 flex items-center gap-4">
                       {/* Checkbox */}
                       <button
                         onClick={() => toggleCheck(item)}
-                        className={`w-8 h-8 border-4 border-black flex items-center justify-center transition-colors flex-shrink-0 ${
-                          isChecked ? 'bg-green-400' : 'bg-white'
-                        }`}
+                        className={`w-8 h-8 border-4 border-black flex items-center justify-center transition-colors flex-shrink-0 ${isChecked ? 'bg-green-400' : 'bg-white'
+                          }`}
                       >
                         {isChecked && <Check size={20} className="text-black font-black" />}
                       </button>
 
                       {/* Item Name */}
                       <span
-                        className={`flex-1 text-black font-bold text-lg ${
-                          isChecked ? 'line-through' : ''
-                        }`}
+                        className={`flex-1 text-black font-bold text-lg ${isChecked ? 'line-through' : ''
+                          }`}
                       >
                         {item}
                       </span>

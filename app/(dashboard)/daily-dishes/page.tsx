@@ -1,10 +1,10 @@
 'use client';
 
 import { useState, useMemo, useEffect, useCallback } from 'react';
-import { 
-  Utensils, Eye, Flame, Clock, BookmarkPlus, ChefHat, MapPin, X, CheckCircle, AlertCircle, 
-  Info, Download, Heart, ShoppingCart, Volume2, Sparkles, Globe, Trash2, ListPlus, Share2, 
-  Check, Crown, Image as ImageIcon, MoreHorizontal, ChevronUp, ChevronDown 
+import {
+  Utensils, Eye, Flame, Clock, BookmarkPlus, ChefHat, MapPin, X, CheckCircle, AlertCircle,
+  Info, Download, Heart, ShoppingCart, Volume2, Sparkles, Globe, Trash2, ListPlus, Share2,
+  Check, Crown, Image as ImageIcon, MoreHorizontal, ChevronUp, ChevronDown
 } from 'lucide-react';
 
 // ==========================================
@@ -84,11 +84,11 @@ const loadScript = (src: string) => {
 
 function escapeHtml(input: string) {
   return String(input)
-      .replaceAll('&', '&amp;')
-      .replaceAll('<', '&lt;')
-      .replaceAll('>', '&gt;')
-      .replaceAll('"', '&quot;')
-      .replaceAll("'", '&#39;');
+    .replaceAll('&', '&amp;')
+    .replaceAll('<', '&lt;')
+    .replaceAll('>', '&gt;')
+    .replaceAll('"', '&quot;')
+    .replaceAll("'", '&#39;');
 }
 
 // ==========================================
@@ -111,20 +111,20 @@ interface RecipeModalProps {
   showActions?: boolean;
 }
 
-function RecipeModal({ 
-    recipe, 
-    isOpen, 
-    onClose, 
-    onSaveToCookbook, 
-    onAddToShoppingList,
-    onShare,
-    showToast, 
-    isSaved = false,
-    isOwner = false,
-    isPublic = false,
-    onTogglePublic,
-    onDelete,
-    showActions = true
+function RecipeModal({
+  recipe,
+  isOpen,
+  onClose,
+  onSaveToCookbook,
+  onAddToShoppingList,
+  onShare,
+  showToast,
+  isSaved = false,
+  isOwner = false,
+  isPublic = false,
+  onTogglePublic,
+  onDelete,
+  showActions = true
 }: RecipeModalProps) {
   const [isReading, setIsReading] = useState(false);
   const [downloading, setDownloading] = useState(false);
@@ -139,14 +139,14 @@ function RecipeModal({
     if (!('speechSynthesis' in window)) return;
     window.speechSynthesis.cancel();
     if (!isReading) {
-        const text = recipe.instructions.map((step, i) => `Step ${i + 1}. ${step}`).join('. ');
-        const utterance = new SpeechSynthesisUtterance(text);
-        utterance.rate = 0.9;
-        utterance.onend = () => setIsReading(false);
-        window.speechSynthesis.speak(utterance);
-        setIsReading(true);
+      const text = recipe.instructions.map((step, i) => `Step ${i + 1}. ${step}`).join('. ');
+      const utterance = new SpeechSynthesisUtterance(text);
+      utterance.rate = 0.9;
+      utterance.onend = () => setIsReading(false);
+      window.speechSynthesis.speak(utterance);
+      setIsReading(true);
     } else {
-        setIsReading(false);
+      setIsReading(false);
     }
   };
 
@@ -155,30 +155,30 @@ function RecipeModal({
   // ------------------------------------
   const handleShare = async () => {
     if (onShare) {
-        onShare(recipe);
-        return;
+      onShare(recipe);
+      return;
     }
 
     // Default share behavior if no prop provided
     if (navigator.share) {
-        try {
-            await navigator.share({
-                title: `Chefini: ${recipe.title}`,
-                text: `Check out this recipe for ${recipe.title}! ⏱️ ${recipe.time} • 🔥 ${recipe.macros.calories} cal`,
-                url: window.location.href,
-            });
-            showToast?.('Recipe shared successfully!', 'success');
-        } catch (error) {
-            console.log('Error sharing:', error);
-        }
+      try {
+        await navigator.share({
+          title: `Chefini: ${recipe.title}`,
+          text: `Check out this recipe for ${recipe.title}! ⏱️ ${recipe.time} • 🔥 ${recipe.macros.calories} cal`,
+          url: window.location.href,
+        });
+        showToast?.('Recipe shared successfully!', 'success');
+      } catch (error) {
+        console.log('Error sharing:', error);
+      }
     } else {
-        // Fallback: Copy to clipboard
-        try {
-            await navigator.clipboard.writeText(`${recipe.title}\n\nIngredients:\n${recipe.ingredients.map(i => i.item).join('\n')}\n\nInstructions:\n${recipe.instructions.join('\n')}`);
-            showToast?.('Recipe details copied to clipboard!', 'success');
-        } catch (err) {
-            showToast?.('Failed to share recipe', 'error');
-        }
+      // Fallback: Copy to clipboard
+      try {
+        await navigator.clipboard.writeText(`${recipe.title}\n\nIngredients:\n${recipe.ingredients.map(i => i.item).join('\n')}\n\nInstructions:\n${recipe.instructions.join('\n')}`);
+        showToast?.('Recipe details copied to clipboard!', 'success');
+      } catch (err) {
+        showToast?.('Failed to share recipe', 'error');
+      }
     }
   };
 
@@ -188,25 +188,25 @@ function RecipeModal({
   const downloadPDF = async () => {
     setDownloading(true);
     try {
-        await loadScript('https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js');
-        await loadScript('https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js');
+      await loadScript('https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js');
+      await loadScript('https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js');
 
-        // @ts-ignore
-        const { jsPDF } = window.jspdf;
-        // @ts-ignore
-        const html2canvas = window.html2canvas;
+      // @ts-ignore
+      const { jsPDF } = window.jspdf;
+      // @ts-ignore
+      const html2canvas = window.html2canvas;
 
-        const tempDiv = document.createElement('div');
-        tempDiv.style.position = 'fixed';
-        tempDiv.style.left = '-9999px';
-        tempDiv.style.top = '0';
-        tempDiv.style.width = '800px'; 
-        tempDiv.style.background = 'white';
-        tempDiv.style.padding = '0';
-        tempDiv.style.boxSizing = 'border-box';
+      const tempDiv = document.createElement('div');
+      tempDiv.style.position = 'fixed';
+      tempDiv.style.left = '-9999px';
+      tempDiv.style.top = '0';
+      tempDiv.style.width = '800px';
+      tempDiv.style.background = 'white';
+      tempDiv.style.padding = '0';
+      tempDiv.style.boxSizing = 'border-box';
 
-        // *** EXACT HTML TEMPLATE ***
-        tempDiv.innerHTML = `
+      // *** EXACT HTML TEMPLATE ***
+      tempDiv.innerHTML = `
         <div style="font-family: Arial, sans-serif; background: white; width: 800px;">
           <div style="background: #FFC72C; padding: 40px; text-align: center; border: 4px solid #000; border-bottom: none;">
             <div style="font-size: 48px; font-weight: 900; color: #000;">CHEFINI</div>
@@ -291,43 +291,43 @@ function RecipeModal({
         </div>
       `;
 
-        document.body.appendChild(tempDiv);
-        await new Promise(r => setTimeout(r, 200));
+      document.body.appendChild(tempDiv);
+      await new Promise(r => setTimeout(r, 200));
 
-        const canvas = await html2canvas(tempDiv, {
-            backgroundColor: '#fff',
-            scale: 2,
-            logging: false,
-            useCORS: true,
-            width: 800
-        });
+      const canvas = await html2canvas(tempDiv, {
+        backgroundColor: '#fff',
+        scale: 2,
+        logging: false,
+        useCORS: true,
+        width: 800
+      });
 
-        document.body.removeChild(tempDiv);
+      document.body.removeChild(tempDiv);
 
-        const imgData = canvas.toDataURL('image/png');
-        const imgWidthPx = canvas.width;
-        const imgHeightPx = canvas.height;
+      const imgData = canvas.toDataURL('image/png');
+      const imgWidthPx = canvas.width;
+      const imgHeightPx = canvas.height;
 
-        const pdfWidth = 210;
-        const pdfHeight = (imgHeightPx * pdfWidth) / imgWidthPx;
+      const pdfWidth = 210;
+      const pdfHeight = (imgHeightPx * pdfWidth) / imgWidthPx;
 
-        const doc = new jsPDF({
-            orientation: 'p',
-            unit: 'mm',
-            format: [pdfWidth, pdfHeight]
-        });
+      const doc = new jsPDF({
+        orientation: 'p',
+        unit: 'mm',
+        format: [pdfWidth, pdfHeight]
+      });
 
-        doc.addImage(imgData, 'PNG', 0, 0, pdfWidth, pdfHeight);
+      doc.addImage(imgData, 'PNG', 0, 0, pdfWidth, pdfHeight);
 
-        const fileName = recipe.title.replace(/[^a-z0-9]/gi, '_').toLowerCase();
-        doc.save(`chefini_${fileName}.pdf`);
+      const fileName = recipe.title.replace(/[^a-z0-9]/gi, '_').toLowerCase();
+      doc.save(`chefini_${fileName}.pdf`);
 
-        showToast?.('PDF downloaded successfully!', 'success');
+      showToast?.('PDF downloaded successfully!', 'success');
     } catch (err) {
-        console.error('PDF generation error:', err);
-        showToast?.('Failed to generate PDF', 'error');
+      console.error('PDF generation error:', err);
+      showToast?.('Failed to generate PDF', 'error');
     } finally {
-        setDownloading(false);
+      setDownloading(false);
     }
   };
 
@@ -337,21 +337,21 @@ function RecipeModal({
   const downloadImage = async () => {
     setDownloading(true);
     try {
-        await loadScript('https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js');
-        // @ts-ignore
-        const html2canvas = window.html2canvas;
+      await loadScript('https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js');
+      // @ts-ignore
+      const html2canvas = window.html2canvas;
 
-        const tempDiv = document.createElement('div');
-        tempDiv.style.position = 'fixed';
-        tempDiv.style.left = '-9999px';
-        tempDiv.style.top = '0';
-        tempDiv.style.width = '800px';
-        tempDiv.style.background = 'white';
-        tempDiv.style.padding = '0';
-        tempDiv.style.boxSizing = 'border-box';
+      const tempDiv = document.createElement('div');
+      tempDiv.style.position = 'fixed';
+      tempDiv.style.left = '-9999px';
+      tempDiv.style.top = '0';
+      tempDiv.style.width = '800px';
+      tempDiv.style.background = 'white';
+      tempDiv.style.padding = '0';
+      tempDiv.style.boxSizing = 'border-box';
 
-        // *** EXACT HTML TEMPLATE ***
-        tempDiv.innerHTML = `
+      // *** EXACT HTML TEMPLATE ***
+      tempDiv.innerHTML = `
         <div style="font-family: Arial, sans-serif; background: white; width: 800px;">
           <div style="background: #FFC72C; padding: 40px; text-align: center; border: 4px solid #000; border-bottom: none;">
             <div style="font-size: 48px; font-weight: 900; color: #000;">CHEFINI</div>
@@ -436,41 +436,41 @@ function RecipeModal({
         </div>
       `;
 
-        document.body.appendChild(tempDiv);
-        await new Promise(r => setTimeout(r, 150));
+      document.body.appendChild(tempDiv);
+      await new Promise(r => setTimeout(r, 150));
 
-        const canvas = await html2canvas(tempDiv, {
-            backgroundColor: '#fff',
-            scale: 2,
-            logging: false,
-            useCORS: true,
-            width: 800
-        });
+      const canvas = await html2canvas(tempDiv, {
+        backgroundColor: '#fff',
+        scale: 2,
+        logging: false,
+        useCORS: true,
+        width: 800
+      });
 
-        document.body.removeChild(tempDiv);
+      document.body.removeChild(tempDiv);
 
-        // Fix: Explicitly type 'blob' as Blob | null
-        canvas.toBlob((blob: Blob | null) => {
-            if (!blob) {
-                showToast?.('Failed to generate image', 'error');
-                return;
-            }
-            const url = URL.createObjectURL(blob);
-            const a = document.createElement('a');
-            const fileName = recipe.title.replace(/[^a-z0-9]/gi, '_').toLowerCase();
-            a.href = url;
-            a.download = `chefini_${fileName}.png`;
-            document.body.appendChild(a);
-            a.click();
-            document.body.removeChild(a);
-            URL.revokeObjectURL(url);
-            showToast?.('Image downloaded successfully!', 'success');
-        }, 'image/png');
+      // Fix: Explicitly type 'blob' as Blob | null
+      canvas.toBlob((blob: Blob | null) => {
+        if (!blob) {
+          showToast?.('Failed to generate image', 'error');
+          return;
+        }
+        const url = URL.createObjectURL(blob);
+        const a = document.createElement('a');
+        const fileName = recipe.title.replace(/[^a-z0-9]/gi, '_').toLowerCase();
+        a.href = url;
+        a.download = `chefini_${fileName}.png`;
+        document.body.appendChild(a);
+        a.click();
+        document.body.removeChild(a);
+        URL.revokeObjectURL(url);
+        showToast?.('Image downloaded successfully!', 'success');
+      }, 'image/png');
     } catch (err) {
-        console.error('Image generation error:', err);
-        showToast?.('Failed to generate image', 'error');
+      console.error('Image generation error:', err);
+      showToast?.('Failed to generate image', 'error');
     } finally {
-        setDownloading(false);
+      setDownloading(false);
     }
   };
 
@@ -544,11 +544,10 @@ function RecipeModal({
                   <button
                     onClick={() => !isSaved && onSaveToCookbook(recipe)}
                     disabled={isSaved}
-                    className={`px-4 py-2 font-bold border-2 border-black flex items-center gap-2 transition-all ${
-                        isSaved 
-                        ? 'bg-green-200 text-green-900 cursor-default' 
-                        : 'bg-green-400 text-black hover:bg-green-500'
-                    }`}
+                    className={`px-4 py-2 font-bold border-2 border-black flex items-center gap-2 transition-all ${isSaved
+                      ? 'bg-green-200 text-green-900 cursor-default'
+                      : 'bg-green-400 text-black hover:bg-green-500'
+                      }`}
                   >
                     {isSaved ? <Check size={18} /> : <BookmarkPlus size={18} />}
                     {isSaved ? 'Saved' : 'Save to Cookbook'}
@@ -656,11 +655,10 @@ function RecipeModal({
                       <button
                         onClick={() => !isSaved && onSaveToCookbook(recipe)}
                         disabled={isSaved}
-                        className={`p-2 font-bold border-2 border-black flex items-center justify-center gap-2 text-sm col-span-2 ${
-                            isSaved 
-                            ? 'bg-green-100 text-green-900 cursor-default' 
-                            : 'bg-green-100 text-black'
-                        }`}
+                        className={`p-2 font-bold border-2 border-black flex items-center justify-center gap-2 text-sm col-span-2 ${isSaved
+                          ? 'bg-green-100 text-green-900 cursor-default'
+                          : 'bg-green-100 text-black'
+                          }`}
                       >
                         {isSaved ? <Check size={16} /> : <BookmarkPlus size={16} />}
                         {isSaved ? 'Saved' : 'Save to Cookbook'}
@@ -697,13 +695,13 @@ function RecipeModal({
 
           {/* Branding Block Inside View Recipe */}
           <div className="flex items-center gap-3 mb-6 pb-4 border-b-2 border-dashed border-gray-300">
-             <div className="w-10 h-10 md:w-12 md:h-12 bg-black text-chefini-yellow border-2 border-chefini-yellow flex items-center justify-center rounded-full shadow-sm">
-                 <ChefHat size={20} className="md:w-6 md:h-6" />
-             </div>
-             <div>
-                <p className="font-black text-base md:text-lg leading-none">Chefini <span className="text-chefini-yellow bg-black px-1 text-xs md:text-sm">GOLD</span></p>
-                <p className="text-[10px] md:text-xs text-gray-500 font-bold">Premium Collection</p>
-             </div>
+            <div className="w-10 h-10 md:w-12 md:h-12 bg-black text-chefini-yellow border-2 border-chefini-yellow flex items-center justify-center rounded-full shadow-sm">
+              <ChefHat size={20} className="md:w-6 md:h-6" />
+            </div>
+            <div>
+              <p className="font-black text-base md:text-lg leading-none">Chefini <span className="text-chefini-yellow bg-black px-1 text-xs md:text-sm">GOLD</span></p>
+              <p className="text-[10px] md:text-xs text-gray-500 font-bold">Premium Collection</p>
+            </div>
           </div>
 
           {/* Ingredients */}
@@ -1950,6 +1948,16 @@ const readyRecipes: StaticRecipe[] = [
   }
 ];
 
+// Helper to determine Veg/Non-Veg status
+const getRecipeCategory = (recipe: StaticRecipe): 'Veg' | 'Non-Veg' => {
+  const nonVegKeywords = ['chicken', 'mutton', 'pork', 'fish', 'prawn', 'egg', 'beef', 'meat', 'crab', 'duck', 'lamb', 'tuna'];
+  const hasNonVeg = recipe.ingredients.some(ing =>
+    nonVegKeywords.some(keyword => ing.item.toLowerCase().includes(keyword)) ||
+    nonVegKeywords.some(keyword => recipe.title.toLowerCase().includes(keyword))
+  );
+  return hasNonVeg ? 'Non-Veg' : 'Veg';
+};
+
 // ==========================================
 // 4. MAIN PAGE COMPONENT
 // ==========================================
@@ -1957,6 +1965,7 @@ const readyRecipes: StaticRecipe[] = [
 export default function DailyDishesPage() {
   const [selectedRecipe, setSelectedRecipe] = useState<StaticRecipe | null>(null);
   const [activeFilter, setActiveFilter] = useState<string>('All Staples');
+  const [activeDietFilter, setActiveDietFilter] = useState<'All' | 'Veg' | 'Non-Veg'>('All');
   const [savedRecipeTitles, setSavedRecipeTitles] = useState<Set<string>>(new Set()); // Track saved recipes
   const { showToast, toasts, removeToast } = useToast();
 
@@ -1966,11 +1975,11 @@ export default function DailyDishesPage() {
       try {
         const res = await fetch('/api/recipes'); // Fetches user recipes by default logic in route.ts
         if (res.ok) {
-            const data = await res.json();
-            if (data.recipes) {
-                const titles = new Set(data.recipes.map((r: any) => r.title));
-                setSavedRecipeTitles(titles as Set<string>);
-            }
+          const data = await res.json();
+          if (data.recipes) {
+            const titles = new Set(data.recipes.map((r: any) => r.title));
+            setSavedRecipeTitles(titles as Set<string>);
+          }
         }
       } catch (error) {
         console.error('Failed to sync cookbook status');
@@ -1986,9 +1995,20 @@ export default function DailyDishesPage() {
   }, []);
 
   const displayedRecipes = useMemo(() => {
-    if (activeFilter === 'All Staples') return readyRecipes;
-    return readyRecipes.filter(r => r.state === activeFilter);
-  }, [activeFilter]);
+    let filtered = readyRecipes;
+
+    // Filter by State
+    if (activeFilter !== 'All Staples') {
+      filtered = filtered.filter(r => r.state === activeFilter);
+    }
+
+    // Filter by Diet
+    if (activeDietFilter !== 'All') {
+      filtered = filtered.filter(r => getRecipeCategory(r) === activeDietFilter);
+    }
+
+    return filtered;
+  }, [activeFilter, activeDietFilter]);
 
   const handleSaveToCookbook = async (recipe: any) => {
     // Prevent duplicate saving
@@ -2023,11 +2043,16 @@ export default function DailyDishesPage() {
       <div className="bg-white border-4 border-black shadow-brutal text-black hover:shadow-brutal-lg transition-all flex flex-col h-full group relative overflow-hidden">
         {/* Premium Badge / Logo overlay */}
         <div className="border-b-4 border-black p-4 md:p-6 bg-chefini-yellow relative">
-           {/* State Badge */}
-          <div className="absolute top-0 right-0 bg-black text-white px-2 py-1 text-xs font-bold uppercase tracking-wider">
-            {recipe.state}
+          {/* State Badge with Veg/Non-Veg Dot */}
+          <div className="absolute top-0 right-0 flex">
+            <div className="bg-white border-l-2 border-b-2 border-black px-2 py-1 flex items-center justify-center">
+              <div className={`w-3 h-3 rounded-full border border-black ${getRecipeCategory(recipe) === 'Veg' ? 'bg-green-500' : 'bg-red-500'}`}></div>
+            </div>
+            <div className="bg-black text-white px-2 py-1 text-xs font-bold uppercase tracking-wider border-b-2 border-black">
+              {recipe.state}
+            </div>
           </div>
-          
+
           <h3 className="text-xl md:text-2xl font-black mb-3 line-clamp-2 selectable mt-4">
             {recipe.title}
           </h3>
@@ -2040,13 +2065,13 @@ export default function DailyDishesPage() {
         <div className="p-4 md:p-6 flex-1 flex flex-col">
           {/* Creator Info - Enhanced */}
           <div className="flex items-center gap-3 mb-4 pb-4 border-b-2 border-dashed border-gray-300">
-             <div className="w-10 h-10 md:w-12 md:h-12 bg-black text-chefini-yellow border-2 border-chefini-yellow flex items-center justify-center rounded-full shadow-sm">
-                 <ChefHat size={20} className="md:w-6 md:h-6" />
-             </div>
-             <div>
-                <p className="font-black text-base md:text-lg leading-none">Chefini <span className="text-chefini-yellow bg-black px-1 text-xs md:text-sm">GOLD</span></p>
-                <p className="text-[10px] md:text-xs text-gray-500 font-bold">Premium Collection</p>
-             </div>
+            <div className="w-10 h-10 md:w-12 md:h-12 bg-black text-chefini-yellow border-2 border-chefini-yellow flex items-center justify-center rounded-full shadow-sm">
+              <ChefHat size={20} className="md:w-6 md:h-6" />
+            </div>
+            <div>
+              <p className="font-black text-base md:text-lg leading-none">Chefini <span className="text-chefini-yellow bg-black px-1 text-xs md:text-sm">GOLD</span></p>
+              <p className="text-[10px] md:text-xs text-gray-500 font-bold">Premium Collection</p>
+            </div>
           </div>
 
           {/* Vibrant Magic Tip */}
@@ -2078,18 +2103,17 @@ export default function DailyDishesPage() {
               <Eye size={16} className="md:w-[18px] md:h-[18px]" />
               View Recipe
             </button>
-             <button 
-                onClick={(e) => { 
-                    e.stopPropagation(); 
-                    if (!isSaved) handleSaveToCookbook(recipe); 
-                }} 
-                disabled={isSaved}
-                className={`px-3 py-2 md:px-4 md:py-3 border-2 border-black font-bold transition-all flex items-center gap-2 ${
-                    isSaved 
-                    ? 'bg-green-100 text-green-700 border-green-600 cursor-default' 
-                    : 'bg-white hover:bg-gray-100 text-green-600'
+            <button
+              onClick={(e) => {
+                e.stopPropagation();
+                if (!isSaved) handleSaveToCookbook(recipe);
+              }}
+              disabled={isSaved}
+              className={`px-3 py-2 md:px-4 md:py-3 border-2 border-black font-bold transition-all flex items-center gap-2 ${isSaved
+                ? 'bg-green-100 text-green-700 border-green-600 cursor-default'
+                : 'bg-white hover:bg-gray-100 text-green-600'
                 }`}
-                title={isSaved ? "Already saved" : "Save Copy to My Cookbook"}
+              title={isSaved ? "Already saved" : "Save Copy to My Cookbook"}
             >
               {isSaved ? <Check size={16} className="md:w-[18px] md:h-[18px]" /> : <BookmarkPlus size={16} className="md:w-[18px] md:h-[18px]" />}
             </button>
@@ -2101,11 +2125,11 @@ export default function DailyDishesPage() {
 
   return (
     <div className="min-h-screen">
-       {toasts.map(toast => (
+      {toasts.map(toast => (
         <Toast key={toast.id} message={toast.message} type={toast.type} onClose={() => removeToast(toast.id)} />
       ))}
 
-       <div className="mb-4 md:mb-8 bg-black border-4 border-chefini-yellow p-4 md:p-6 mx-4 md:mx-8 mt-4 md:mt-8">
+      <div className="mb-4 md:mb-8 bg-black border-4 border-chefini-yellow p-4 md:p-6 mx-4 md:mx-8 mt-4 md:mt-8">
         <h1 className="text-2xl md:text-4xl font-black flex flex-col md:flex-row items-start md:items-center gap-2 md:gap-3 text-white">
           <Utensils className="text-chefini-yellow w-8 h-8 md:w-10 md:h-10" />
           INDIAN STAPLES
@@ -2116,7 +2140,7 @@ export default function DailyDishesPage() {
       </div>
 
       <div className="p-4 md:p-8 max-w-7xl mx-auto">
-        <div className="mb-6 md:mb-10 flex gap-2 md:gap-3 overflow-x-auto pb-4 no-scrollbar">
+        <div className="mb-6 md:mb-10 flex gap-2 md:gap-3 overflow-x-auto pb-4 scrollbar-thin">
           {states.map((state) => (
             <button key={state} onClick={() => setActiveFilter(state)} className={`px-4 py-1.5 md:px-6 md:py-2 text-sm md:text-base font-black border-4 border-black whitespace-nowrap transition-all shadow-brutal-sm ${activeFilter === state ? 'bg-chefini-yellow text-black scale-105' : 'bg-white text-gray-500 hover:bg-gray-50'}`}>
               {state}
@@ -2124,12 +2148,30 @@ export default function DailyDishesPage() {
           ))}
         </div>
 
-        <div className="mb-6 md:mb-8 flex items-center gap-4">
+        <div className="mb-6 md:mb-8 flex flex-col md:flex-row items-center gap-4">
           <h2 className="text-xl md:text-3xl font-black text-black bg-white border-4 border-black px-4 py-1.5 md:px-6 md:py-2 shadow-brutal-sm inline-flex items-center gap-2 transform -rotate-1">
             <MapPin className="text-red-500 w-5 h-5 md:w-6 md:h-6" />
             {activeFilter === 'All Staples' ? 'Pan-India Collection' : `${activeFilter} Specials`}
           </h2>
-          <div className="h-1 bg-black flex-1 rounded-full opacity-20 border-t-2 border-black border-dashed"></div>
+          <div className="hidden md:block h-1 bg-black flex-1 rounded-full opacity-20 border-t-2 border-black border-dashed"></div>
+
+          {/* DIET TOGGLE (Inline) */}
+          <div className="flex bg-gray-100 p-1 rounded-lg border-2 border-black">
+            {['All', 'Veg', 'Non-Veg'].map((diet) => (
+              <button
+                key={diet}
+                onClick={() => setActiveDietFilter(diet as any)}
+                className={`px-4 py-2 text-sm font-bold rounded-md transition-all ${activeDietFilter === diet
+                  ? diet === 'Veg' ? 'bg-green-500 text-white shadow-sm'
+                    : diet === 'Non-Veg' ? 'bg-red-500 text-white shadow-sm'
+                      : 'bg-black text-white shadow-sm'
+                  : 'text-gray-500 hover:text-black'
+                  }`}
+              >
+                {diet}
+              </button>
+            ))}
+          </div>
         </div>
 
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 md:gap-8">
@@ -2137,7 +2179,7 @@ export default function DailyDishesPage() {
             <RecipeCard key={recipe._id} recipe={recipe} />
           ))}
         </div>
-        
+
         {displayedRecipes.length === 0 && (
           <div className="text-center py-12 text-gray-500 font-bold">
             No recipes found for this state.
