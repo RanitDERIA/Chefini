@@ -11,7 +11,7 @@ import {
 
 export default function Footer() {
   return (
-    <footer className="border-t-4 border-chefini-yellow bg-black text-white pt-16 pb-8" suppressHydrationWarning>
+    <footer className="border-t-4 border-chefini-yellow bg-black text-white pt-16 pb-32 md:pb-8" suppressHydrationWarning>
       <div className="max-w-7xl mx-auto px-6">
 
         <div className="grid md:grid-cols-4 gap-12 mb-12">
