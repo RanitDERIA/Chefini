@@ -800,14 +800,14 @@ export default function BatchCompiler() {
                             {/* BUILD PHASE - Terminal Style */}
                             <div className="bg-white border-4 border-black shadow-brutal">
                                 <div className="bg-emerald-400 border-b-4 border-black p-4 flex items-center gap-2">
-                                    <Terminal size={24} className="text-black" />
-                                    <h3 className="text-xl font-black text-black">STEP 1: PREP DAY (SUNDAY)</h3>
+                                    <Terminal size={20} className="text-black hidden sm:block" />
+                                    <h3 className="text-lg sm:text-xl font-black text-black">STEP 1: PREP DAY (SUNDAY)</h3>
                                 </div>
-                                <div className="p-6 space-y-3">
+                                <div className="p-4 sm:p-6 space-y-3">
                                     {result.build_phase.map((step, i) => {
                                         const isCompleted = completedSteps.has(i);
                                         return (
-                                            <div key={i} className={`bg-gray-50 border-2 border-black p-4 transition-opacity ${isCompleted ? 'opacity-50' : ''}`}>
+                                            <div key={i} className={`bg-gray-50 border-2 border-black p-3 sm:p-4 transition-opacity ${isCompleted ? 'opacity-50' : ''}`}>
                                                 <div className="flex items-start gap-3">
                                                     {/* Checkbox */}
                                                     <button
@@ -822,19 +822,19 @@ export default function BatchCompiler() {
                                                         {i + 1}
                                                     </span>
                                                     <div className="flex-1 min-w-0">
-                                                        <p className={`font-black text-black mb-2 break-words ${isCompleted ? 'line-through' : ''}`}>
+                                                        <p className={`font-black text-black text-sm sm:text-base mb-2 break-words ${isCompleted ? 'line-through' : ''}`}>
                                                             {step.task}
                                                         </p>
-                                                        <div className="flex flex-wrap gap-4 text-sm text-gray-700 font-bold">
+                                                        <div className="flex flex-wrap gap-3 text-xs sm:text-sm text-gray-700 font-bold">
                                                             <span className="flex items-center gap-1">
-                                                                <Timer size={16} /> {step.duration}
+                                                                <Timer size={14} /> {step.duration}
                                                             </span>
                                                             <span className="flex items-center gap-1">
-                                                                <Thermometer size={16} /> {step.temp}
+                                                                <Thermometer size={14} /> {step.temp}
                                                             </span>
                                                         </div>
                                                         <div className="mt-2 bg-yellow-50 p-2 border-l-4 border-chefini-yellow">
-                                                            <p className="text-sm text-black font-bold flex items-start gap-2">
+                                                            <p className="text-xs sm:text-sm text-black font-bold flex items-start gap-2">
                                                                 <Zap size={14} className="flex-shrink-0 mt-0.5" />
                                                                 <span className="break-words">{step.why}</span>
                                                             </p>
@@ -850,10 +850,10 @@ export default function BatchCompiler() {
                             {/* RUNTIME PHASE - Card Grid */}
                             <div className="bg-white border-4 border-black shadow-brutal">
                                 <div className="bg-violet-500 border-b-4 border-black p-4 flex items-center gap-2">
-                                    <Play size={24} className="text-black" />
-                                    <h3 className="text-xl font-black text-black">STEP 2: DAILY MEALS (QUICK ASSEMBLY)</h3>
+                                    <Play size={20} className="text-black hidden sm:block" />
+                                    <h3 className="text-lg sm:text-xl font-black text-black uppercase">STEP 2: Daily Assembly</h3>
                                 </div>
-                                <div className="p-6 space-y-4">
+                                <div className="p-4 sm:p-6 space-y-4">
                                     {result.runtime_phase.map((recipe) => {
                                         const isExpanded = expandedDay === recipe.day;
                                         return (
@@ -861,33 +861,33 @@ export default function BatchCompiler() {
                                                 {/* Day Header */}
                                                 <button
                                                     onClick={() => setExpandedDay(isExpanded ? null : recipe.day)}
-                                                    className="w-full bg-chefini-yellow p-4 flex items-center justify-between hover:bg-yellow-300 transition-colors"
+                                                    className="w-full bg-chefini-yellow p-3 sm:p-4 flex items-center justify-between hover:bg-yellow-300 transition-colors"
                                                 >
-                                                    <div className="flex items-center gap-3">
-                                                        <div className="bg-black text-chefini-yellow w-10 h-10 flex items-center justify-center font-black text-xl border-2 border-black">
+                                                    <div className="flex items-center gap-3 text-left">
+                                                        <div className="bg-black text-chefini-yellow w-8 h-8 sm:w-10 sm:h-10 flex flex-shrink-0 items-center justify-center font-black text-lg sm:text-xl border-2 border-black">
                                                             {recipe.day}
                                                         </div>
-                                                        <div className="text-left">
-                                                            <h4 className="font-black text-black text-lg">{recipe.title}</h4>
-                                                            <p className="text-sm text-gray-700 font-bold">{recipe.time}</p>
+                                                        <div className="min-w-0">
+                                                            <h4 className="font-black text-black text-base sm:text-lg break-words">{recipe.title}</h4>
+                                                            <p className="text-xs sm:text-sm text-gray-700 font-bold">{recipe.time}</p>
                                                         </div>
                                                     </div>
-                                                    {isExpanded ? <ChevronUp className="text-black" /> : <ChevronDown className="text-black" />}
+                                                    {isExpanded ? <ChevronUp className="text-black flex-shrink-0" /> : <ChevronDown className="text-black flex-shrink-0" />}
                                                 </button>
 
                                                 {/* Expanded Content */}
                                                 {isExpanded && (
-                                                    <div className="bg-white p-6 border-t-4 border-black">
+                                                    <div className="bg-white p-4 sm:p-6 border-t-4 border-black">
                                                         {/* Instructions */}
                                                         <div className="mb-4">
-                                                            <h5 className="font-black text-black mb-3 flex items-center gap-2">
+                                                            <h5 className="font-black text-black mb-3 flex items-center gap-2 text-sm sm:text-base">
                                                                 <Utensils size={18} /> ASSEMBLY STEPS
                                                             </h5>
                                                             <ol className="space-y-3">
                                                                 {recipe.instructions.map((step, i) => (
                                                                     <li key={i} className="flex gap-3">
-                                                                        <span className="font-black text-chefini-yellow text-lg">{i + 1}.</span>
-                                                                        <span className="font-bold text-black flex-1">{step}</span>
+                                                                        <span className="font-black text-chefini-yellow text-base sm:text-lg">{i + 1}.</span>
+                                                                        <span className="font-bold text-black flex-1 text-sm sm:text-base">{step}</span>
                                                                     </li>
                                                                 ))}
                                                             </ol>
@@ -933,7 +933,7 @@ export default function BatchCompiler() {
                             <div className="bg-blue-50 border-4 border-black p-4 flex items-start gap-3 shadow-brutal-sm">
                                 <Package className="text-blue-600 flex-shrink-0 mt-1" size={24} />
                                 <div>
-                                    <span className="font-black block text-sm text-blue-600 mb-1 uppercase">STORAGE TIP:</span>
+                                    <span className="font-black block text-xs sm:text-sm text-blue-600 mb-1 uppercase">STORAGE TIP:</span>
                                     <p className="text-sm text-blue-900 font-bold">
                                         {result.storage_tip}
                                     </p>
