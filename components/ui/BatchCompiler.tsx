@@ -894,21 +894,21 @@ export default function BatchCompiler() {
                                                         </div>
 
                                                         {/* Macros */}
-                                                        <div className="grid grid-cols-4 gap-3 bg-gray-50 p-4 border-4 border-black mb-4">
+                                                        <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 bg-gray-50 p-4 border-4 border-black mb-4">
                                                             <div className="text-center">
-                                                                <div className="text-2xl font-black text-black">{recipe.macros.calories}</div>
+                                                                <div className="text-xl sm:text-2xl font-black text-black">{recipe.macros.calories}</div>
                                                                 <div className="text-xs text-gray-600 font-bold">CAL</div>
                                                             </div>
                                                             <div className="text-center">
-                                                                <div className="text-2xl font-black text-red-600">{recipe.macros.protein}g</div>
+                                                                <div className="text-xl sm:text-2xl font-black text-red-600">{recipe.macros.protein}g</div>
                                                                 <div className="text-xs text-gray-600 font-bold">PRO</div>
                                                             </div>
                                                             <div className="text-center">
-                                                                <div className="text-2xl font-black text-blue-600">{recipe.macros.carbs}g</div>
+                                                                <div className="text-xl sm:text-2xl font-black text-blue-600">{recipe.macros.carbs}g</div>
                                                                 <div className="text-xs text-gray-600 font-bold">CARB</div>
                                                             </div>
                                                             <div className="text-center">
-                                                                <div className="text-2xl font-black text-yellow-600">{recipe.macros.fats}g</div>
+                                                                <div className="text-xl sm:text-2xl font-black text-yellow-600">{recipe.macros.fats}g</div>
                                                                 <div className="text-xs text-gray-600 font-bold">FAT</div>
                                                             </div>
                                                         </div>
