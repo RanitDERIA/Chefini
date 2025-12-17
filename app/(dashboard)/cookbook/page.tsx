@@ -24,6 +24,8 @@ interface Recipe {
   createdAt: string;
 }
 
+import { motion } from 'framer-motion';
+
 export default function CookbookPage() {
   const [recipes, setRecipes] = useState<Recipe[]>([]);
   const [loading, setLoading] = useState(true);
@@ -49,18 +51,18 @@ export default function CookbookPage() {
   const deleteRecipe = async (id: string, title: string) => {
     try {
       const res = await fetch(`/api/recipes?id=${id}`, { method: 'DELETE' });
-      
+
       if (!res.ok) {
         throw new Error('Failed to delete');
       }
 
       setRecipes(recipes.filter(r => r._id !== id));
-      
+
       // Close modal if the deleted recipe is open
       if (selectedRecipe?._id === id) {
         setSelectedRecipe(null);
       }
-      
+
       showToast(`"${title}" deleted successfully`, 'success');
     } catch (error) {
       showToast('Failed to delete recipe', 'error');
@@ -79,17 +81,17 @@ export default function CookbookPage() {
       });
 
       const data = await res.json();
-      
+
       // Update in list
-      setRecipes(recipes.map(r => 
+      setRecipes(recipes.map(r =>
         r._id === id ? { ...r, isPublic: data.recipe.isPublic } : r
       ));
-      
+
       // Update modal if open
       if (selectedRecipe?._id === id) {
         setSelectedRecipe({ ...selectedRecipe, isPublic: data.recipe.isPublic });
       }
-      
+
       showToast(
         data.recipe.isPublic ? 'Recipe is now public!' : 'Recipe is now private',
         'info'
@@ -103,6 +105,22 @@ export default function CookbookPage() {
     if (confirm(`Are you sure you want to delete "${title}"?`)) {
       deleteRecipe(recipeId, title);
     }
+  };
+
+  // Animation Variants
+  const container = {
+    hidden: { opacity: 0 },
+    show: {
+      opacity: 1,
+      transition: {
+        staggerChildren: 0.1
+      }
+    }
+  };
+
+  const item = {
+    hidden: { opacity: 0, y: 20 },
+    show: { opacity: 1, y: 0 }
   };
 
   if (loading) {
@@ -140,7 +158,11 @@ export default function CookbookPage() {
       />
 
       {/* Header */}
-      <div className="mb-8 bg-black border-4 border-chefini-yellow p-6">
+      <motion.div
+        initial={{ opacity: 0, x: -20 }}
+        animate={{ opacity: 1, x: 0 }}
+        className="mb-8 bg-black border-4 border-chefini-yellow p-6"
+      >
         <h1 className="text-4xl font-black flex items-center gap-3">
           <ChefHat className="text-chefini-yellow" size={40} />
           MY COOKBOOK
@@ -148,19 +170,29 @@ export default function CookbookPage() {
         <p className="text-gray-400 mt-2">
           All your magical creations in one place • {recipes.length} {recipes.length === 1 ? 'recipe' : 'recipes'}
         </p>
-      </div>
+      </motion.div>
 
       {recipes.length === 0 ? (
-        <div className="border-4 border-chefini-yellow bg-black p-12 text-center">
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          className="border-4 border-chefini-yellow bg-black p-12 text-center"
+        >
           <ChefHat size={64} className="mx-auto mb-4 text-chefini-yellow" />
           <h2 className="text-2xl font-black mb-2">NO RECIPES YET</h2>
           <p className="text-gray-400">Generate your first recipe to get started!</p>
-        </div>
+        </motion.div>
       ) : (
-        <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+        <motion.div
+          variants={container}
+          initial="hidden"
+          animate="show"
+          className="grid md:grid-cols-2 lg:grid-cols-3 gap-6"
+        >
           {recipes.map((recipe) => (
-            <div
+            <motion.div
               key={recipe._id}
+              variants={item}
               className="bg-white border-4 border-black shadow-brutal text-black hover:shadow-brutal-lg transition-all"
             >
               {/* Card Header */}
@@ -180,11 +212,10 @@ export default function CookbookPage() {
                 {/* Status Badge */}
                 <div className="mb-4">
                   <span
-                    className={`inline-block px-3 py-1 text-xs font-bold border-2 border-black ${
-                      recipe.isPublic
+                    className={`inline-block px-3 py-1 text-xs font-bold border-2 border-black ${recipe.isPublic
                         ? 'bg-green-400 text-black'
                         : 'bg-gray-200 text-black'
-                    }`}
+                      }`}
                   >
                     {recipe.isPublic ? '🌍 PUBLIC' : '🔒 PRIVATE'}
                   </span>
@@ -232,42 +263,47 @@ export default function CookbookPage() {
                 {/* Actions */}
                 <div className="space-y-2">
                   {/* View Recipe Button */}
-                  <button
+                  <motion.button
+                    whileHover={{ scale: 1.02 }}
+                    whileTap={{ scale: 0.98 }}
                     onClick={() => setSelectedRecipe(recipe)}
-                    className="w-full px-4 py-3 bg-chefini-yellow text-black font-bold border-2 border-black hover:shadow-brutal-sm hover:translate-x-0.5 hover:translate-y-0.5 transition-all flex items-center justify-center gap-2"
+                    className="w-full px-4 py-3 bg-chefini-yellow text-black font-bold border-2 border-black hover:shadow-brutal-sm transition-all flex items-center justify-center gap-2"
                   >
                     <Eye size={18} />
                     View Full Recipe
-                  </button>
+                  </motion.button>
 
                   {/* Quick Actions */}
                   <div className="flex gap-2">
-                    <button
+                    <motion.button
+                      whileHover={{ scale: 1.05 }}
+                      whileTap={{ scale: 0.95 }}
                       onClick={() => togglePublic(recipe._id, recipe.isPublic)}
-                      className={`flex-1 px-3 py-2 border-2 border-black font-bold text-sm flex items-center justify-center gap-2 transition-colors ${
-                        recipe.isPublic 
-                          ? 'bg-green-400 hover:bg-green-500' 
+                      className={`flex-1 px-3 py-2 border-2 border-black font-bold text-sm flex items-center justify-center gap-2 transition-colors ${recipe.isPublic
+                          ? 'bg-green-400 hover:bg-green-500'
                           : 'bg-gray-200 hover:bg-gray-300'
-                      }`}
+                        }`}
                       title={recipe.isPublic ? 'Make Private' : 'Make Public'}
                     >
                       <Globe size={16} />
                       {recipe.isPublic ? 'Public' : 'Private'}
-                    </button>
-                    
-                    <button
+                    </motion.button>
+
+                    <motion.button
+                      whileHover={{ scale: 1.05 }}
+                      whileTap={{ scale: 0.95 }}
                       onClick={() => deleteRecipe(recipe._id, recipe.title)}
                       className="px-3 py-2 border-2 border-black bg-red-500 text-white hover:bg-red-600 transition-colors"
                       title="Delete Recipe"
                     >
                       <Trash2 size={16} />
-                    </button>
+                    </motion.button>
                   </div>
                 </div>
               </div>
-            </div>
+            </motion.div>
           ))}
-        </div>
+        </motion.div>
       )}
     </div>
   );

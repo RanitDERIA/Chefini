@@ -16,6 +16,7 @@ import {
   Menu,
   X
 } from 'lucide-react';
+import { motion } from 'framer-motion';
 
 export default function LandingPage() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
@@ -120,21 +121,40 @@ export default function LandingPage() {
         <div className="max-w-7xl mx-auto px-6 py-12 md:py-32">
           <div className="grid md:grid-cols-2 gap-12 md:gap-16 items-center">
             <div className="z-10">
-              <div className="inline-flex items-center gap-2 px-4 py-2 bg-black text-chefini-yellow font-bold border-2 border-black mb-6 transform -rotate-2 text-sm md:text-base">
+              <motion.div
+                initial={{ opacity: 0, x: -50 }}
+                animate={{ opacity: 1, x: 0 }}
+                className="inline-flex items-center gap-2 px-4 py-2 bg-black text-chefini-yellow font-bold border-2 border-black mb-6 transform -rotate-2 text-sm md:text-base"
+              >
                 <Wand2 size={20} />
                 <span>THE KITCHEN ALCHEMIST</span>
-              </div>
+              </motion.div>
 
-              <h1 className="text-4xl md:text-5xl lg:text-7xl font-black mb-6 leading-[1.1] md:leading-[0.9] text-black">
+              <motion.h1
+                initial={{ opacity: 0, y: 30 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ delay: 0.2 }}
+                className="text-4xl md:text-5xl lg:text-7xl font-black mb-6 leading-[1.1] md:leading-[0.9] text-black"
+              >
                 DON'T JUST COOK. <br />
                 <span className="text-transparent bg-clip-text bg-gradient-to-r from-chefini-yellow to-orange-600 block md:inline">PERFORM MAGIC.</span>
-              </h1>
+              </motion.h1>
 
-              <p className="text-lg md:text-xl text-gray-600 mb-8 leading-relaxed font-medium border-l-4 border-chefini-yellow pl-6">
+              <motion.p
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                transition={{ delay: 0.4 }}
+                className="text-lg md:text-xl text-gray-600 mb-8 leading-relaxed font-medium border-l-4 border-chefini-yellow pl-6"
+              >
                 Remember how Mom could open an "empty" fridge and make a feast? We digitized that intuition. Turn your scraps and lonely veggies into gold.
-              </p>
+              </motion.p>
 
-              <div className="flex flex-col sm:flex-row gap-4">
+              <motion.div
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ delay: 0.6 }}
+                className="flex flex-col sm:flex-row gap-4"
+              >
                 <Link
                   href="/signup"
                   className="px-8 py-4 font-black text-lg border-4 border-black bg-chefini-yellow text-black shadow-brutal-lg hover:translate-x-1 hover:translate-y-1 hover:shadow-brutal transition-all flex items-center justify-center gap-2 text-center"
@@ -149,7 +169,7 @@ export default function LandingPage() {
                 >
                   THE STORY
                 </Link>
-              </div>
+              </motion.div>
 
               <div className="mt-10 flex flex-wrap items-center gap-6 text-sm font-bold">
                 <div className="flex items-center gap-2">
@@ -227,19 +247,28 @@ export default function LandingPage() {
       {/* Features Section */}
       <section id="features" className="py-12 md:py-20 bg-black border-b-4 border-chefini-yellow relative">
         <div className="max-w-7xl mx-auto px-6">
-          <div className="text-center mb-10 md:mb-16">
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            className="text-center mb-10 md:mb-16"
+          >
             <h2 className="text-3xl md:text-5xl font-black mb-4 text-white">
               THE <span className="text-chefini-yellow">TOOLS</span> OF ALCHEMY
             </h2>
             <p className="text-lg md:text-xl text-gray-400 max-w-2xl mx-auto">
               Built to digitize the resourceful eye of a master home cook.
             </p>
-          </div>
+          </motion.div>
 
           <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
             {features.map((feature, idx) => (
-              <div
+              <motion.div
                 key={idx}
+                initial={{ opacity: 0, scale: 0.9 }}
+                whileInView={{ opacity: 1, scale: 1 }}
+                viewport={{ once: true }}
+                transition={{ delay: idx * 0.1 }}
                 className="bg-white border-4 border-white p-6 shadow-[8px_8px_0px_0px_rgba(255,255,255,0.2)] hover:bg-chefini-yellow hover:border-chefini-yellow hover:scale-105 transition-all duration-300 group"
               >
                 <div className="w-16 h-16 bg-black border-2 border-black flex items-center justify-center mb-4 text-white group-hover:bg-white group-hover:text-black transition-colors">
@@ -247,7 +276,7 @@ export default function LandingPage() {
                 </div>
                 <h3 className="text-xl font-black text-black mb-2">{feature.title}</h3>
                 <p className="text-gray-700 text-sm font-medium leading-relaxed">{feature.description}</p>
-              </div>
+              </motion.div>
             ))}
           </div>
         </div>

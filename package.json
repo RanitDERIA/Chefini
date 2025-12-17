@@ -11,6 +11,7 @@
   "dependencies": {
     "@types/nodemailer": "^7.0.4",
     "bcryptjs": "^3.0.3",
+    "framer-motion": "^12.23.26",
     "groq-sdk": "^0.36.0",
     "html2canvas": "^1.4.1",
     "jspdf": "^3.0.4",

@@ -2,6 +2,8 @@
 
 import { useState, useEffect } from 'react';
 import { Sparkles, ChefHat, Target, Volume2, ShoppingCart } from 'lucide-react';
+import { motion, AnimatePresence } from 'framer-motion'; // IMPORTED
+import AlchemyLoader from '@/components/ui/AlchemyLoader'; // IMPORTED
 import { Leaf, Wheat, Drumstick } from 'lucide-react';
 import TagInput from '@/components/ui/TagInput';
 import ChefiniButton from '@/components/ui/ChefiniButton';
@@ -171,9 +173,13 @@ export default function GeneratePage() {
       ))}
 
       {/* INPUT SECTION */}
-      <div className="space-y-6">
+      <motion.div
+        initial={{ opacity: 0, x: -20 }}
+        animate={{ opacity: 1, x: 0 }}
+        className="space-y-6"
+      >
         <div className="bg-black border-4 border-chefini-yellow p-6">
-          <h2 className="text-3xl font-black mb-6 flex items-center gap-2">
+          <h2 className="text-3xl font-black mb-6 flex items-center gap-2 text-white">
             <Sparkles className="text-chefini-yellow" />
             WHAT'S IN YOUR KITCHEN?
           </h2>
@@ -187,7 +193,7 @@ export default function GeneratePage() {
           />
 
           {/* Staples Toggle */}
-          <div className="mt-4 flex items-center gap-3">
+          <div className="mt-4 flex items-center gap-3 text-white">
             <input
               type="checkbox"
               id="staples"
@@ -202,163 +208,198 @@ export default function GeneratePage() {
 
           {/* Dietary Filters */}
           <div className="mt-6">
-            <h3 className="font-black mb-3">DIETARY PREFERENCES</h3>
+            <h3 className="font-black mb-3 text-white">DIETARY PREFERENCES</h3>
             <div className="grid grid-cols-3 gap-2 sm:gap-3">
               {dietaryOptions.map(({ id, label, icon: Icon }) => (
-                <button
+                <motion.button
                   key={id}
+                  whileHover={{ scale: 1.05 }}
+                  whileTap={{ scale: 0.95 }}
                   onClick={() => {
                     setDietary(prev =>
                       prev.includes(id) ? prev.filter(d => d !== id) : [...prev, id]
                     );
                   }}
-                  className={`px-2 sm:px-4 py-2 border-2 border-black font-bold flex items-center justify-center gap-1 sm:gap-2 transition-all text-xs sm:text-sm md:text-base w-full ${dietary.includes(id)
-                    ? 'bg-chefini-yellow text-black'
-                    : 'bg-white text-black hover:bg-gray-100'
+                  className={`px-2 sm:px-4 py-2 border-2 border-white font-bold flex items-center justify-center gap-1 sm:gap-2 transition-all text-xs sm:text-sm md:text-base w-full ${dietary.includes(id)
+                    ? 'bg-chefini-yellow text-black border-chefini-yellow'
+                    : 'bg-transparent text-white hover:bg-white/10'
                     }`}
                 >
                   <Icon size={18} className="shrink-0" />
                   <span className="truncate">{label}</span>
-                </button>
+                </motion.button>
               ))}
             </div>
           </div>
 
           {/* Healthy Mode */}
           <div className="mt-6">
-            <button
+            <motion.button
+              whileHover={{ scale: 1.02 }}
+              whileTap={{ scale: 0.98 }}
               onClick={() => setHealthyMode(!healthyMode)}
-              className={`w-full px-4 py-3 border-2 border-black font-bold flex items-center justify-center gap-2 transition-all ${healthyMode
-                ? 'bg-green-400 text-black'
-                : 'bg-white text-black hover:bg-gray-100'
+              className={`w-full px-4 py-3 border-2 border-white font-bold flex items-center justify-center gap-2 transition-all ${healthyMode
+                ? 'bg-green-500 text-black border-green-500'
+                : 'bg-transparent text-white hover:bg-white/10'
                 }`}
             >
               <Target size={20} />
               MAKE IT HEALTHY MODE {healthyMode ? 'ON' : 'OFF'}
-            </button>
+            </motion.button>
           </div>
 
           {/* Generate Button */}
           <div className="mt-6">
-            <ChefiniButton
-              onClick={generateRecipe}
-              icon={Sparkles}
-              disabled={ingredients.length === 0 || loading}
-              className="w-full justify-center"
-            >
-              {loading ? 'COOKING UP MAGIC...' : 'GENERATE RECIPE'}
-            </ChefiniButton>
+            <motion.div whileHover={{ scale: 1.02 }} whileTap={{ scale: 0.98 }}>
+              <ChefiniButton
+                onClick={generateRecipe}
+                icon={Sparkles}
+                disabled={ingredients.length === 0 || loading}
+                className="w-full justify-center"
+              >
+                {loading ? 'COOKING UP MAGIC...' : 'GENERATE RECIPE'}
+              </ChefiniButton>
+            </motion.div>
           </div>
         </div>
-      </div>
+      </motion.div>
 
       {/* RIGHT SIDE — Recipe Display */}
       <div>
-        {loading && (
-          <div className="border-4 border-chefini-yellow bg-black p-12 text-center">
-            <ChefHat size={64} className="mx-auto mb-4 text-chefini-yellow animate-pulse" />
-            <div className="text-chefini-yellow font-black text-xl animate-pulse">
-              CHEFINI IS WORKING MAGIC...
-            </div>
-          </div>
-        )}
+        <AnimatePresence mode="wait">
+          {loading && (
+            <motion.div
+              key="loader"
+              initial={{ opacity: 0, scale: 0.9 }}
+              animate={{ opacity: 1, scale: 1 }}
+              exit={{ opacity: 0, scale: 0.9 }}
+              className="border-4 border-chefini-yellow bg-black p-12 text-center"
+            >
+              <AlchemyLoader text="CONSULTING THE FLAVOR MATRIX..." />
+            </motion.div>
+          )}
 
-        {!loading && recipe && (
-          <div className="border-4 border-black bg-white shadow-brutal-lg p-6 text-black">
-            {/* Header */}
-            <div className="border-b-2 border-dashed border-black pb-4 mb-4">
-              <h2 className="text-3xl font-black mb-2">{recipe.title}</h2>
-              <div className="flex gap-4 text-sm font-bold">
-                <span>⏱️ {recipe.time}</span>
-                <span>🔥 {recipe.macros.calories} cal</span>
+          {!loading && recipe && (
+            <motion.div
+              key="result"
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              exit={{ opacity: 0, scale: 0.95 }}
+              className="border-4 border-black bg-white shadow-brutal-lg p-6 text-black"
+            >
+              {/* Header */}
+              <div className="border-b-2 border-dashed border-black pb-4 mb-4">
+                <h2 className="text-3xl font-black mb-2">{recipe.title}</h2>
+                <div className="flex gap-4 text-sm font-bold">
+                  <span>⏱️ {recipe.time}</span>
+                  <span>🔥 {recipe.macros.calories} cal</span>
+                </div>
               </div>
-            </div>
 
-            {/* Ingredients */}
-            <div className="mb-6">
-              <h3 className="text-xl font-black mb-3 flex items-center gap-2">
-                <ShoppingCart size={20} />
-                INGREDIENTS
-              </h3>
-              <ul className="space-y-2">
-                {recipe.ingredients.map((ing, idx) => (
-                  <li key={idx} className="flex items-start gap-2">
-                    <span className="font-mono">▪</span>
-                    <span className={ing.missing ? 'text-red-600 font-bold flex-1' : 'flex-1'}>
-                      {ing.item}
-                      {ing.missing && (
-                        <button
-                          onClick={() => addToShoppingList(ing.item)}
-                          className="ml-2 text-xs bg-red-500 text-white px-2 py-1 border border-black hover:bg-red-600"
-                        >
-                          ADD TO LIST
-                        </button>
-                      )}
-                    </span>
-                  </li>
-                ))}
-              </ul>
-            </div>
-
-            {/* Instructions */}
-            <div className="mb-6">
-              <div className="flex justify-between items-center mb-3">
-                <h3 className="text-xl font-black flex items-center gap-2">
-                  <ChefHat size={20} />
-                  INSTRUCTIONS
+              {/* Ingredients */}
+              <div className="mb-6">
+                <h3 className="text-xl font-black mb-3 flex items-center gap-2">
+                  <ShoppingCart size={20} />
+                  INGREDIENTS
                 </h3>
-                <button
-                  onClick={speakInstructions}
-                  className={`p-2 border-2 border-black transition-colors ${isReading ? 'bg-chefini-yellow' : 'bg-white hover:bg-gray-100'
-                    }`}
+                <motion.ul
+                  className="space-y-2"
+                  initial="hidden"
+                  animate="visible"
+                  variants={{
+                    hidden: { opacity: 0 },
+                    visible: { opacity: 1, transition: { staggerChildren: 0.1 } }
+                  }}
                 >
-                  <Volume2 size={20} />
-                </button>
+                  {recipe.ingredients.map((ing, idx) => (
+                    <motion.li
+                      key={idx}
+                      variants={{ hidden: { opacity: 0, x: -10 }, visible: { opacity: 1, x: 0 } }}
+                      className="flex items-start gap-2"
+                    >
+                      <span className="font-mono">▪</span>
+                      <span className={ing.missing ? 'text-red-600 font-bold flex-1' : 'flex-1'}>
+                        {ing.item}
+                        {ing.missing && (
+                          <button
+                            onClick={() => addToShoppingList(ing.item)}
+                            className="ml-2 text-xs bg-red-500 text-white px-2 py-1 border border-black hover:bg-red-600"
+                          >
+                            ADD TO LIST
+                          </button>
+                        )}
+                      </span>
+                    </motion.li>
+                  ))}
+                </motion.ul>
               </div>
-              <ol className="space-y-3">
-                {recipe.instructions.map((step, idx) => (
-                  <li key={idx} className="flex gap-3">
-                    <span className="font-black text-lg">{idx + 1}.</span>
-                    <span>{step}</span>
-                  </li>
-                ))}
-              </ol>
-            </div>
 
-            {/* Tip */}
-            <div className="border-2 border-chefini-yellow bg-chefini-yellow bg-opacity-20 p-4 mb-6">
-              <h3 className="text-lg font-black mb-2 flex items-center gap-2">
-                <Sparkles size={18} />
-                CHEFINI'S MAGIC TIP
-              </h3>
-              <p className="text-sm">{recipe.tip}</p>
-            </div>
+              {/* Instructions */}
+              <div className="mb-6">
+                <div className="flex justify-between items-center mb-3">
+                  <h3 className="text-xl font-black flex items-center gap-2">
+                    <ChefHat size={20} />
+                    INSTRUCTIONS
+                  </h3>
+                  <button
+                    onClick={speakInstructions}
+                    className={`p-2 border-2 border-black transition-colors ${isReading ? 'bg-chefini-yellow' : 'bg-white hover:bg-gray-100'
+                      }`}
+                  >
+                    <Volume2 size={20} />
+                  </button>
+                </div>
+                <ol className="space-y-3">
+                  {recipe.instructions.map((step, idx) => (
+                    <li key={idx} className="flex gap-3">
+                      <span className="font-black text-lg">{idx + 1}.</span>
+                      <span>{step}</span>
+                    </li>
+                  ))}
+                </ol>
+              </div>
 
-            {/* Macros */}
-            <div className="pt-4 border-t-2 border-dashed border-black grid grid-cols-3 gap-4 text-center">
-              <div>
-                <div className="font-black text-2xl">{recipe.macros.protein}g</div>
-                <div className="text-xs">PROTEIN</div>
+              {/* Tip */}
+              <div className="border-2 border-chefini-yellow bg-chefini-yellow bg-opacity-20 p-4 mb-6">
+                <h3 className="text-lg font-black mb-2 flex items-center gap-2">
+                  <Sparkles size={18} />
+                  CHEFINI'S MAGIC TIP
+                </h3>
+                <p className="text-sm">{recipe.tip}</p>
               </div>
-              <div>
-                <div className="font-black text-2xl">{recipe.macros.carbs}g</div>
-                <div className="text-xs">CARBS</div>
-              </div>
-              <div>
-                <div className="font-black text-2xl">{recipe.macros.fats}g</div>
-                <div className="text-xs">FATS</div>
-              </div>
-            </div>
-          </div>
-        )}
 
-        {!recipe && !loading && (
-          <div className="border-4 border-chefini-yellow bg-black p-12 text-center">
-            <ChefHat size={64} className="mx-auto mb-4 text-chefini-yellow" />
-            <p className="text-xl font-bold">Add ingredients and hit Generate!</p>
-            <p className="text-gray-400 mt-2">Chefini will work its magic ✨</p>
-          </div>
-        )}
+              {/* Macros */}
+              <div className="pt-4 border-t-2 border-dashed border-black grid grid-cols-3 gap-4 text-center">
+                <div>
+                  <div className="font-black text-2xl">{recipe.macros.protein}g</div>
+                  <div className="text-xs">PROTEIN</div>
+                </div>
+                <div>
+                  <div className="font-black text-2xl">{recipe.macros.carbs}g</div>
+                  <div className="text-xs">CARBS</div>
+                </div>
+                <div>
+                  <div className="font-black text-2xl">{recipe.macros.fats}g</div>
+                  <div className="text-xs">FATS</div>
+                </div>
+              </div>
+            </motion.div>
+          )}
+
+          {!recipe && !loading && (
+            <motion.div
+              key="empty"
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+              className="border-4 border-chefini-yellow bg-black p-12 text-center"
+            >
+              <ChefHat size={64} className="mx-auto mb-4 text-chefini-yellow" />
+              <p className="text-xl font-bold text-white">Add ingredients and hit Generate!</p>
+              <p className="text-gray-400 mt-2">Chefini will work its magic ✨</p>
+            </motion.div>
+          )}
+        </AnimatePresence>
       </div>
 
     </div>

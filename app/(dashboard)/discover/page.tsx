@@ -28,6 +28,8 @@ interface Recipe {
   };
 }
 
+import { motion } from 'framer-motion';
+
 export default function DiscoverPage() {
   const [recipes, setRecipes] = useState<Recipe[]>([]);
   const [loading, setLoading] = useState(true);
@@ -79,7 +81,7 @@ export default function DiscoverPage() {
       }
 
       // Update local state
-      setRecipes(recipes.map(r => 
+      setRecipes(recipes.map(r =>
         r._id === id ? { ...r, likes: data.likes } : r
       ));
 
@@ -127,6 +129,22 @@ export default function DiscoverPage() {
     }
   };
 
+  // Animation Variants
+  const container = {
+    hidden: { opacity: 0 },
+    show: {
+      opacity: 1,
+      transition: {
+        staggerChildren: 0.1
+      }
+    }
+  };
+
+  const item = {
+    hidden: { opacity: 0, y: 20 },
+    show: { opacity: 1, y: 0 }
+  };
+
   if (loading) {
     return (
       <div className="text-center py-12">
@@ -161,7 +179,11 @@ export default function DiscoverPage() {
       />
 
       {/* Header */}
-      <div className="mb-8 bg-black border-4 border-chefini-yellow p-6">
+      <motion.div
+        initial={{ opacity: 0, x: -20 }}
+        animate={{ opacity: 1, x: 0 }}
+        className="mb-8 bg-black border-4 border-chefini-yellow p-6"
+      >
         <h1 className="text-4xl font-black flex items-center gap-3">
           <Users className="text-chefini-yellow" size={40} />
           DISCOVER RECIPES
@@ -169,19 +191,28 @@ export default function DiscoverPage() {
         <p className="text-gray-400 mt-2">
           Explore magical creations from the Chefini community • {recipes.length} recipes
         </p>
-      </div>
+      </motion.div>
 
       {recipes.length === 0 ? (
-        <div className="border-4 border-chefini-yellow bg-black p-12 text-center">
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          className="border-4 border-chefini-yellow bg-black p-12 text-center"
+        >
           <Users size={64} className="mx-auto mb-4 text-chefini-yellow" />
           <h2 className="text-2xl font-black mb-2">NO PUBLIC RECIPES YET</h2>
           <p className="text-gray-400">Be the first to share your creation!</p>
-        </div>
+        </motion.div>
       ) : (
-        <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+        <motion.div
+          variants={container}
+          initial="hidden"
+          animate="show"
+          className="grid md:grid-cols-2 lg:grid-cols-3 gap-6"
+        >
           {recipes.map((recipe) => {
             const isLiked = likedRecipes.has(recipe._id);
-            
+
             // Calculate Avatar Display for each creator
             const creatorAvatar = getAvatarDisplay({
               name: recipe.createdBy.name,
@@ -190,8 +221,9 @@ export default function DiscoverPage() {
             });
 
             return (
-              <div
+              <motion.div
                 key={recipe._id}
+                variants={item}
                 className="bg-white border-4 border-black shadow-brutal text-black hover:shadow-brutal-lg transition-all group"
               >
                 {/* Card Header */}
@@ -264,35 +296,38 @@ export default function DiscoverPage() {
 
                   {/* Actions */}
                   <div className="flex gap-2">
-                    <button
+                    <motion.button
+                      whileHover={{ scale: 1.02 }}
+                      whileTap={{ scale: 0.98 }}
                       onClick={() => setSelectedRecipe(recipe)}
-                      className="flex-1 px-4 py-3 bg-chefini-yellow text-black font-bold border-2 border-black hover:shadow-brutal-sm hover:translate-x-0.5 hover:translate-y-0.5 transition-all flex items-center justify-center gap-2"
+                      className="flex-1 px-4 py-3 bg-chefini-yellow text-black font-bold border-2 border-black hover:shadow-brutal-sm transition-all flex items-center justify-center gap-2"
                     >
                       <Eye size={18} />
                       View Full Recipe
-                    </button>
+                    </motion.button>
 
-                    <button
+                    <motion.button
+                      whileHover={{ scale: 1.05 }}
+                      whileTap={{ scale: 0.95 }}
                       onClick={() => toggleLike(recipe._id)}
-                      className={`px-4 py-3 border-2 border-black font-bold transition-all flex items-center gap-2 ${
-                        isLiked
+                      className={`px-4 py-3 border-2 border-black font-bold transition-all flex items-center gap-2 ${isLiked
                           ? 'bg-red-500 text-white hover:bg-red-600'
                           : 'bg-white text-black hover:bg-red-100'
-                      }`}
+                        }`}
                       title={isLiked ? 'Unlike' : 'Like'}
                     >
-                      <Heart 
-                        size={18} 
+                      <Heart
+                        size={18}
                         className={isLiked ? 'fill-white' : 'fill-none text-red-500'}
                       />
                       <span>{recipe.likes}</span>
-                    </button>
+                    </motion.button>
                   </div>
                 </div>
-              </div>
+              </motion.div>
             );
           })}
-        </div>
+        </motion.div>
       )}
     </div>
   );

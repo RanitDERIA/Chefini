@@ -1,16 +1,37 @@
 import { ChefHat, Heart, Lightbulb, Target, Users, Sparkles, Wand2 } from 'lucide-react';
+import { motion } from 'framer-motion';
 
 export default function AboutPage() {
+  const container = {
+    hidden: { opacity: 0 },
+    show: {
+      opacity: 1,
+      transition: {
+        staggerChildren: 0.1
+      }
+    }
+  };
+
+  const item = {
+    hidden: { opacity: 0, y: 20 },
+    show: { opacity: 1, y: 0 }
+  };
+
   return (
-    <div className="max-w-4xl mx-auto">
-      <div className="bg-black border-4 border-chefini-yellow p-8 mb-8">
+    <motion.div
+      variants={container}
+      initial="hidden"
+      animate="show"
+      className="max-w-4xl mx-auto"
+    >
+      <motion.div variants={item} className="bg-black border-4 border-chefini-yellow p-8 mb-8">
         <div className="flex items-center gap-3 mb-6">
           <ChefHat size={40} className="text-chefini-yellow" />
           <h1 className="text-4xl font-black text-chefini-yellow">THE CHEFINI STORY</h1>
         </div>
 
         <div className="space-y-6 text-gray-300">
-          <section>
+          <motion.section variants={item}>
             <h2 className="text-2xl font-black text-white mb-3 flex items-center gap-2">
               <Sparkles className="text-chefini-yellow" />
               The Inspiration
@@ -24,9 +45,9 @@ export default function AboutPage() {
               To a child, this wasn't just cooking—it was alchemy. Chefini is my attempt to digitize that maternal intuition—the
               "Chef + Houdini" spirit—so every user can look at a handful of scraps and see a feast.
             </p>
-          </section>
+          </motion.section>
 
-          <section>
+          <motion.section variants={item}>
             <h2 className="text-2xl font-black text-white mb-3 flex items-center gap-2">
               <Target className="text-chefini-yellow" />
               Our Mission
@@ -34,9 +55,9 @@ export default function AboutPage() {
             <p>
               To cure the "failure of imagination" regarding food waste. We believe that throwing food away is a tragedy not just for the planet, but for the plate. We want to empower every student, bachelor, and busy parent to create magic with whatever they have on hand.
             </p>
-          </section>
+          </motion.section>
 
-          <section>
+          <motion.section variants={item}>
             <h2 className="text-2xl font-black text-white mb-3 flex items-center gap-2">
               <Lightbulb className="text-chefini-yellow" />
               How The Magic Works
@@ -78,9 +99,9 @@ export default function AboutPage() {
                 </div>
               </div>
             </div>
-          </section>
+          </motion.section>
 
-          <section>
+          <motion.section variants={item}>
             <h2 className="text-2xl font-black text-white mb-3 flex items-center gap-2">
               <Users className="text-chefini-yellow" />
               The Alchemist
@@ -110,9 +131,9 @@ export default function AboutPage() {
                 </p>
               </div>
             </div>
-          </section>
+          </motion.section>
 
-          <section>
+          <motion.section variants={item}>
             <h2 className="text-2xl font-black text-white mb-3 flex items-center gap-2">
               <Heart className="text-red-500 fill-red-500" />
               The Philosophy
@@ -125,9 +146,9 @@ export default function AboutPage() {
                 Chefini is built on that value. We believe that sustainability doesn't start in a boardroom; it starts in the kitchen, with a single decision to use that "useless" broccoli stem instead of throwing it away.
               </p>
             </div>
-          </section>
+          </motion.section>
 
-          <section>
+          <motion.section variants={item}>
             <h2 className="text-2xl font-black text-white mb-3">Join The Family</h2>
             <p className="mb-4">
               Whether you are a student trying to survive on a budget or a pro cook looking for inspiration, we'd love to hear your story.
@@ -143,18 +164,18 @@ export default function AboutPage() {
                 <span className="text-chefini-yellow">LinkedIn:</span> <a href='https://www.linkedin.com/in/ranit-deria-916864257/' target='_blank' className="hover:underline">linkedin.com/ranit-deria</a>
               </p>
             </div>
-          </section>
+          </motion.section>
 
-          <div className="text-center pt-8 border-t-2 border-dashed border-gray-700">
+          <motion.div variants={item} className="text-center pt-8 border-t-2 border-dashed border-gray-700">
             <p className="text-lg font-black text-chefini-yellow mb-2">
               Dedicated to মা <Heart size={20} className="inline text-red-500 fill-red-500 animate-pulse mx-1" /> The original Kitchen Alchemist
             </p>
             <p className="text-sm text-gray-500">
               Coded with love at Chittaranjan, India
             </p>
-          </div>
+          </motion.div>
         </div>
-      </div>
-    </div>
+      </motion.div>
+    </motion.div>
   );
 }

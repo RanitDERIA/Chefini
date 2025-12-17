@@ -2,6 +2,7 @@
 
 import { useState, useRef, useEffect, useCallback } from 'react';
 import Link from 'next/link';
+import { motion, AnimatePresence } from 'framer-motion';
 import {
     AlertTriangle,
     CheckCircle2,
@@ -561,15 +562,36 @@ export default function BatchCompiler() {
         setExpandedDay(null);
     };
 
+    // Animation Variants
+    const container = {
+        hidden: { opacity: 0 },
+        show: {
+            opacity: 1,
+            transition: {
+                staggerChildren: 0.1
+            }
+        }
+    };
+
+    const itemAnim = {
+        hidden: { opacity: 0, y: 20 },
+        show: { opacity: 1, y: 0 }
+    };
+
     return (
-        <div className="p-4 md:p-6">
+        <motion.div
+            variants={container}
+            initial="hidden"
+            animate="show"
+            className="p-4 md:p-6"
+        >
             {/* Toast Container */}
             {toasts.map(toast => (
                 <Toast key={toast.id} message={toast.message} type={toast.type} onClose={() => removeToast(toast.id)} />
             ))}
 
             {/* Header Section */}
-            <div className="mb-6 md:mb-8 bg-black border-4 border-chefini-yellow p-4 md:p-6">
+            <motion.div variants={itemAnim} className="mb-6 md:mb-8 bg-black border-4 border-chefini-yellow p-4 md:p-6">
                 <h1 className="text-2xl md:text-4xl font-black flex items-center gap-3">
                     <Cpu className="text-chefini-yellow flex-shrink-0" size={32} />
                     SMART MEAL
@@ -577,13 +599,13 @@ export default function BatchCompiler() {
                 <p className="text-gray-400 mt-2">
                     Cook once (Sunday), eat differently all week. A smarter way to meal prep.
                 </p>
-            </div>
+            </motion.div>
 
             {/* Main Content */}
             <div className="grid grid-cols-1 lg:grid-cols-3 gap-4 md:gap-6">
 
                 {/* Left Sidebar - Input Form */}
-                <div className="lg:col-span-1">
+                <motion.div variants={itemAnim} className="lg:col-span-1">
                     <div className="bg-black border-4 border-chefini-yellow p-4 md:p-6 lg:sticky lg:top-6 h-fit">
                         <h2 className="text-xl md:text-2xl font-black mb-4 flex items-center gap-2">
                             <Plus className="text-chefini-yellow" />
@@ -620,7 +642,7 @@ export default function BatchCompiler() {
                                         disabled={status !== 'idle'}
                                         className={`py-3 border-2 font-black transition-all disabled:opacity-50 disabled:cursor-not-allowed ${days === d
                                             ? 'bg-chefini-yellow text-black border-chefini-yellow shadow-brutal-sm'
-                                            : 'bg-transparent text-white border-white hover:bg-white hover:text-black'
+                                            : 'bg-transparent text-white border-white hover:bg-white/10'
                                             }`}
                                     >
                                         {d}D
@@ -724,10 +746,10 @@ export default function BatchCompiler() {
                             </div>
                         </div>
                     </div>
-                </div>
+                </motion.div>
 
                 {/* Right Side - Results */}
-                <div className="lg:col-span-2 space-y-6">
+                <motion.div variants={itemAnim} className="lg:col-span-2 space-y-6">
 
                     {/* Compiling State */}
                     {status === 'compiling' && (
@@ -948,8 +970,8 @@ export default function BatchCompiler() {
                         </div>
                     )}
 
-                </div>
+                </motion.div>
             </div>
-        </div>
+        </motion.div>
     );
 }

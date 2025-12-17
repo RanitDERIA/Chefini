@@ -11,6 +11,13 @@
     -ms-overflow-style: none;
     scrollbar-width: none;
   }
+  
+  /* High-contrast focus state for accessibility */
+  :focus-visible {
+    outline: 3px dashed #FFC72C;
+    outline-offset: 4px;
+    border-radius: 2px;
+  }
 }
 
 @layer base {

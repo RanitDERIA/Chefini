@@ -1,6 +1,7 @@
 'use client';
 
 import { useState, useRef, useEffect, useCallback } from 'react';
+import { motion, AnimatePresence } from 'framer-motion';
 import {
     AlertTriangle,
     CheckCircle2,
@@ -100,6 +101,7 @@ export default function FlavorDebugger() {
     const { showToast, toasts, removeToast } = useToast();
 
     // Helper: Validation API
+    // Helper: Validation API
     const validateContent = async (text: string): Promise<{ valid: boolean; reason?: string }> => {
         try {
             const res = await fetch('/api/validate-content', {
@@ -172,15 +174,35 @@ export default function FlavorDebugger() {
         setResult(null);
     };
 
+    // Animation Variants
+    const container = {
+        hidden: { opacity: 0 },
+        show: {
+            opacity: 1,
+            transition: {
+                staggerChildren: 0.1
+            }
+        }
+    };
+
+    const itemAnim = {
+        hidden: { opacity: 0, y: 20 },
+        show: { opacity: 1, y: 0 }
+    };
+
     return (
-        <div>
+        <motion.div
+            variants={container}
+            initial="hidden"
+            animate="show"
+        >
             {/* Toast Container */}
             {toasts.map(toast => (
                 <Toast key={toast.id} message={toast.message} type={toast.type} onClose={() => removeToast(toast.id)} />
             ))}
 
             {/* Header Section - EXACTLY like shopping list */}
-            <div className="mb-8 bg-black border-4 border-chefini-yellow p-6">
+            <motion.div variants={itemAnim} className="mb-8 bg-black border-4 border-chefini-yellow p-6">
                 <h1 className="text-4xl font-black flex items-center gap-3">
                     <Stethoscope className="text-chefini-yellow" size={40} />
                     FLAVOR RESCUE LAB
@@ -188,13 +210,13 @@ export default function FlavorDebugger() {
                 <p className="text-gray-400 mt-2">
                     Did you add too much salt? Is it too spicy? Don't panic • We'll calculate the chemical fix
                 </p>
-            </div>
+            </motion.div>
 
             {/* Main Content */}
             <div className="grid lg:grid-cols-3 gap-6">
 
                 {/* Left Sidebar - Input Form */}
-                <div className="lg:col-span-1">
+                <motion.div variants={itemAnim} className="lg:col-span-1">
                     <div className="bg-black border-4 border-chefini-yellow p-6 sticky top-6">
                         <h2 className="text-2xl font-black mb-4 flex items-center gap-2">
                             <Soup className="text-chefini-yellow" />
@@ -254,10 +276,10 @@ export default function FlavorDebugger() {
                             </div>
                         </div>
                     </div>
-                </div>
+                </motion.div>
 
                 {/* Right Side - Problem Selection & Results */}
-                <div className="lg:col-span-2 space-y-6">
+                <motion.div variants={itemAnim} className="lg:col-span-2 space-y-6">
 
                     {/* Question 2: The Problem */}
                     <div className={`bg-white border-4 border-black shadow-brutal transition-all duration-300 ${status !== 'idle' ? 'opacity-50 pointer-events-none' : ''}`}>
@@ -319,10 +341,15 @@ export default function FlavorDebugger() {
                     </div>
 
                     {/* Result Card */}
-                    {status === 'patched' && result && (
-                        <div ref={resultRef} className="animate-in slide-in-from-bottom-4 duration-500">
-
-                            <div className="bg-white border-4 border-green-500 shadow-brutal overflow-hidden">
+                    <AnimatePresence>
+                        {status === 'patched' && result && (
+                            <motion.div
+                                ref={resultRef}
+                                initial={{ opacity: 0, y: 20 }}
+                                animate={{ opacity: 1, y: 0 }}
+                                exit={{ opacity: 0, y: 20 }}
+                                className="bg-white border-4 border-green-500 shadow-brutal overflow-hidden"
+                            >
 
                                 {/* Success Header */}
                                 <div className="bg-green-400 border-b-4 border-black p-4">
@@ -391,12 +418,12 @@ export default function FlavorDebugger() {
                                         <RotateCcw size={20} /> RESCUE ANOTHER DISH
                                     </button>
                                 </div>
-                            </div>
-                        </div>
-                    )}
+                            </motion.div>
+                        )}
+                    </AnimatePresence>
 
-                </div>
+                </motion.div>
             </div>
-        </div>
+        </motion.div>
     );
 }

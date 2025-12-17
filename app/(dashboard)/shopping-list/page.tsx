@@ -16,6 +16,7 @@ import ChefiniButton from '@/components/ui/ChefiniButton';
 import Toast from '@/components/ui/Toast';
 import { useToast } from '@/app/hooks/useToast';
 import OrderItemModal from '@/components/ui/OrderItemModal';
+import { motion, AnimatePresence } from 'framer-motion';
 
 // Helper to load external scripts dynamically (Same as RecipeModal)
 const loadScript = (src: string) => {
@@ -317,8 +318,9 @@ export default function ShoppingListPage() {
         if (!blob) throw new Error('Blob creation failed');
         const url = URL.createObjectURL(blob);
         const a = document.createElement('a');
+        const fileName = `Chefini_List_${new Date().toISOString().split('T')[0]}.png`;
         a.href = url;
-        a.download = `Chefini_List_${new Date().toISOString().split('T')[0]}.png`;
+        a.download = fileName;
         document.body.appendChild(a);
         a.click();
         document.body.removeChild(a);
@@ -331,6 +333,22 @@ export default function ShoppingListPage() {
     } finally {
       setExportLoading(false);
     }
+  };
+
+  // Animation Variants
+  const container = {
+    hidden: { opacity: 0 },
+    show: {
+      opacity: 1,
+      transition: {
+        staggerChildren: 0.05
+      }
+    }
+  };
+
+  const itemAnim = {
+    hidden: { opacity: 0, x: -10 },
+    show: { opacity: 1, x: 0 }
   };
 
   if (loading) {
@@ -363,7 +381,11 @@ export default function ShoppingListPage() {
       />
 
       {/* Header */}
-      <div className="mb-8 bg-black border-4 border-chefini-yellow p-6">
+      <motion.div
+        initial={{ opacity: 0, x: -20 }}
+        animate={{ opacity: 1, x: 0 }}
+        className="mb-8 bg-black border-4 border-chefini-yellow p-6"
+      >
         <h1 className="text-4xl font-black flex items-center gap-3">
           <ShoppingCart className="text-chefini-yellow" size={40} />
           SMART SHOPPING LIST
@@ -371,11 +393,16 @@ export default function ShoppingListPage() {
         <p className="text-gray-400 mt-2">
           Never forget an ingredient again! • Order items individually online
         </p>
-      </div>
+      </motion.div>
 
       <div className="grid lg:grid-cols-3 gap-6">
         {/* Add Item Section */}
-        <div className="lg:col-span-1">
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.1 }}
+          className="lg:col-span-1"
+        >
           <div className="bg-black border-4 border-chefini-yellow p-6 sticky top-6">
             <h2 className="text-2xl font-black mb-4 flex items-center gap-2">
               <Plus className="text-chefini-yellow" />
@@ -432,34 +459,42 @@ export default function ShoppingListPage() {
                 </h3>
 
                 <div className="space-y-2">
-                  <button
+                  <motion.button
+                    whileHover={{ scale: 1.02 }}
+                    whileTap={{ scale: 0.98 }}
                     onClick={downloadPDF}
                     disabled={exportLoading}
                     className="w-full px-4 py-3 bg-white text-black font-bold border-2 border-black hover:bg-gray-100 flex items-center justify-center gap-2 disabled:opacity-50"
                   >
                     <FileText size={20} />
                     Download PDF
-                  </button>
+                  </motion.button>
 
-                  <button
+                  <motion.button
+                    whileHover={{ scale: 1.02 }}
+                    whileTap={{ scale: 0.98 }}
                     onClick={downloadImage}
                     disabled={exportLoading}
                     className="w-full px-4 py-3 bg-white text-black font-bold border-2 border-black hover:bg-gray-100 flex items-center justify-center gap-2 disabled:opacity-50"
                   >
                     <ImageIcon size={20} />
                     Download Image
-                  </button>
+                  </motion.button>
                 </div>
               </div>
             )}
           </div>
-        </div>
+        </motion.div>
 
         {/* Shopping List Items */}
         <div className="lg:col-span-2 space-y-6">
           {/* Info Banner */}
           {items.length > 0 && (
-            <div className="bg-chefini-yellow border-4 border-black p-4 flex items-start gap-3">
+            <motion.div
+              initial={{ opacity: 0, y: -10 }}
+              animate={{ opacity: 1, y: 0 }}
+              className="bg-chefini-yellow border-4 border-black p-4 flex items-start gap-3"
+            >
               <ShoppingBag size={24} className="text-black flex-shrink-0 mt-1" />
               <div>
                 <p className="font-black text-black text-lg mb-1">ORDER ONLINE</p>
@@ -468,68 +503,85 @@ export default function ShoppingListPage() {
                   Swiggy Instamart, BigBasket, Jiomart and Dealshare.
                 </p>
               </div>
-            </div>
+            </motion.div>
           )}
 
           {/* Items List */}
           {items.length === 0 ? (
-            <div className="border-4 border-chefini-yellow bg-black p-12 text-center">
+            <motion.div
+              initial={{ opacity: 0, scale: 0.9 }}
+              animate={{ opacity: 1, scale: 1 }}
+              className="border-4 border-chefini-yellow bg-black p-12 text-center"
+            >
               <ShoppingCart size={64} className="mx-auto mb-4 text-chefini-yellow" />
               <h2 className="text-2xl font-black mb-2">YOUR LIST IS EMPTY</h2>
               <p className="text-gray-400">Add items manually or generate a recipe with missing ingredients!</p>
-            </div>
+            </motion.div>
           ) : (
-            <div className="space-y-3">
-              {items.map((item, idx) => {
-                const isChecked = checkedItems.has(item);
+            <motion.div
+              variants={container}
+              initial="hidden"
+              animate="show"
+              className="space-y-3"
+            >
+              <AnimatePresence>
+                {items.map((item, idx) => {
+                  const isChecked = checkedItems.has(item);
 
-                return (
-                  <div
-                    key={idx}
-                    className={`bg-white border-4 border-black shadow-brutal transition-all ${isChecked ? 'opacity-50' : ''
-                      }`}
-                  >
-                    <div className="p-4 flex items-center gap-4">
-                      {/* Checkbox */}
-                      <button
-                        onClick={() => toggleCheck(item)}
-                        className={`w-8 h-8 border-4 border-black flex items-center justify-center transition-colors flex-shrink-0 ${isChecked ? 'bg-green-400' : 'bg-white'
-                          }`}
-                      >
-                        {isChecked && <Check size={20} className="text-black font-black" />}
-                      </button>
+                  return (
+                    <motion.div
+                      key={item} // Key should be item name for correct AnimatePresence behavior
+                      variants={itemAnim}
+                      exit={{ opacity: 0, x: -20, height: 0, marginTop: 0 }}
+                      className={`bg-white border-4 border-black shadow-brutal transition-all ${isChecked ? 'opacity-50' : ''
+                        }`}
+                    >
+                      <div className="p-4 flex items-center gap-4">
+                        {/* Checkbox */}
+                        <button
+                          onClick={() => toggleCheck(item)}
+                          className={`w-8 h-8 border-4 border-black flex items-center justify-center transition-colors flex-shrink-0 ${isChecked ? 'bg-green-400' : 'bg-white'
+                            }`}
+                        >
+                          {isChecked && <Check size={20} className="text-black font-black" />}
+                        </button>
 
-                      {/* Item Name */}
-                      <span
-                        className={`flex-1 text-black font-bold text-lg ${isChecked ? 'line-through' : ''
-                          }`}
-                      >
-                        {item}
-                      </span>
+                        {/* Item Name */}
+                        <span
+                          className={`flex-1 text-black font-bold text-lg ${isChecked ? 'line-through' : ''
+                            }`}
+                        >
+                          {item}
+                        </span>
 
-                      {/* Order Button */}
-                      <button
-                        onClick={() => handleOrderClick(item)}
-                        className="px-4 py-2 bg-chefini-yellow text-black font-bold border-2 border-black hover:shadow-brutal-sm hover:translate-x-0.5 hover:translate-y-0.5 transition-all flex items-center gap-2"
-                        title="Order this item"
-                      >
-                        <ShoppingBag size={18} />
-                        <span className="hidden sm:inline">Order</span>
-                      </button>
+                        {/* Order Button */}
+                        <motion.button
+                          whileHover={{ scale: 1.05 }}
+                          whileTap={{ scale: 0.95 }}
+                          onClick={() => handleOrderClick(item)}
+                          className="px-4 py-2 bg-chefini-yellow text-black font-bold border-2 border-black hover:shadow-brutal-sm transition-all flex items-center gap-2"
+                          title="Order this item"
+                        >
+                          <ShoppingBag size={18} />
+                          <span className="hidden sm:inline">Order</span>
+                        </motion.button>
 
-                      {/* Delete Button */}
-                      <button
-                        onClick={() => removeItem(item)}
-                        className="p-2 bg-red-500 text-white border-2 border-black hover:bg-red-600 transition-colors"
-                        title="Remove item"
-                      >
-                        <Trash2 size={20} />
-                      </button>
-                    </div>
-                  </div>
-                );
-              })}
-            </div>
+                        {/* Delete Button */}
+                        <motion.button
+                          whileHover={{ scale: 1.1 }}
+                          whileTap={{ scale: 0.9 }}
+                          onClick={() => removeItem(item)}
+                          className="p-2 bg-red-500 text-white border-2 border-black hover:bg-red-600 transition-colors"
+                          title="Remove item"
+                        >
+                          <Trash2 size={20} />
+                        </motion.button>
+                      </div>
+                    </motion.div>
+                  );
+                })}
+              </AnimatePresence>
+            </motion.div>
           )}
         </div>
       </div>

@@ -8,6 +8,10 @@ import Toast from '@/components/ui/Toast';
 import { useToast } from '@/app/hooks/useToast';
 import { avatarOptions, getAvatarDisplay } from '@/lib/avatars';
 
+import { motion } from 'framer-motion';
+
+// ... (existing imports)
+
 export default function ProfilePage() {
   const { data: session, update } = useSession();
   const { toasts, showToast, removeToast } = useToast();
@@ -127,6 +131,22 @@ export default function ProfilePage() {
 
   const isGoogleUser = !!profile.image && !profile.avatar;
 
+  // Animation Variants
+  const container = {
+    hidden: { opacity: 0 },
+    show: {
+      opacity: 1,
+      transition: {
+        staggerChildren: 0.1
+      }
+    }
+  };
+
+  const itemAnim = {
+    hidden: { opacity: 0, y: 20 },
+    show: { opacity: 1, y: 0 }
+  };
+
   return (
     <div>
       {/* Toast Notifications */}
@@ -140,18 +160,27 @@ export default function ProfilePage() {
       ))}
 
       {/* Header */}
-      <div className="mb-6 sm:mb-8 bg-black border-4 border-chefini-yellow p-4 sm:p-6">
+      <motion.div
+        initial={{ opacity: 0, x: -20 }}
+        animate={{ opacity: 1, x: 0 }}
+        className="mb-6 sm:mb-8 bg-black border-4 border-chefini-yellow p-4 sm:p-6"
+      >
         <h1 className="text-3xl sm:text-4xl font-black flex items-center gap-3 text-white">
           <User className="text-chefini-yellow" size={32} />
           MY PROFILE
         </h1>
         <p className="text-gray-400 mt-2 text-sm sm:text-base">Manage your account settings and preferences</p>
-      </div>
+      </motion.div>
 
-      <div className="grid lg:grid-cols-3 gap-6">
-        
+      <motion.div
+        variants={container}
+        initial="hidden"
+        animate="show"
+        className="grid lg:grid-cols-3 gap-6"
+      >
+
         {/* Left — Profile Preview */}
-        <div className="lg:col-span-1">
+        <motion.div variants={itemAnim} className="lg:col-span-1">
           <div className="bg-black border-4 border-chefini-yellow p-4 sm:p-6 sticky top-6">
             <h2 className="text-xl sm:text-2xl font-black mb-6 text-center text-white">PROFILE PREVIEW</h2>
 
@@ -183,10 +212,10 @@ export default function ProfilePage() {
               )}
             </div>
           </div>
-        </div>
+        </motion.div>
 
         {/* Right — Settings */}
-        <div className="lg:col-span-2 space-y-6">
+        <motion.div variants={itemAnim} className="lg:col-span-2 space-y-6">
 
           {/* Basic Info */}
           <div className="bg-white border-4 border-black shadow-brutal p-4 sm:p-6 text-black">
@@ -196,7 +225,7 @@ export default function ProfilePage() {
             </h2>
 
             <div className="space-y-4">
-              
+
               <div>
                 <label className="block font-bold mb-2">NAME</label>
                 <input
@@ -237,18 +266,17 @@ export default function ProfilePage() {
             </h2>
 
             <div className="space-y-6">
-              
+
               {/* Google Profile Image Option */}
               {profile.image && (
                 <div>
                   <p className="font-bold mb-2 text-sm sm:text-base">GOOGLE PROFILE IMAGE</p>
                   <button
                     onClick={() => setSelectedAvatar('')}
-                    className={`p-1 border-4 transition-all ${
-                      selectedAvatar === ''
+                    className={`p-1 border-4 transition-all ${selectedAvatar === ''
                         ? 'border-chefini-yellow bg-chefini-yellow bg-opacity-20'
                         : 'border-black bg-white hover:border-chefini-yellow'
-                    }`}
+                      }`}
                   >
                     <img
                       src={profile.image}
@@ -265,11 +293,10 @@ export default function ProfilePage() {
                 <p className="font-bold mb-2 text-sm sm:text-base">NAME INITIAL</p>
                 <button
                   onClick={() => setSelectedAvatar('initial')}
-                  className={`p-1 border-4 transition-all ${
-                    selectedAvatar === 'initial'
+                  className={`p-1 border-4 transition-all ${selectedAvatar === 'initial'
                       ? 'border-chefini-yellow bg-chefini-yellow'
                       : 'border-black bg-white hover:border-chefini-yellow'
-                  }`}
+                    }`}
                 >
                   <div className="w-16 h-16 flex items-center justify-center text-3xl sm:text-4xl font-black">
                     {profile.name?.[0]?.toUpperCase() || 'C'}
@@ -286,15 +313,14 @@ export default function ProfilePage() {
                     <button
                       key={avatar.id}
                       onClick={() => setSelectedAvatar(avatar.id)}
-                      className={`border-4 transition-all hover:scale-110 aspect-square overflow-hidden bg-gray-50 ${
-                        selectedAvatar === avatar.id
+                      className={`border-4 transition-all hover:scale-110 aspect-square overflow-hidden bg-gray-50 ${selectedAvatar === avatar.id
                           ? 'border-chefini-yellow bg-chefini-yellow bg-opacity-10'
                           : 'border-black bg-white hover:border-chefini-yellow'
-                      }`}
+                        }`}
                       title={avatar.label}
                     >
-                      <img 
-                        src={avatar.src} 
+                      <img
+                        src={avatar.src}
                         alt={avatar.label}
                         className="w-full h-full object-cover"
                       />
@@ -384,8 +410,8 @@ export default function ProfilePage() {
             </div>
           )}
 
-        </div>
-      </div>
+        </motion.div>
+      </motion.div>
     </div>
   );
 }

@@ -6,6 +6,7 @@ import {
   Info, Download, Heart, ShoppingCart, Volume2, Sparkles, Globe, Trash2, ListPlus, Share2,
   Check, Crown, Image as ImageIcon, MoreHorizontal, ChevronUp, ChevronDown
 } from 'lucide-react';
+import { motion, AnimatePresence } from 'framer-motion';
 
 // ==========================================
 // 1. HOOKS & UTILITIES (Inlined to fix imports)
@@ -1962,6 +1963,113 @@ const getRecipeCategory = (recipe: StaticRecipe): 'Veg' | 'Non-Veg' => {
 // 4. MAIN PAGE COMPONENT
 // ==========================================
 
+const itemAnim = {
+  hidden: { opacity: 0, y: 20 },
+  show: { opacity: 1, y: 0 }
+};
+
+interface RecipeCardProps {
+  recipe: StaticRecipe;
+  isSaved: boolean;
+  onSelect: (recipe: StaticRecipe) => void;
+  onSave: (recipe: StaticRecipe) => void;
+}
+
+const RecipeCard = ({ recipe, isSaved, onSelect, onSave }: RecipeCardProps) => {
+  return (
+    <motion.div
+      variants={itemAnim}
+      className="bg-white border-4 border-black shadow-brutal text-black hover:shadow-brutal-lg transition-all flex flex-col h-full group relative overflow-hidden"
+    >
+      {/* Premium Badge / Logo overlay */}
+      <div className="border-b-4 border-black p-4 md:p-6 bg-chefini-yellow relative">
+        {/* State Badge with Veg/Non-Veg Dot */}
+        <div className="absolute top-0 right-0 flex">
+          <div className="bg-white border-l-2 border-b-2 border-black px-2 py-1 flex items-center justify-center">
+            <div className={`w-3 h-3 rounded-full border border-black ${getRecipeCategory(recipe) === 'Veg' ? 'bg-green-500' : 'bg-red-500'}`}></div>
+          </div>
+          <div className="bg-black text-white px-2 py-1 text-xs font-bold uppercase tracking-wider border-b-2 border-black">
+            {recipe.state}
+          </div>
+        </div>
+
+        <h3 className="text-xl md:text-2xl font-black mb-3 line-clamp-2 selectable mt-4">
+          {recipe.title}
+        </h3>
+        <div className="flex flex-wrap gap-3 text-xs md:text-sm font-bold">
+          <span>⏱️ {recipe.time}</span>
+          <span>🔥 {recipe.macros.calories} cal</span>
+        </div>
+      </div>
+
+      <div className="p-4 md:p-6 flex-1 flex flex-col">
+        {/* Creator Info - Enhanced */}
+        <div className="flex items-center gap-3 mb-4 pb-4 border-b-2 border-dashed border-gray-300">
+          <div className="w-10 h-10 md:w-12 md:h-12 bg-black text-chefini-yellow border-2 border-chefini-yellow flex items-center justify-center rounded-full shadow-sm">
+            <ChefHat size={20} className="md:w-6 md:h-6" />
+          </div>
+          <div>
+            <p className="font-black text-base md:text-lg leading-none">Chefini <span className="text-chefini-yellow bg-black px-1 text-xs md:text-sm">GOLD</span></p>
+            <p className="text-[10px] md:text-xs text-gray-500 font-bold">Premium Collection</p>
+          </div>
+        </div>
+
+        {/* Vibrant Magic Tip */}
+        <div className="mb-4 bg-purple-50 p-3 md:p-4 border-l-4 border-purple-600 text-xs md:text-sm text-purple-900 font-medium italic relative">
+          <Sparkles className="absolute -top-2 -right-2 text-purple-500 fill-purple-200" size={16} />
+          <span className="not-italic font-bold block text-[10px] md:text-xs text-purple-600 mb-1">✨ MAGIC TIP:</span>
+          "{recipe.tip}"
+        </div>
+
+        <div className="mb-4 flex-1">
+          <p className="text-xs md:text-sm font-bold text-gray-700 mb-2">Core Ingredients:</p>
+          <ul className="text-xs md:text-sm space-y-1">
+            {recipe.ingredients.slice(0, 3).map((ing, idx) => (
+              <li key={idx} className="flex items-start gap-2">
+                <span className="text-chefini-yellow font-black">▪</span>
+                <span className="line-clamp-1">{ing.item}</span>
+              </li>
+            ))}
+            {recipe.ingredients.length > 3 && (
+              <li className="text-gray-500 italic pl-3">
+                + {recipe.ingredients.length - 3} more...
+              </li>
+            )}
+          </ul>
+        </div>
+
+        <div className="flex gap-2 mt-auto">
+          <motion.button
+            whileHover={{ scale: 1.05 }}
+            whileTap={{ scale: 0.95 }}
+            onClick={() => onSelect(recipe)}
+            className="flex-1 px-3 py-2 md:px-4 md:py-3 bg-chefini-yellow text-black font-bold border-2 border-black hover:shadow-brutal-sm transition-all flex items-center justify-center gap-2 text-sm md:text-base"
+          >
+            <Eye size={16} className="md:w-[18px] md:h-[18px]" />
+            View Recipe
+          </motion.button>
+          <motion.button
+            whileHover={{ scale: 1.05 }}
+            whileTap={{ scale: 0.95 }}
+            onClick={(e) => {
+              e.stopPropagation();
+              if (!isSaved) onSave(recipe);
+            }}
+            disabled={isSaved}
+            className={`px-3 py-2 md:px-4 md:py-3 border-2 border-black font-bold transition-all flex items-center gap-2 ${isSaved
+              ? 'bg-green-100 text-green-700 border-green-600 cursor-default'
+              : 'bg-white hover:bg-gray-100 text-green-600'
+              }`}
+            title={isSaved ? "Already saved" : "Save Copy to My Cookbook"}
+          >
+            {isSaved ? <Check size={16} className="md:w-[18px] md:h-[18px]" /> : <BookmarkPlus size={16} className="md:w-[18px] md:h-[18px]" />}
+          </motion.button>
+        </div>
+      </div>
+    </motion.div>
+  );
+};
+
 export default function DailyDishesPage() {
   const [selectedRecipe, setSelectedRecipe] = useState<StaticRecipe | null>(null);
   const [activeFilter, setActiveFilter] = useState<string>('All Staples');
@@ -2036,92 +2144,25 @@ export default function DailyDishesPage() {
     }
   };
 
-  const RecipeCard = ({ recipe }: { recipe: StaticRecipe }) => {
-    const isSaved = savedRecipeTitles.has(recipe.title); // Check if this specific recipe is saved
 
-    return (
-      <div className="bg-white border-4 border-black shadow-brutal text-black hover:shadow-brutal-lg transition-all flex flex-col h-full group relative overflow-hidden">
-        {/* Premium Badge / Logo overlay */}
-        <div className="border-b-4 border-black p-4 md:p-6 bg-chefini-yellow relative">
-          {/* State Badge with Veg/Non-Veg Dot */}
-          <div className="absolute top-0 right-0 flex">
-            <div className="bg-white border-l-2 border-b-2 border-black px-2 py-1 flex items-center justify-center">
-              <div className={`w-3 h-3 rounded-full border border-black ${getRecipeCategory(recipe) === 'Veg' ? 'bg-green-500' : 'bg-red-500'}`}></div>
-            </div>
-            <div className="bg-black text-white px-2 py-1 text-xs font-bold uppercase tracking-wider border-b-2 border-black">
-              {recipe.state}
-            </div>
-          </div>
 
-          <h3 className="text-xl md:text-2xl font-black mb-3 line-clamp-2 selectable mt-4">
-            {recipe.title}
-          </h3>
-          <div className="flex flex-wrap gap-3 text-xs md:text-sm font-bold">
-            <span>⏱️ {recipe.time}</span>
-            <span>🔥 {recipe.macros.calories} cal</span>
-          </div>
-        </div>
 
-        <div className="p-4 md:p-6 flex-1 flex flex-col">
-          {/* Creator Info - Enhanced */}
-          <div className="flex items-center gap-3 mb-4 pb-4 border-b-2 border-dashed border-gray-300">
-            <div className="w-10 h-10 md:w-12 md:h-12 bg-black text-chefini-yellow border-2 border-chefini-yellow flex items-center justify-center rounded-full shadow-sm">
-              <ChefHat size={20} className="md:w-6 md:h-6" />
-            </div>
-            <div>
-              <p className="font-black text-base md:text-lg leading-none">Chefini <span className="text-chefini-yellow bg-black px-1 text-xs md:text-sm">GOLD</span></p>
-              <p className="text-[10px] md:text-xs text-gray-500 font-bold">Premium Collection</p>
-            </div>
-          </div>
 
-          {/* Vibrant Magic Tip */}
-          <div className="mb-4 bg-purple-50 p-3 md:p-4 border-l-4 border-purple-600 text-xs md:text-sm text-purple-900 font-medium italic relative">
-            <Sparkles className="absolute -top-2 -right-2 text-purple-500 fill-purple-200" size={16} />
-            <span className="not-italic font-bold block text-[10px] md:text-xs text-purple-600 mb-1">✨ MAGIC TIP:</span>
-            "{recipe.tip}"
-          </div>
 
-          <div className="mb-4 flex-1">
-            <p className="text-xs md:text-sm font-bold text-gray-700 mb-2">Core Ingredients:</p>
-            <ul className="text-xs md:text-sm space-y-1">
-              {recipe.ingredients.slice(0, 3).map((ing, idx) => (
-                <li key={idx} className="flex items-start gap-2">
-                  <span className="text-chefini-yellow font-black">▪</span>
-                  <span className="line-clamp-1">{ing.item}</span>
-                </li>
-              ))}
-              {recipe.ingredients.length > 3 && (
-                <li className="text-gray-500 italic pl-3">
-                  + {recipe.ingredients.length - 3} more...
-                </li>
-              )}
-            </ul>
-          </div>
 
-          <div className="flex gap-2 mt-auto">
-            <button onClick={() => setSelectedRecipe(recipe)} className="flex-1 px-3 py-2 md:px-4 md:py-3 bg-chefini-yellow text-black font-bold border-2 border-black hover:shadow-brutal-sm hover:translate-x-0.5 hover:translate-y-0.5 transition-all flex items-center justify-center gap-2 text-sm md:text-base">
-              <Eye size={16} className="md:w-[18px] md:h-[18px]" />
-              View Recipe
-            </button>
-            <button
-              onClick={(e) => {
-                e.stopPropagation();
-                if (!isSaved) handleSaveToCookbook(recipe);
-              }}
-              disabled={isSaved}
-              className={`px-3 py-2 md:px-4 md:py-3 border-2 border-black font-bold transition-all flex items-center gap-2 ${isSaved
-                ? 'bg-green-100 text-green-700 border-green-600 cursor-default'
-                : 'bg-white hover:bg-gray-100 text-green-600'
-                }`}
-              title={isSaved ? "Already saved" : "Save Copy to My Cookbook"}
-            >
-              {isSaved ? <Check size={16} className="md:w-[18px] md:h-[18px]" /> : <BookmarkPlus size={16} className="md:w-[18px] md:h-[18px]" />}
-            </button>
-          </div>
-        </div>
-      </div>
-    );
+
+  // Animation Variants for Container
+  const container = {
+    hidden: { opacity: 0 },
+    show: {
+      opacity: 1,
+      transition: {
+        staggerChildren: 0.1
+      }
+    }
   };
+
+
 
   return (
     <div className="min-h-screen">
@@ -2129,7 +2170,12 @@ export default function DailyDishesPage() {
         <Toast key={toast.id} message={toast.message} type={toast.type} onClose={() => removeToast(toast.id)} />
       ))}
 
-      <div className="mb-4 md:mb-8 bg-black border-4 border-chefini-yellow p-4 md:p-6 mx-4 md:mx-8 mt-4 md:mt-8">
+      <motion.div
+        initial={{ x: -50, opacity: 0 }}
+        animate={{ x: 0, opacity: 1 }}
+        transition={{ duration: 0.5 }}
+        className="mb-4 md:mb-8 bg-black border-4 border-chefini-yellow p-4 md:p-6 mx-4 md:mx-8 mt-4 md:mt-8"
+      >
         <h1 className="text-2xl md:text-4xl font-black flex flex-col md:flex-row items-start md:items-center gap-2 md:gap-3 text-white">
           <Utensils className="text-chefini-yellow w-8 h-8 md:w-10 md:h-10" />
           INDIAN STAPLES
@@ -2137,18 +2183,28 @@ export default function DailyDishesPage() {
         <p className="text-gray-400 mt-2 font-bold text-sm md:text-base">
           A culinary journey through India • {readyRecipes.length} recipes from 28 states and 8 union territories
         </p>
-      </div>
+      </motion.div>
 
       <div className="p-4 md:p-8 max-w-7xl mx-auto">
-        <div className="mb-6 md:mb-10 flex gap-2 md:gap-3 overflow-x-auto pb-4 scrollbar-thin">
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.2 }}
+          className="mb-6 md:mb-10 flex gap-2 md:gap-3 overflow-x-auto pb-4 scrollbar-thin"
+        >
           {states.map((state) => (
             <button key={state} onClick={() => setActiveFilter(state)} className={`px-4 py-1.5 md:px-6 md:py-2 text-sm md:text-base font-black border-4 border-black whitespace-nowrap transition-all shadow-brutal-sm ${activeFilter === state ? 'bg-chefini-yellow text-black scale-105' : 'bg-white text-gray-500 hover:bg-gray-50'}`}>
               {state}
             </button>
           ))}
-        </div>
+        </motion.div>
 
-        <div className="mb-6 md:mb-8 flex flex-col md:flex-row items-center gap-4">
+        <motion.div
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{ delay: 0.3 }}
+          className="mb-6 md:mb-8 flex flex-col md:flex-row items-center gap-4"
+        >
           <h2 className="text-xl md:text-3xl font-black text-black bg-white border-4 border-black px-4 py-1.5 md:px-6 md:py-2 shadow-brutal-sm inline-flex items-center gap-2 transform -rotate-1">
             <MapPin className="text-red-500 w-5 h-5 md:w-6 md:h-6" />
             {activeFilter === 'All Staples' ? 'Pan-India Collection' : `${activeFilter} Specials`}
@@ -2172,13 +2228,18 @@ export default function DailyDishesPage() {
               </button>
             ))}
           </div>
-        </div>
+        </motion.div>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 md:gap-8">
+        <motion.div
+          variants={container}
+          initial="hidden"
+          animate="show"
+          className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 md:gap-8"
+        >
           {displayedRecipes.map((recipe) => (
             <RecipeCard key={recipe._id} recipe={recipe} />
           ))}
-        </div>
+        </motion.div>
 
         {displayedRecipes.length === 0 && (
           <div className="text-center py-12 text-gray-500 font-bold">
@@ -2187,16 +2248,18 @@ export default function DailyDishesPage() {
         )}
       </div>
 
-      {selectedRecipe && (
-        <RecipeModal
-          recipe={selectedRecipe}
-          isOpen={!!selectedRecipe}
-          onClose={() => setSelectedRecipe(null)}
-          showToast={showToast}
-          onSaveToCookbook={handleSaveToCookbook}
-          isSaved={savedRecipeTitles.has(selectedRecipe.title)} // Pass saved status to modal
-        />
-      )}
+      <AnimatePresence>
+        {selectedRecipe && (
+          <RecipeModal
+            recipe={selectedRecipe}
+            isOpen={!!selectedRecipe}
+            onClose={() => setSelectedRecipe(null)}
+            showToast={showToast}
+            onSaveToCookbook={handleSaveToCookbook}
+            isSaved={savedRecipeTitles.has(selectedRecipe.title)} // Pass saved status to modal
+          />
+        )}
+      </AnimatePresence>
     </div>
   );
 }
