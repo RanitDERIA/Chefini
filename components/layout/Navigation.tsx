@@ -29,7 +29,7 @@ export default function Navigation() {
     <>
       {/* DESKTOP NAVIGATION (Top) - Hidden on Mobile */}
       <nav className="hidden md:block bg-black border-b-2 border-chefini-yellow sticky top-0 z-30" suppressHydrationWarning>
-        <div className="max-w-7xl mx-auto flex gap-1 overflow-x-auto scrollbar-hide">
+        <div className="max-w-7xl mx-auto flex gap-1 overflow-x-auto no-scrollbar">
           {navItems.map(({ href, label, icon: Icon }) => {
             const isActive = pathname === href;
 
