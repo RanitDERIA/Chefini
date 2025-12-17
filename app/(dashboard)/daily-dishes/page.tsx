@@ -2237,7 +2237,13 @@ export default function DailyDishesPage() {
           className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 md:gap-8"
         >
           {displayedRecipes.map((recipe) => (
-            <RecipeCard key={recipe._id} recipe={recipe} />
+            <RecipeCard
+              key={recipe._id}
+              recipe={recipe}
+              isSaved={savedRecipeTitles.has(recipe.title)}
+              onSelect={setSelectedRecipe}
+              onSave={handleSaveToCookbook}
+            />
           ))}
         </motion.div>
 
