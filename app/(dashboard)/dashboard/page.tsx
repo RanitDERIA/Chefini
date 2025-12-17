@@ -179,8 +179,8 @@ export default function GeneratePage() {
         className="space-y-6"
       >
         <div className="bg-black border-4 border-chefini-yellow p-6">
-          <h2 className="text-xl md:text-3xl font-black mb-6 flex items-center gap-2 text-white">
-            <Sparkles className="text-chefini-yellow" />
+          <h2 className="text-lg md:text-3xl font-black mb-6 flex items-center gap-2 text-white">
+            <Sparkles className="text-chefini-yellow flex-shrink-0" />
             WHAT'S IN YOUR KITCHEN?
           </h2>
 
@@ -369,18 +369,18 @@ export default function GeneratePage() {
               </div>
 
               {/* Macros */}
-              <div className="pt-4 border-t-2 border-dashed border-black grid grid-cols-3 gap-2 md:gap-4 text-center">
-                <div>
+              <div className="pt-4 border-t-2 border-dashed border-black flex flex-wrap justify-around gap-2 md:gap-4 text-center">
+                <div className="min-w-[60px]">
                   <div className="font-black text-lg md:text-2xl">{recipe.macros.protein}g</div>
-                  <div className="text-xs">PROTEIN</div>
+                  <div className="text-[10px] md:text-xs font-bold">PROTEIN</div>
                 </div>
-                <div>
+                <div className="min-w-[60px]">
                   <div className="font-black text-lg md:text-2xl">{recipe.macros.carbs}g</div>
-                  <div className="text-xs">CARBS</div>
+                  <div className="text-[10px] md:text-xs font-bold">CARBS</div>
                 </div>
-                <div>
+                <div className="min-w-[60px]">
                   <div className="font-black text-lg md:text-2xl">{recipe.macros.fats}g</div>
-                  <div className="text-xs">FATS</div>
+                  <div className="text-[10px] md:text-xs font-bold">FATS</div>
                 </div>
               </div>
             </motion.div>
