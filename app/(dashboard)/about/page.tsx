@@ -1,3 +1,5 @@
+'use client';
+
 import { ChefHat, Heart, Lightbulb, Target, Users, Sparkles, Wand2 } from 'lucide-react';
 import { motion } from 'framer-motion';
 
