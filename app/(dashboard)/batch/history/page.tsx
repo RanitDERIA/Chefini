@@ -158,24 +158,21 @@ export default function BatchHistoryPage() {
                         return (
                             <div key={plan._id} className="bg-white border-4 border-black shadow-brutal transition-all hover:shadow-brutal-lg hover:-translate-y-1 duration-300">
                                 {/* Plan Header */}
-                                <div className={`${headerColor} p-4 md:p-5 border-b-4 border-black flex items-center justify-between cursor-pointer hover:brightness-110 transition-all`}
+                                <div className={`${headerColor} p-3 md:p-5 border-b-4 border-black flex items-center justify-between cursor-pointer hover:brightness-110 transition-all`}
                                     onClick={() => setExpandedPlan(isExpanded ? null : plan._id)}>
-                                    <div className="flex-1">
-                                        <h3 className="text-xl md:text-2xl font-black text-black uppercase">{plan.batch_title}</h3>
-                                        <div className="flex flex-wrap gap-4 text-xs md:text-sm font-bold text-black mt-2">
-                                            <span className="flex items-center gap-1 bg-white px-2 py-1 border-2 border-black">
-                                                <Clock size={14} /> {plan.total_prep_time}
+                                    <div className="flex-1 min-w-0 pr-2">
+                                        <h3 className="text-lg md:text-2xl font-black text-black uppercase truncate">{plan.batch_title}</h3>
+                                        <div className="flex flex-wrap gap-2 md:gap-4 text-xs md:text-sm font-bold text-black mt-2">
+                                            <span className="flex items-center gap-1 bg-white px-2 py-1 border-2 border-black whitespace-nowrap">
+                                                <Clock size={12} className="md:w-[14px] md:h-[14px]" /> {plan.total_prep_time}
                                             </span>
-                                            <span className="flex items-center gap-1 bg-white px-2 py-1 border-2 border-black">
-                                                <Calendar size={14} /> {plan.days} Days
-                                            </span>
-                                            <span className="text-gray-700 flex items-center mt-1">
-                                                Saved on {new Date(plan.createdAt).toLocaleDateString()}
+                                            <span className="flex items-center gap-1 bg-white px-2 py-1 border-2 border-black whitespace-nowrap">
+                                                <Calendar size={12} className="md:w-[14px] md:h-[14px]" /> {plan.days} Days
                                             </span>
                                         </div>
                                     </div>
 
-                                    <div className="flex items-center gap-3">
+                                    <div className="flex items-center gap-2 md:gap-3 flex-shrink-0">
                                         <button
                                             onClick={(e) => {
                                                 e.stopPropagation();
@@ -184,10 +181,10 @@ export default function BatchHistoryPage() {
                                             className="p-2 bg-red-500 text-white border-2 border-black hover:bg-red-600 transition-colors z-10"
                                             title="Delete Plan"
                                         >
-                                            <Trash2 size={20} />
+                                            <Trash2 size={16} className="md:w-[20px] md:h-[20px]" />
                                         </button>
                                         <div className={`transform transition-transform duration-300 ${isExpanded ? 'rotate-180' : ''}`}>
-                                            <ChevronDown size={28} className="text-black" />
+                                            <ChevronDown size={20} className="text-black md:w-[28px] md:h-[28px]" />
                                         </div>
                                     </div>
                                 </div>
@@ -199,14 +196,14 @@ export default function BatchHistoryPage() {
 
                                             {/* LEFT: Ingredients */}
                                             <div>
-                                                <h4 className="font-black text-lg text-black mb-3 flex items-center gap-2 border-b-2 border-black pb-1 w-fit">
-                                                    <span className={`w-4 h-4 rounded-full border-2 border-black ${headerColor}`}></span>
+                                                <h4 className="font-black text-base md:text-lg text-black mb-3 flex items-center gap-2 border-b-2 border-black pb-1 w-fit">
+                                                    <span className={`w-3 h-3 md:w-4 md:h-4 rounded-full border-2 border-black ${headerColor}`}></span>
                                                     PROPOSED INGREDIENTS
                                                 </h4>
-                                                <div className="bg-gray-50 border-2 border-black p-4">
+                                                <div className="bg-gray-50 border-2 border-black p-3 md:p-4">
                                                     <ul className="space-y-1">
                                                         {plan.ingredients.map((ing, i) => (
-                                                            <li key={i} className="text-sm font-bold text-gray-800 flex items-start gap-2">
+                                                            <li key={i} className="text-xs md:text-sm font-bold text-gray-800 flex items-start gap-2">
                                                                 <span className="text-chefini-yellow mt-1">▪</span>
                                                                 {ing.toLowerCase().replace(/\b\w/g, s => s.toUpperCase())}
                                                             </li>
@@ -217,22 +214,22 @@ export default function BatchHistoryPage() {
 
                                             {/* RIGHT: Daily Dishes */}
                                             <div>
-                                                <h4 className="font-black text-lg text-black mb-3 flex items-center gap-2 border-b-2 border-black pb-1 w-fit">
-                                                    <span className={`w-4 h-4 rounded-full border-2 border-black ${headerColor}`}></span>
-                                                    DISHES TO MAKE (DAY-WISE)
+                                                <h4 className="font-black text-base md:text-lg text-black mb-3 flex items-center gap-2 border-b-2 border-black pb-1 w-fit">
+                                                    <span className={`w-3 h-3 md:w-4 md:h-4 rounded-full border-2 border-black ${headerColor}`}></span>
+                                                    DISHES TO MAKE
                                                 </h4>
-                                                <div className="space-y-3">
+                                                <div className="space-y-2 md:space-y-3">
                                                     {plan.runtime_phase.map((meal: any, i: number) => (
-                                                        <div key={i} className="flex items-center gap-3 bg-white border-2 border-black p-3 shadow-brutal-sm">
-                                                            <div className="bg-black text-chefini-yellow w-8 h-8 flex flex-shrink-0 items-center justify-center font-black border border-black">
+                                                        <div key={i} className="flex items-center gap-3 bg-white border-2 border-black p-2 md:p-3 shadow-brutal-sm">
+                                                            <div className="bg-black text-chefini-yellow w-7 h-7 md:w-8 md:h-8 flex flex-shrink-0 items-center justify-center font-black text-sm md:text-base border border-black">
                                                                 {meal.day}
                                                             </div>
-                                                            <div className="flex-1">
-                                                                <p className="font-black text-sm md:text-base leading-tight text-black">
+                                                            <div className="flex-1 min-w-0">
+                                                                <p className="font-black text-sm md:text-base leading-tight text-black truncate">
                                                                     {meal.title || 'Untitled Meal'}
                                                                 </p>
                                                                 <p className="text-xs text-gray-500 font-bold mt-0.5 flex items-center gap-1">
-                                                                    <Clock size={12} /> {meal.time}
+                                                                    <Clock size={10} className="md:w-[12px] md:h-[12px]" /> {meal.time}
                                                                 </p>
                                                             </div>
                                                         </div>
@@ -244,8 +241,8 @@ export default function BatchHistoryPage() {
 
                                         {/* Storage Tip Footer */}
                                         {plan.storage_tip && (
-                                            <div className="mt-6 bg-blue-50 border-l-4 border-blue-500 p-4">
-                                                <p className="text-sm font-bold text-blue-900 flex items-start gap-2 break-words">
+                                            <div className="mt-4 md:mt-6 bg-blue-50 border-l-4 border-blue-500 p-3 md:p-4">
+                                                <p className="text-xs md:text-sm font-bold text-blue-900 flex items-start gap-2 break-words">
                                                     <span className="uppercase text-blue-600 font-black flex-shrink-0">Storage Tip:</span>
                                                     {plan.storage_tip}
                                                 </p>
